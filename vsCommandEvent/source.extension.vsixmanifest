@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Vsix xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2010">
+    <Identifier Id="DA5CEB32-1E09-44A5-A6AA-71D3149A53B7">
+        <Name>vsCommandEvent</Name>
+        <Author>entry.reg@gmail.com</Author>
+        <Version>1.0.0</Version>
+        <Description xml:space="preserve">Manager of commands with flexible actions</Description>
+        <Locale>1033</Locale>
+        <MoreInfoUrl>http://vssbe.r-eg.net</MoreInfoUrl>
+        <License>Resources/vsixinfo</License>
+        <GettingStartedGuide>http://vssbe.r-eg.net</GettingStartedGuide>
+        <Icon>Resources/Package.png</Icon>
+        <PreviewImage>Resources/preview.png</PreviewImage>
+        <InstalledByMsi>false</InstalledByMsi>
+        <SupportedProducts>
+            <VisualStudio Version="10.0">
+                <Edition>Ultimate</Edition>
+                <Edition>Premium</Edition>
+                <Edition>Pro</Edition>
+                <Edition>IntegratedShell</Edition>
+            </VisualStudio>
+            <VisualStudio Version="11.0">
+                <Edition>Ultimate</Edition>
+                <Edition>Premium</Edition>
+                <Edition>Pro</Edition>
+                <Edition>IntegratedShell</Edition>
+            </VisualStudio>
+            <VisualStudio Version="12.0">
+                <Edition>Community</Edition>
+                <Edition>Enterprise</Edition>
+                <Edition>Ultimate</Edition>
+                <Edition>Premium</Edition>
+                <Edition>Pro</Edition>
+                <Edition>IntegratedShell</Edition>
+            </VisualStudio>
+            <VisualStudio Version="14.0">
+                <Edition>Community</Edition>
+                <Edition>Enterprise</Edition>
+                <Edition>Ultimate</Edition>
+                <Edition>Premium</Edition>
+                <Edition>Pro</Edition>
+                <Edition>IntegratedShell</Edition>
+            </VisualStudio>
+        </SupportedProducts>
+        <SupportedFrameworkRuntimeEdition MinVersion="4.5" />
+    </Identifier>
+    <References>
+        <Reference Id="Microsoft.VisualStudio.MPF" MinVersion="10.0">
+            <Name>Visual Studio MPF</Name>
+        </Reference>
+    </References>
+    <Content>
+        <VsPackage>|%CurrentProject%;PkgdefProjectOutputGroup|</VsPackage>
+    </Content>
+</Vsix>

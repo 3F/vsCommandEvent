@@ -22,7 +22,7 @@
  * THE SOFTWARE.
 */
 
-namespace net.r_eg.vsSBE.Bridge
+namespace net.r_eg.vsCE.Bridge
 {
     /// <summary>
     /// Represents a different codes for our library

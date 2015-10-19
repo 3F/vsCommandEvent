@@ -4,20 +4,10 @@ nuget:
 build_script:
 - build_[CI_Debug]
 artifacts:
-- path: bin\Releases
-  name: Releases
-- path: bin\Releases\Bridge_v*
-  name: Bridge
-- path: bin\Releases\CI.MSBuild_v*
-  name: CI.MSBuild
-- path: bin\Releases\Devenv_v*
-  name: Devenv
-- path: bin\Releases\Provider_v*
-  name: Provider
 - path: bin\Releases\Release_notes.txt
   name: Release_notes
-- path: bin\Releases\vsSolutionBuildEvent_v*
-  name: vsSolutionBuildEvent
+- path: bin\Releases\vsCommandEvent_v*
+  name: vsCommandEvent
 notifications:
 - provider: Email
   to:

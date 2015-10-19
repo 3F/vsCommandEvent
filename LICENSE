@@ -1,5 +1,11 @@
-vsSolutionBuildEvent (vsSBE)
-Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+vsCommandEvent (vsCE)
+Copyright (c) 2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+
+    The 'vsCommandEvent' product based on:
+
+        vsSolutionBuildEvent (vsSBE)
+        Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+
 
 This program is licensed under GNU LGPLv3:
 

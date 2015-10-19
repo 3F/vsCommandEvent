@@ -25,7 +25,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace net.r_eg.vsSBE.Bridge
+namespace net.r_eg.vsCE.Bridge
 {
     /// <summary>
     /// Represents available types of the build for any actions

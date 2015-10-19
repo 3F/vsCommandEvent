@@ -24,36 +24,54 @@
 
 using System;
 using System.Runtime.InteropServices;
-using Microsoft.VisualStudio.Shell.Interop;
 
-namespace net.r_eg.vsSBE.Bridge
+namespace net.r_eg.vsCE.Bridge
 {
-    [Guid("FD4E35DB-9509-4353-9F2A-C31B7B1E63B8")]
-    public interface IEvent: IEventLight, IEventLight2
+    [Guid("F9BF1346-3701-43A0-92D7-828B1112B63C")]
+    public interface IEvent
     {
         /// <summary>
-        /// 'PRE' of Project.
-        /// Before a project configuration begins to build.
+        /// Solution has been opened.
         /// </summary>
-        /// <param name="pHierProj">Pointer to a hierarchy project object.</param>
-        /// <param name="pCfgProj">Pointer to a configuration project object.</param>
-        /// <param name="pCfgSln">Pointer to a configuration solution object.</param>
-        /// <param name="dwAction">Double word containing the action.</param>
-        /// <param name="pfCancel">Pointer to a flag indicating cancel.</param>
-        /// <returns>If the method succeeds, it returns Codes.Success. If it fails, it returns an error code.</returns>
-        int onProjectPre(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, ref int pfCancel);
+        /// <param name="pUnkReserved">Reserved for future use.</param>
+        /// <param name="fNewSolution">true if the solution is being created. false if the solution was created previously or is being loaded.</param>
+        /// <returns>If the method succeeds, it returns VSConstants.S_OK. If it fails, it returns an error code.</returns>
+        int solutionOpened(object pUnkReserved, int fNewSolution);
 
         /// <summary>
-        /// 'POST' of Project.
-        /// After a project configuration is finished building.
+        /// Solution has been closed.
         /// </summary>
-        /// <param name="pHierProj">Pointer to a hierarchy project object.</param>
-        /// <param name="pCfgProj">Pointer to a configuration project object.</param>
-        /// <param name="pCfgSln">Pointer to a configuration solution object.</param>
-        /// <param name="dwAction">Double word containing the action.</param>
-        /// <param name="fSuccess">Flag indicating success.</param>
-        /// <param name="fCancel">Flag indicating cancel.</param>
-        /// <returns>If the method succeeds, it returns Codes.Success. If it fails, it returns an error code.</returns>
-        int onProjectPost(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, int fSuccess, int fCancel);
+        /// <param name="pUnkReserved">Reserved for future use.</param>
+        /// <returns>If the method succeeds, it returns VSConstants.S_OK. If it fails, it returns an error code.</returns>
+        int solutionClosed(object pUnkReserved);
+
+        /// <summary>
+        /// Before executing Command ID for EnvDTE.
+        /// </summary>
+        /// <param name="guid">The GUID.</param>
+        /// <param name="id">The command ID.</param>
+        /// <param name="customIn">Custom input parameters.</param>
+        /// <param name="customOut">Custom output parameters.</param>
+        /// <param name="cancelDefault">Whether the command has been cancelled.</param>
+        /// <returns>If the method succeeds, it returns VSConstants.S_OK. If it fails, it returns an error code.</returns>
+        int onCommandDtePre(string guid, int id, object customIn, object customOut, ref bool cancelDefault);
+
+        /// <summary>
+        /// After executed Command ID for EnvDTE.
+        /// </summary>
+        /// <param name="guid">The GUID.</param>
+        /// <param name="id">The command ID.</param>
+        /// <param name="customIn">Custom input parameters.</param>
+        /// <param name="customOut">Custom output parameters.</param>
+        /// <returns>If the method succeeds, it returns VSConstants.S_OK. If it fails, it returns an error code.</returns>
+        int onCommandDtePost(string guid, int id, object customIn, object customOut);
+
+        /// <summary>
+        /// During assembly.
+        /// </summary>
+        /// <param name="data">Raw data of building process</param>
+        /// <param name="guid">Guid string of pane</param>
+        /// <param name="item">Name of item pane</param>
+        void onBuildRaw(string data, string guid, string item);
     }
 }

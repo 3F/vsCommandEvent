@@ -5,9 +5,5 @@ obj
 .vs
 /TestResults
 /packages
-/vsSolutionBuildEvent/Version.cs
-/Bridge/Version.cs
-/CI.MSBuild/Version.cs
-/Devenv/Version.cs
-/Provider/Version.cs
+/vsCommandEvent/Version.cs
 /bin/Releases

@@ -24,7 +24,7 @@
 
 using System;
 
-namespace net.r_eg.vsSBE.Bridge.Exceptions
+namespace net.r_eg.vsCE.Bridge.Exceptions
 {
     [Serializable]
     public class InvalidArgumentException: GeneralException

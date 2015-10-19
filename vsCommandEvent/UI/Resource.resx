@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="Package_32" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAICAAAAEAIACoEAAAFgAAACgAAAAgAAAAQAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8AAGArGABVHAn///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8AAC4fUwAnFA3///8AAFVVAwBpQU4AZUGVAFkmFP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AAAcEUoALyiOABwJNv///wAAYDU1AGo+eABi
+        OIUAgAAC////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wAAGQozABoKTQAtHiL///8A////AP///wAAGQUzACUaiwAdFpcAHApK////AABm
+        Ig8AYDRFAHBAEP///wD///8A////AP///wD///8AAICAAgAnOw3///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AAAbFTAAIxuDAB4TbgsgABj///8A////AAAdD2kAGgVqAB8emwAe
+        DCv///8A////AAAAAAEAO3YNADFrHwAvcTYAQJBMAEWWXAA1enMAMHWLADJ8Uv///wAAAAABACQAFf//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AAAnHyEAGg9EACsrBv///wD///8AABsQQQAb
+        FmgAKR5F////AAAwcBAANY1cAE2hegBGnX8AKnmSADCHlQBMooMARp1/ACp5kgAwh5UAO4kaACMMFgAY
+        D3QAHBxb////AP///wD///8A////AP///wD///8A////AP///wD///8A////AABqKwwAaisM////AP//
+        /wD//wABABwACf///wAATZkKADF3fgA0gpMAU6h+AD6TfwAze40ANIKTAFOofgA+k38AM3uNADKAcP//
+        /wAAIxRmAB0QjAAeDTv///8A////AP///wD///8A////AP///wD///8A////AABVKwwAXi5qAGI4mgBl
+        Pp0AXDOLAFsuOP///wD///8A////AAAwcU8APoWEAECOhwAzgH4ANXtbADp9YABBjH4AMX6SADN4hgA+
+        hYQANG8n////AAAhADYAJQ43AAAAAf///wD///8A////AP///wD///8A////AP///wAATRoKAGI+hwBj
+        PqAAYDWIAF8zfABcNVsAZTk6////AP///wAAQIAEAD6MgwA7gmgALGEdAD6MPgBBkHEAN3+LADB2jwA0
+        hZIAPYyJADuEX////wAAVQADAGguFgBgKC0AXS9HAGM+XwBVAAb///8A////AP///wD///8A////AABf
+        QXEAaUWcAGZBmQBbNp0AXkCLAGlFiABqQDz///8A////AABZphcASp9gACtvHgAxiIEATKKDAEadfwAq
+        eZIAMIeVAEyigwBIn3IAN20OAF48PABpRJIAZkGZAFs2pgBeQKgAZ0Fy////AP///wD///8A////AP//
+        /wD///8AAGk8EQBwQCAAYzkxAGI6RgBhPlcAaUMu////AP///wD///8AAGOqEgBAiRwAMXqCADSCkwBT
+        qH4APpN/ADN7jQA0gpMAVKhwADqAFgBdFwsAXzmXAGo9YABiNXgAXzOfAGA8pwBlPCb///8A////AP//
+        /wD///8A////AP///wD///8AEiQADgAbCzAAQAAE////AP///wD///8A////AP///wD///8AADJ0LgA7
+        gGQAQ4x2ADF9hwA2eHcAP4NhAESPQAA5jgn///8AAFocJQBkNE8AXjeeAF4yngBiOJwAYzZV////AP//
+        /wD///8A////AP///wD///8A////AAAcAAkAIRuFACEXZQAiFSX///8A////AAAnDyEAGg0oAB8AGWZm
+        AAX///8A////AP///wD///8A////AP///wD///8A////AP///wD///8AAF4tTwBfN2sAXzVhAGI2NP//
+        /wD///8A////AP///wD///8A////AP///wD///8AAB0dNAAsJGkAKB86AAAAA////wAAMQoaACUaRQAZ
+        FJoAHB+cACwkjAAmHGUAGwsvAAAAAf///wD///8A////AAAdHTUALR85ACUbMAAWABf///8A////AP//
+        /wAAGw0mAB8cSgBAFQz///8A////AP///wD///8A////AP///wAAAAAB////AP///wD///8A////AAAz
+        H1oIIQAfABwThwAeGpsALyiOACIbjgAdFJcAGxJzACQkB////wAAHAAkACIZWwAvKI4AIhuOAB0UlwAc
+        FH4AJxQa////AAAZA10AHhOGAC4mhgAeCjP///8A////AP///wD///8A////AP///wAAGmYeABtdQgAm
+        ZD3///8AAB0TawAfDmwHHAAlACUciwAcF5oAHRGTACEVkQAkHJMAGQ9n////AAAcB0kAHgdFAB0WaQAc
+        EZMAIRWRACQckwAbFI4AIAAQACsADAAlGkUAJRw3AAAAA////wAAAAABACRsQAAlaz4AFlkXABpjO///
+        /wD///8A////AP///wAAIBdXACQdlQAfEmMAGgAnAB8ZewAkHZUAHxaWABwUmQAfHpsAIhUlBhgAKgAd
+        EpgAIRldAB8NUQAeD3kAHBSZAB8emwAlHWH///8A////AP///wD///8A////AAAzZgUALnFjACxwYgAA
+        VQMAH2xjAChrE////wD///8A////AABWNmgAJiCOABkUmgAdHpcAKyNeACYXZAAYEJIAHB+cACwnkQAq
+        IGEAAAABABsbeQAsJ5EAJiCOABoTlQAbG5cALCeRACgijQ0bABP///8A////AP///wD///8A////AAA1
+        clcAJW1ZACRtHAApcBn///8A////AP///wAAaR4RAGpDkAAoHGYAHRSXAB4amwAvKI4AIhuOAB0UlwAe
+        GpsALyiOACMciiQkAAcAHAAJADEkTgAiGH4AHRSXAB4amwAvKI4AIhuOAB0LR////wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AABhJBUAXjmmAF0qaABEJ5UAKyGVABwXmgAd
+        EZMAIRWRACQckwAcF5oAHRGTACkVJf///wD///8A////AA0mABQAKBo6AB4ZZQAdD4YAJhhs////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AABgOXAAYj2fAF8ylABc
+        M6QAPCBZACEXZgAfFZMAHBSZAB8emwAkHZUAJhNE////AP///wAAYzIkAGAwNQBdFxb///8AAAAAAQAg
+        ABj///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8AAG0kBwBm
+        QIAAWzamAF5AqABrOh////8AACIADwAYEUkAKyN8ACYgjgAbEF////8AAFUAAwBnN1wAXDahAF5AqABn
+        P03///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8AAF0uFgBeN5oAXzqZAIAAAv///wAiMwAPKysABgAAAAEAIxUkABwIP////wD///8AAGM6dwBe
+        L3cAXzeZAGpFlwBeJhv///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8AAFwkMgBiNVb///8A////AAAmBlgAJBd5Fy4AC////wD///8A////AP//
+        /wAAYSQVAGEwZABjPI0AXjmmAF4wWv///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8AAIBABP///wD///8AAB4LXAAdEI8AHg8z////AP//
+        /wD///8A////AP///wD///8A////AABYHRoAXiox////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wAAAAACABoXZAAk
+        FiP///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wAAAAACAAAAAv///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////////////////////////7////e////n///79/7////E///+zd/8f
+        PH/8fvD//B+Rw///M7P//9/H/f/////x////8Hx5//g+H//uG5//4xwP/9APD//QD+//4w///+PvP//z
+        /5////+f//+///////////////////////8=
+</value>
+  </data>
+  <data name="StringCSharpModeCodeByDefault" xml:space="preserve">
+    <value>using ICommand = net.r_eg.vsCE.Actions.ICommand;
+using ISolutionEvent = net.r_eg.vsCE.Events.ISolutionEvent;
+
+namespace vsCommandEvent
+{
+    public class CSharpMode
+    {
+        public static int Init(ICommand cmd, ISolutionEvent evt)
+        {
+            return 0;
+        }
+    }
+}</value>
+  </data>
+  <data name="StringDefaultValueForTargetsMode" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"&gt;
+
+    &lt;Target Name="Init"&gt;
+        &lt;!-- ... --&gt;
+    &lt;/Target&gt;
+
+    &lt;!--
+        Additional properties:
+            $(ActionName)
+            $(BuildType)
+            $(EventType)
+            $(SupportMSBuild)
+            $(SupportSBEScripts)
+            $(SolutionActiveCfg)
+            $(StartupProject)
+    --&gt;
+&lt;/Project&gt;</value>
+  </data>
+  <data name="StringScriptExampleSBE" xml:space="preserve">
+    <value>#["
+      Example
+"]
+#[var ver = v1.2.3]
+#[var log = $(TMP)/ver.txt]
+
+#[($(Configuration) ~= Deb || true) {
+    #[var tStart   = $([System.DateTime]::Parse("%mdate%").ToBinary())]
+    #[var tNow     = $([System.DateTime]::UtcNow.Ticks)]
+    #[var revBuild = $([System.TimeSpan]::FromTicks($([MSBuild]::Subtract(#[var tNow], #[var tStart]))).TotalMinutes.ToString("0"))]
+    #[var ver      = #[var ver].#[var revBuild]]
+}]
+
+#[File write("#[var log]"):&gt; Example #[var ver] \r\n\t\t Generated by vsCommandEvent]
+#[File scall("notepad", "#[var log]", 30)]</value>
+    <comment>Example of the SBE-Scripts for testing tool the ScriptCheckFrm</comment>
+  </data>
+  <data name="StringWarnForWaiting" xml:space="preserve">
+    <value>This option mean a wait for completion action with main thread! therefore:
+* [Performance] - For repeated events such as EW, OWP, Logging etc. probably need a more time for services of your all defined actions. Remember this!
+* [Compatibility] - However, some your actions can require a lock of the main thread for waiting to the next steps, otherwise some actions can lose a some technical data for processes of your script on next step.</value>
+  </data>
+</root>
