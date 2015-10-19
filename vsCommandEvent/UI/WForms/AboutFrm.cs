@@ -241,7 +241,7 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void linkLicense_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Util.openUrl("http://vssbe.r-eg.net/License/");
+            Util.openUrl("http://vsce.r-eg.net/License/");
         }
 
         private void linkPage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -251,7 +251,7 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void linkLabelDonationHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Util.openUrl("http://vssbe.r-eg.net/Donation/");
+            Util.openUrl("http://vsce.r-eg.net/Donation/");
         }
 
         private void pictureBoxDonation_Click(object sender, EventArgs e)

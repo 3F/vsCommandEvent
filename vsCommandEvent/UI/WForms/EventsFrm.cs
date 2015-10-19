@@ -1007,37 +1007,37 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void toolStripMenuChangelog_Click(object sender, EventArgs e)
         {
-            Util.openUrl("https://bitbucket.org/3F/vscommandevent/raw/master/changelog.txt");
+            Util.openUrl("http://vsce.r-eg.net/Changelist/#vsix");
         }
 
         private void toolStripMenuWiki_Click(object sender, EventArgs e)
         {
-            Util.openUrl("http://vssbe.r-eg.net/");
+            Util.openUrl("http://vsce.r-eg.net/");
         }
 
         private void toolStripMenuIssue_Click(object sender, EventArgs e)
         {
-            Util.openUrl("https://bitbucket.org/3F/vssolutionbuildevent/issues");
+            Util.openUrl("https://github.com/3F/vsCommandEvent/issues");
         }
 
         private void toolStripMenuSources_Click(object sender, EventArgs e)
         {
-            Util.openUrl("https://bitbucket.org/3F/vssolutionbuildevent/commits/all");
+            Util.openUrl("https://bitbucket.org/3F/vscommandevent/commits/all");
         }
 
         private void toolStripMenuForkGithub_Click(object sender, EventArgs e)
         {
-            Util.openUrl("https://github.com/3F/vsSolutionBuildEvent");
+            Util.openUrl("https://github.com/3F/vsCommandEvent");
         }
 
         private void toolStripMenuForkBitbucket_Click(object sender, EventArgs e)
         {
-            Util.openUrl("https://bitbucket.org/3F/vssolutionbuildevent/overview");
+            Util.openUrl("https://bitbucket.org/3F/vscommandevent/overview");
         }
 
         private void toolStripMenuLicense_Click(object sender, EventArgs e)
         {
-            Util.openUrl("http://vssbe.r-eg.net/License/");
+            Util.openUrl("http://vsce.r-eg.net/License/");
         }
 
         private void menuGetVSSBE_Click(object sender, EventArgs e)
@@ -1055,7 +1055,7 @@ namespace net.r_eg.vsCE.UI.WForms
             DialogResult ret = MessageBox.Show("Seen error or have a suggestion - Click 'Yes'", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if(ret == DialogResult.Yes) {
-                Util.openUrl("https://bitbucket.org/3F/vssolutionbuildevent/issues/new");
+                Util.openUrl("https://github.com/3F/vsCommandEvent/issues/new");
             }
         }
 

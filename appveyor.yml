@@ -1,8 +1,11 @@
 version: build-{build}
+branches:
+  except:
+  - releases
 nuget:
   disable_publish_on_pr: true
 build_script:
-- build_[CI_Debug]
+- cmd: build_[CI_Debug]
 artifacts:
 - path: bin\Releases\Release_notes.txt
   name: Release_notes

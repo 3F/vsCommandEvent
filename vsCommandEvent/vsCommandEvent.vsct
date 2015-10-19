@@ -56,9 +56,9 @@
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
-            <CommandName>Command Event</CommandName>
-            <ButtonText>Command Event</ButtonText>
-            <MenuText>Command Event</MenuText>
+            <CommandName>vsCommandEvent</CommandName>
+            <ButtonText>vsCommandEvent</ButtonText>
+            <MenuText>vsCommandEvent</MenuText>
             <CanonicalName>vsCE.Settings</CanonicalName>
         </Strings>
       </Button>

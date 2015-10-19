@@ -239,7 +239,7 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void btnDoc_Click(object sender, EventArgs e)
         {
-            Util.openUrl("http://vssbe.r-eg.net/doc/Scripts/SBE-Scripts/");
+            Util.openUrl("http://vsce.r-eg.net/doc/Scripts/SBE-Scripts/");
         }
 
         private void chkListComponents_ItemCheck(object sender, ItemCheckEventArgs e)

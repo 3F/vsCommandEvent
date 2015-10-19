@@ -162,7 +162,7 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void componentInfo(string name)
         {
-            Util.openUrl(String.Format("http://vssbe.r-eg.net/doc/Scripts/SBE-Scripts/Components/{0}/", name));
+            Util.openUrl(String.Format("http://vsce.r-eg.net/doc/Scripts/SBE-Scripts/Components/{0}/", name));
         }
 
         protected IEnumerable<INodeInfo> domElemsBy(string className)
