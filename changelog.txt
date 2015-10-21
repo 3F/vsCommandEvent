@@ -2,6 +2,6 @@ vsCommandEvent
 ______________
 
 
-[v1.0.0] 2015.??.??
+[v1.0.0] 2015.10.21
 
-    * First release
+    * First release. Based on vsSolutionBuildEvent - v0.12.4

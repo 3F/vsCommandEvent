@@ -2,18 +2,18 @@
 
 ##### Flexible actions for all ...
 
-[![Build status - master](https://ci.appveyor.com/api/projects/status/yy8yu9wr4nuhaf7p/branch/master?svg=true)](https://ci.appveyor.com/project/3Fs/vscommandevent/branch/master) [![LGPLv3](http://vsce.r-eg.net/etc/badges/License.svg)](http://vsce.r-eg.net/License/) 
+[![Build status - master](https://ci.appveyor.com/api/projects/status/yy8yu9wr4nuhaf7p/branch/master?svg=true)](https://ci.appveyor.com/project/3Fs/vscommandevent/branch/master) [![VSPackage](http://vsce.r-eg.net/etc/badges/VSPackage.svg)](http://vsce.r-eg.net/Changelist/#vsix) [![LGPLv3](http://vsce.r-eg.net/etc/badges/License.svg)](http://vsce.r-eg.net/License/) 
 
 -------
-[Download .vsix](http://visualstudiogallery.msdn.microsoft.com/0d1dbfd7-ed8a-40af-ae39-281bfeca2334/referral/118151)  :: **[Downloads](http://vsce.r-eg.net/Downloads/)**
+[Download .vsix](https://visualstudiogallery.msdn.microsoft.com/ad9f19b2-04c0-46fe-9637-9a52ce4ca661/file/184640/)  :: **[Downloads](http://vsce.r-eg.net/Downloads/)**
 
 *MS Visual Studio Gallery*:
 
-* [0d1dbfd7-ed8a-40af-ae39-281bfeca2334](#)
+* [ad9f19b2-04c0-46fe-9637-9a52ce4ca661](http://visualstudiogallery.msdn.microsoft.com/ad9f19b2-04c0-46fe-9637-9a52ce4ca661/)
 
 *Components*:
 
-* vsSolutionBuildEvent [![vsSolutionBuildEvent](http://vssbe.r-eg.net/etc/badges/VSPackage.svg)](http://vssbe.r-eg.net/Changelist/#vsix)
+* [![vsSolutionBuildEvent](http://vssbe.r-eg.net/etc/badges/VSPackage.svg)](http://vssbe.r-eg.net/Changelist/#vsix)
 
 -------
 
@@ -33,8 +33,8 @@ Works on the Event-Actions model, and ready for anything for what you need.
 
 * [Changelist](http://vsce.r-eg.net/Changelist/)
 * [How to build](http://vsce.r-eg.net/doc/Dev/How%20to%20build/) ([Developer Zone](http://vsce.r-eg.net/doc/Dev/))
+* [vsSolutionBuildEvent engine](http://vssbe.r-eg.net)
 * [SBE-Scripts](http://vsce.r-eg.net/doc/Scripts/SBE-Scripts/)
-* [MSBuild](http://vsce.r-eg.net/doc/Scripts/MSBuild/)
 * **[Examples](http://vsce.r-eg.net/doc/Examples/)** *- scripts, solutions, syntax etc.,*
 * [Processing modes](http://vsce.r-eg.net/doc/Modes/)
 
@@ -43,4 +43,4 @@ Works on the Event-Actions model, and ready for anything for what you need.
 * **[Public Issue Tracker](https://github.com/3F/vsCommandEvent/issues/new)** - *bug ? suggestions ? write here*
 
 
-**[Support us: ![](https://bitbucket.org/3F/vssolutionbuildevent/raw/master/vsSolutionBuildEvent/Resources/help-16.png)](http://vsce.r-eg.net/Donation/)**    [![Donate](https://bitbucket.org/3F/vssolutionbuildevent/raw/master/vsSolutionBuildEvent/Resources/paypal.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P2HRG52AJSA9N&lc=US&item_name=vsCommandEvent%20%28vsCE%29%20Open%20Source%20Project&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted)
+**[Support us: ![](https://raw.githubusercontent.com/3F/vsCommandEvent/master/vsCommandEvent/Resources/help-16.png)](http://vsce.r-eg.net/Donation/)**    [![Donate](https://raw.githubusercontent.com/3F/vsCommandEvent/master/vsCommandEvent/Resources/paypal.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P2HRG52AJSA9N&lc=US&item_name=vsCommandEvent%20%28vsCE%29%20Open%20Source%20Project&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted)

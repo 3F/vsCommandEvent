@@ -71,13 +71,13 @@
       "Mode": {
         "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
         "Type": "Script",
-        "Command": "#[\"\n    Prepares data - versions, revBuild & information from git\n\"]\n\n#[var tStart    = $([System.DateTime]::Parse(\"2015/10/17\").ToBinary())]\n#[var tNow      = $([System.DateTime]::UtcNow.Ticks)]\n#[var revBuild  = $([System.TimeSpan]::FromTicks($([MSBuild]::Subtract($(tNow), $(tStart)))).TotalMinutes.ToString(\"0\"))]\n\n#[var tplVersion = #[File get(\"Version.tpl\")]]\n\n#[var pDir  = vsCommandEvent/]\n#[var numCE = #[File get(\".version\")]]",
+        "Command": "#[\"\n    Prepares data - versions, revBuild & information from git\n\"]\n\n#[var tStart    = $([System.DateTime]::Parse(\"2015/10/19\").ToBinary())]\n#[var tNow      = $([System.DateTime]::UtcNow.Ticks)]\n#[var revBuild  = $([System.TimeSpan]::FromTicks($([MSBuild]::Subtract($(tNow), $(tStart)))).TotalMinutes.ToString(\"0\"))]\n\n#[var tplVersion = #[File get(\"Version.tpl\")]]\n\n#[var pDir  = vsCommandEvent/]\n#[var numCE = #[File get(\".version\")]]",
         "Command__": [
           "#[\"",
           "    Prepares data - versions, revBuild & information from git",
           "\"]",
           "",
-          "#[var tStart    = $([System.DateTime]::Parse(\"2015/10/17\").ToBinary())]",
+          "#[var tStart    = $([System.DateTime]::Parse(\"2015/10/19\").ToBinary())]",
           "#[var tNow      = $([System.DateTime]::UtcNow.Ticks)]",
           "#[var revBuild  = $([System.TimeSpan]::FromTicks($([MSBuild]::Subtract($(tNow), $(tStart)))).TotalMinutes.ToString(\"0\"))]",
           "",
