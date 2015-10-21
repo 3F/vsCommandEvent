@@ -121,7 +121,7 @@
     <value>vsCommandEvent</value>
   </data>
   <data name="112" xml:space="preserve">
-    <value>Manager of commands with flexible actions</value>
+    <value>Advanced handler of all commands and output data as manager of this. Based on vsSolutionBuildEvent engine and continues mission to providing flexible actions for your environment.</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">

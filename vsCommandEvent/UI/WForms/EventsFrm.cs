@@ -325,10 +325,11 @@ namespace net.r_eg.vsCE.UI.WForms
 
                 object customIn  = Value.packArgument(row.Cells[dgvCEFiltersColumnCustomIn.Name].Value);
                 object customOut = Value.packArgument(row.Cells[dgvCEFiltersColumnCustomOut.Name].Value);
+                object guid      = row.Cells[dgvCEFiltersColumnGuid.Name].Value;
 
                 list.Add(new Filter()
                 {
-                    Guid        = (string)row.Cells[dgvCEFiltersColumnGuid.Name].Value,
+                    Guid        = (guid == null)? String.Empty : ((string)guid).Trim(),
                     CustomIn    = customIn.IsNullOrEmptyString() ? null : customIn,
                     CustomOut   = customOut.IsNullOrEmptyString() ? null : customOut,
                     Description = (string)row.Cells[dgvCEFiltersColumnDescription.Name].Value,
@@ -529,10 +530,11 @@ namespace net.r_eg.vsCE.UI.WForms
 
                 object customIn  = Value.packArgument(row.Cells[dgvEnvCmdColumnCustomIn.Name].Value);
                 object customOut = Value.packArgument(row.Cells[dgvEnvCmdColumnCustomOut.Name].Value);
+                object guid      = row.Cells[dgvEnvCmdColumnGuid.Name].Value;
 
                 list.Add(new CommandDte()
                 {
-                    Guid        = (string)row.Cells[dgvEnvCmdColumnGuid.Name].Value,
+                    Guid        = (guid == null) ? String.Empty : ((string)guid).Trim(),
                     Id          = Convert.ToInt32(row.Cells[dgvEnvCmdColumnId.Name].Value),
                     CustomIn    = customIn.IsNullOrEmptyString() ? null : customIn,
                     CustomOut   = customOut.IsNullOrEmptyString() ? null : customOut,
@@ -545,6 +547,7 @@ namespace net.r_eg.vsCE.UI.WForms
         {
             clearControls();
             renderData();
+            updateColors();
 
             if(!requiresNotification) {
                 notice(false);
@@ -592,6 +595,7 @@ namespace net.r_eg.vsCE.UI.WForms
                 ISolutionEvent evt = logic.addEventItem(copyFrom);
                 dgvActions.Rows.Add(evt.Enabled, evt.Name, evt.Caption);
                 selectAction(dgvActions.Rows.Count - 1, true);
+                notice(true);
             }
             catch(Exception ex) {
                 Log.Error("Failed to add event-item: '{0}'", ex.Message);
@@ -606,6 +610,7 @@ namespace net.r_eg.vsCE.UI.WForms
 
             if(idx.ColumnIndex == dgv.Columns.IndexOf(btn) && idx.RowIndex < dgv.Rows.Count - 1) {
                 dgv.Rows.Remove(dgv.Rows[idx.RowIndex]);
+                notice(true);
             }
         }
 
@@ -613,6 +618,8 @@ namespace net.r_eg.vsCE.UI.WForms
         {
             dgvOWP.Rows.Clear();
             dgvCEFilters.Rows.Clear();
+            dgvOperations.Rows.Clear();
+            dgvEnvCmd.Rows.Clear();
             textEditor.Text = String.Empty;
         }
 
@@ -1002,7 +1009,7 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void toolStripMenuGalleryPage_Click(object sender, EventArgs e)
         {
-            Util.openUrl("http://visualstudiogallery.msdn.microsoft.com/0d1dbfd7-ed8a-40af-ae39-281bfeca2334/");
+            Util.openUrl("https://visualstudiogallery.msdn.microsoft.com/ad9f19b2-04c0-46fe-9637-9a52ce4ca661/");
         }
 
         private void toolStripMenuChangelog_Click(object sender, EventArgs e)
@@ -1100,6 +1107,11 @@ namespace net.r_eg.vsCE.UI.WForms
         private void toolStripMenuPluginDir_Click(object sender, EventArgs e)
         {
             Util.openUrl(String.Format("\"{0}\"", App.LibPath));
+        }
+
+        private void menuCommonCfgDir_Click(object sender, EventArgs e)
+        {
+            Util.openUrl(String.Format("\"{0}\"", App.CommonPath));
         }
 
         private void toolStripMenuApply_Click(object sender, EventArgs e)
@@ -1229,10 +1241,15 @@ namespace net.r_eg.vsCE.UI.WForms
             dgvActions.Rows.RemoveAt(index);
             logic.removeEventItem(index);
             refreshSettingsWithIndex(currentActionIndex());
+            notice(true);
         }
 
         private void dgvActions_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
         {
+            if(e.ColumnIndex != dgvActions.Columns.IndexOf(dgvActionName)) {
+                return;
+            }
+
             string origin = logic.SBE.evt[e.RowIndex].Name;
             try
             {
@@ -1287,8 +1304,11 @@ namespace net.r_eg.vsCE.UI.WForms
             switch(e.KeyCode)
             {
                 case Keys.F2: {
-                    menuActionsEditName_Click(this, e);
-                    break;
+                    if(dgvActions.CurrentCell != null && dgvActions.CurrentCell.ColumnIndex == dgvActions.Columns.IndexOf(dgvActionEnabled)) {
+                        menuActionsEditName_Click(this, e);
+                        break;
+                    }
+                    return;
                 }
                 case Keys.Space: {
                     dgvActions.Rows[currentActionIndex()].Cells[dgvActionEnabled.Name].Value = !logic.SBEItem.Enabled;
@@ -1420,6 +1440,10 @@ namespace net.r_eg.vsCE.UI.WForms
             }
             menuCfgUseSln.Enabled   = true;
             menuCfgClone.Enabled    = true;
+
+            if(!App.ConfigManager.IsExistCfg(ContextType.Solution)) {
+                return;
+            }
 
             if(App.ConfigManager.getConfigFor(ContextType.Solution).InRAM) {
                 return;

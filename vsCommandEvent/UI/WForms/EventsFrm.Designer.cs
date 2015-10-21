@@ -78,6 +78,7 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuPlugin = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuPluginDir = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuCommonCfgDir = new System.Windows.Forms.ToolStripMenuItem();
             this.menuGetVSSBE = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuHelp = new System.Windows.Forms.ToolStripSplitButton();
             this.toolStripMenuDocItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -495,7 +496,8 @@
             // toolStripMenuPlugin
             // 
             this.toolStripMenuPlugin.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuPluginDir});
+            this.toolStripMenuPluginDir,
+            this.menuCommonCfgDir});
             this.toolStripMenuPlugin.Name = "toolStripMenuPlugin";
             this.toolStripMenuPlugin.Size = new System.Drawing.Size(185, 22);
             this.toolStripMenuPlugin.Text = "Plugin";
@@ -503,9 +505,16 @@
             // toolStripMenuPluginDir
             // 
             this.toolStripMenuPluginDir.Name = "toolStripMenuPluginDir";
-            this.toolStripMenuPluginDir.Size = new System.Drawing.Size(153, 22);
+            this.toolStripMenuPluginDir.Size = new System.Drawing.Size(154, 22);
             this.toolStripMenuPluginDir.Text = "Open directory";
             this.toolStripMenuPluginDir.Click += new System.EventHandler(this.toolStripMenuPluginDir_Click);
+            // 
+            // menuCommonCfgDir
+            // 
+            this.menuCommonCfgDir.Name = "menuCommonCfgDir";
+            this.menuCommonCfgDir.Size = new System.Drawing.Size(154, 22);
+            this.menuCommonCfgDir.Text = "Common .vsce";
+            this.menuCommonCfgDir.Click += new System.EventHandler(this.menuCommonCfgDir_Click);
             // 
             // menuGetVSSBE
             // 
@@ -1295,7 +1304,6 @@
             this.dgvEnvCmdColumnCustomIn,
             this.dgvEnvCmdColumnCustomOut,
             this.dgvEnvCmdColumnRemove});
-            this.dgvEnvCmd.ContextMenuStrip = this.contextMenuDte;
             dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -1403,7 +1411,6 @@
             this.dgvOpColumnName,
             this.dgvOpColumnArgs,
             this.dgvOpColumnRemove});
-            this.dgvOperations.ContextMenuStrip = this.contextMenuDte;
             dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -2037,6 +2044,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvOpColumnArgs;
         private System.Windows.Forms.DataGridViewButtonColumn dgvOpColumnRemove;
         private System.Windows.Forms.LinkLabel linkAddAction;
+        private System.Windows.Forms.ToolStripMenuItem menuCommonCfgDir;
 
     }
 }

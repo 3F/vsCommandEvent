@@ -17,9 +17,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using net.r_eg.vsCE.Exceptions;
+using net.r_eg.vsCE.Extensions;
 
 namespace net.r_eg.vsCE.SBEScripts
 {
@@ -98,6 +98,16 @@ namespace net.r_eg.vsCE.SBEScripts
             return Double.Parse(val.Trim(), CultureInfo.InvariantCulture);
         }
 
+        /// <summary>
+        /// Getting of symbol as char.
+        /// </summary>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        public static char toChar(string val)
+        {
+            return Char.Parse(val.Trim());
+        }
+
         /// <param name="val"></param>
         /// <returns></returns>
         public static string from(bool val)
@@ -174,10 +184,7 @@ namespace net.r_eg.vsCE.SBEScripts
             if(data == null) {
                 return null;
             }
-
-#if DEBUG
-            Debug.Assert(!(data is Newtonsoft.Json.Linq.JArray));
-#endif
+            data = data.ToSystemObject();
 
             if(!data.GetType().IsArray) {
                 return data.ToString();
@@ -186,37 +193,39 @@ namespace net.r_eg.vsCE.SBEScripts
 
             foreach(object val in (object[])data)
             {
-                if(val.GetType().IsArray) {
-                    ret.Add(pack(val));
+                object sys = val.ToSystemObject();
+
+                if(sys.GetType().IsArray) {
+                    ret.Add(pack(sys));
                     continue;
                 }
 
-                if(val is string) {
-                    ret.Add(String.Format("\"{0}\"", val));
+                if(sys is string) {
+                    ret.Add(String.Format("\"{0}\"", sys));
                     continue;
                 }
 
-                if(val is bool) {
-                    ret.Add(val.ToString().ToLower());
+                if(sys is bool) {
+                    ret.Add(sys.ToString().ToLower());
                     continue;
                 }
 
-                if(val is char) {
-                    ret.Add(String.Format("'{0}'", val));
+                if(sys is char) {
+                    ret.Add(String.Format("'{0}'", sys));
                     continue;
                 }
 
-                if(val is Single) {
-                    ret.Add(String.Format("{0}f", val.ToString().Replace(',', '.')));
+                if(sys is Single) {
+                    ret.Add(String.Format("{0}f", sys.ToString().Replace(',', '.')));
                     continue;
                 }
 
-                if(val is Double) {
-                    ret.Add(val.ToString().Replace(',', '.'));
+                if(sys is Double) {
+                    ret.Add(sys.ToString().Replace(',', '.'));
                     continue;
                 }
 
-                ret.Add(val);
+                ret.Add(sys);
             }
             return String.Format("{{{0}}}", String.Join(", ", ret));
         }
@@ -232,7 +241,7 @@ namespace net.r_eg.vsCE.SBEScripts
                 return null;
             }
 
-            if(arg is string && String.IsNullOrWhiteSpace((string)arg)) {
+            if(!(arg is string) || String.IsNullOrWhiteSpace((string)arg)) {
                 return arg;
             }
 

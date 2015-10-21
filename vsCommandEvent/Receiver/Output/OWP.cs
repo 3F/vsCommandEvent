@@ -133,9 +133,17 @@ namespace net.r_eg.vsCE.Receiver.Output
             if(pane == null || pane.Guid == null) {
                 return;
             }
-            TextDocument textD  = pane.TextDocument;
-            int countLines      = textD.EndPoint.Line;
 
+            TextDocument textD;
+            try {
+                textD = pane.TextDocument;
+            }
+            catch(System.Runtime.InteropServices.COMException ex) {
+                Log.Debug("notifyRaw: COMException - '{0}'", ex.Message);
+                return;
+            }
+
+            int countLines = textD.EndPoint.Line;
             if(countLines <= 1 || countLines - getPrevCountLines(pane.Guid) < 1) {
                 return;
             }

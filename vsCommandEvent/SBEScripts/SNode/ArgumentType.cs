@@ -43,6 +43,11 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
         StringDouble,
 
         /// <summary>
+        /// Single symbol from single quotes. 
+        /// </summary>
+        Char,
+
+        /// <summary>
         /// Boolean data.
         /// </summary>
         Boolean,

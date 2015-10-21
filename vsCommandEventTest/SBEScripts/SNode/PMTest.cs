@@ -762,7 +762,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.SNode
         [TestMethod()]
         public void detectArgumentTest3()
         {
-            IPM pm = new PM(" m77(\"guid\", 12, {\"p1\", {4, \"test\", 8, 's2'}, true}, {false, \"p2\"}) ");
+            IPM pm = new PM(" m77(\"guid\", 12, {\"p1\", {4, \"test\", 8, 'y'}, true}, {false, 'p2'}) ");
 
             Assert.AreEqual(pm.Is(0, LevelType.Method, "m77"), true);
 
@@ -797,8 +797,8 @@ namespace net.r_eg.vsCE.Test.SBEScripts.SNode
                     Assert.AreEqual(args21[2].type, ArgumentType.Integer);
                     Assert.AreEqual(args21[2].data, 8);
 
-                    Assert.AreEqual(args21[3].type, ArgumentType.StringSingle);
-                    Assert.AreEqual(args21[3].data, "s2");
+                    Assert.AreEqual(args21[3].type, ArgumentType.Char);
+                    Assert.AreEqual(args21[3].data, 'y');
                 }
 
                 Assert.AreEqual(args2[2].type, ArgumentType.Boolean);
@@ -813,7 +813,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.SNode
                 Assert.AreEqual(args3[0].type, ArgumentType.Boolean);
                 Assert.AreEqual(args3[0].data, false);
 
-                Assert.AreEqual(args3[1].type, ArgumentType.StringDouble);
+                Assert.AreEqual(args3[1].type, ArgumentType.StringSingle);
                 Assert.AreEqual(args3[1].data, "p2");
             }
         }

@@ -4,9 +4,9 @@
         <Name>vsCommandEvent</Name>
         <Author>entry.reg@gmail.com</Author>
         <Version>1.0.0</Version>
-        <Description xml:space="preserve">Manager of commands with flexible actions</Description>
+        <Description xml:space="preserve">Advanced handler of all commands and output data as manager of this. Based on vsSolutionBuildEvent engine and continues mission to providing flexible actions for your environment.</Description>
         <Locale>1033</Locale>
-        <MoreInfoUrl>http://vsce.r-eg.net</MoreInfoUrl>
+        <MoreInfoUrl>https://visualstudiogallery.msdn.microsoft.com/ad9f19b2-04c0-46fe-9637-9a52ce4ca661/</MoreInfoUrl>
         <License>Resources/vsixinfo</License>
         <GettingStartedGuide>http://vsce.r-eg.net</GettingStartedGuide>
         <Icon>Resources/Package.png</Icon>

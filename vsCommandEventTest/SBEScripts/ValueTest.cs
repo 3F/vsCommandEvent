@@ -437,8 +437,8 @@ namespace net.r_eg.vsCE.Test.SBEScripts
                 Assert.AreEqual(args[3].type, ArgumentType.Boolean);
                 Assert.AreEqual(args[3].data, true);
 
-                Assert.AreEqual(args[4].type, ArgumentType.StringSingle);
-                Assert.AreEqual(args[4].data, "n");
+                Assert.AreEqual(args[4].type, ArgumentType.Char);
+                Assert.AreEqual(args[4].data, 'n');
 
                 Assert.AreEqual(args[5].type, ArgumentType.Object);
                 {
@@ -451,8 +451,8 @@ namespace net.r_eg.vsCE.Test.SBEScripts
                     Assert.AreEqual(args5[1].type, ArgumentType.StringDouble);
                     Assert.AreEqual(args5[1].data, "str2");
 
-                    Assert.AreEqual(args5[2].type, ArgumentType.StringSingle);
-                    Assert.AreEqual(args5[2].data, "y");
+                    Assert.AreEqual(args5[2].type, ArgumentType.Char);
+                    Assert.AreEqual(args5[2].data, 'y');
 
                     Assert.AreEqual(args5[3].type, ArgumentType.Boolean);
                     Assert.AreEqual(args5[3].data, false);
@@ -493,6 +493,16 @@ namespace net.r_eg.vsCE.Test.SBEScripts
 
             Assert.AreEqual(args[5].type, ArgumentType.Double);
             Assert.AreEqual(args[5].data, -1.4d);
+        }
+
+        /// <summary>
+        ///A test for pack - nested
+        ///</summary>
+        [TestMethod()]
+        public void packTest6()
+        {
+            object data = (object)new object[] { "str", new object[] { 1, 'y', new object[] { -12.457f, new object[] { 12 } } }, true };
+            Assert.AreEqual("{\"str\", {1, 'y', {-12.457f, {12}}}, true}", Value.pack(data));
         }
     }
 }

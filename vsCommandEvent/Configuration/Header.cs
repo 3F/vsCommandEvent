@@ -23,7 +23,7 @@ namespace net.r_eg.vsCE.Configuration
         {
             " Current file requires a vsCommandEvent engine.", 
             " Free plugin for Visual Studio:",
-            "  * http://visualstudiogallery.msdn.microsoft.com/0d1dbfd7-ed8a-40af-ae39-281bfeca2334/",
+            "  * https://visualstudiogallery.msdn.microsoft.com/ad9f19b2-04c0-46fe-9637-9a52ce4ca661/",
             "  * http://vsce.r-eg.net",
             " Feedback: entry.reg@gmail.com"
         };

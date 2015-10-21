@@ -196,6 +196,14 @@ namespace net.r_eg.vsCE.SBEScripts
         }
 
         /// <summary>
+        /// Char symbol value from allowed syntax
+        /// </summary>
+        public static string CharContent
+        {
+            get { return @"\s*'(\S{1})'\s*"; }
+        }
+
+        /// <summary>
         /// Content for present symbol of quotes
         /// Escaping is a "\" for used symbol
         /// e.g.: \', \"

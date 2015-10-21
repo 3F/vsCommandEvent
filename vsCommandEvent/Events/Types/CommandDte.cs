@@ -45,7 +45,6 @@ namespace net.r_eg.vsCE.Events.Types
         /// <summary>
         /// Input parameters.
         /// </summary>
-        [JsonProperty(TypeNameHandling = TypeNameHandling.All, ItemTypeNameHandling = TypeNameHandling.All)]
         public object CustomIn
         {
             get;
@@ -55,7 +54,6 @@ namespace net.r_eg.vsCE.Events.Types
         /// <summary>
         /// Output parameters.
         /// </summary>
-        [JsonProperty(TypeNameHandling = TypeNameHandling.All, ItemTypeNameHandling = TypeNameHandling.All)]
         public object CustomOut
         {
             get;

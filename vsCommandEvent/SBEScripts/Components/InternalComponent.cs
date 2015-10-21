@@ -29,7 +29,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
     /// <summary>
     /// All internal operations with vsCE
     /// </summary>
-    [Component("vsCE", "All internal operations with vsCE")]
+    [Component("vsCE", new string[]{ "Core" }, "All internal operations with vsCE")]
     public class InternalComponent: Component, IComponent
     {
         /// <summary>
@@ -37,7 +37,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         /// </summary>
         public override string Condition
         {
-            get { return "vsCE "; }
+            get { return @"(?:vsCE|Core)\s"; }
         }
 
         /// <summary>

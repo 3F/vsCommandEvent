@@ -243,6 +243,18 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
                 };
             }
 
+            // Char
+
+            m = Regex.Match(raw, String.Format("^{0}$", RPattern.CharContent));
+            if(m.Success)
+            {
+                return new Argument() { 
+                    type = ArgumentType.Char,
+                    data = Value.toChar(m.Groups[1].Value)
+                };
+            }
+
+
             // Strings
 
             m = Regex.Match(raw, 
@@ -272,17 +284,6 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
                 };
             }
 
-            // Double
-
-            m = Regex.Match(raw, String.Format("^{0}$", RPattern.DoubleContent));
-            if(m.Success)
-            {
-                return new Argument() {
-                    type = ArgumentType.Double,
-                    data = Value.toDouble(m.Groups[1].Value)
-                };
-            }
-
             // Float
 
             m = Regex.Match(raw, String.Format("^{0}$", RPattern.FloatContent));
@@ -291,6 +292,17 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
                 return new Argument() { 
                     type = ArgumentType.Float,
                     data = Value.toFloat(m.Groups[1].Value)
+                };
+            }
+
+            // Double
+
+            m = Regex.Match(raw, String.Format("^{0}$", RPattern.DoubleContent));
+            if(m.Success)
+            {
+                return new Argument() {
+                    type = ArgumentType.Double,
+                    data = Value.toDouble(m.Groups[1].Value)
                 };
             }
 

@@ -193,7 +193,8 @@ namespace net.r_eg.vsCE.UI.WForms
 
             space = new DeepSpace(pictureBoxSpace.CreateGraphics(), pictureBoxSpace.Width, pictureBoxSpace.Height);
 
-            labelCopyright.Text = String.Format("Copyright (c) 2013-{0}  Denis Kuzmin (reg) < entry.reg@gmail.com >", Math.Max(2015, DateTime.Now.Year));
+            int act = Math.Max(2015, DateTime.Now.Year);
+            labelCopyright.Text = String.Format("Copyright (c) 2015{0}  Denis Kuzmin (reg) < entry.reg@gmail.com >", (act == 2015)? "" : String.Format("-{0}", act));
 
 #if !DEBUG
             labelVersionVal.Text = String.Format("v{0} [ {1} ]", Version.numberWithRevString, Version.branchSha1);

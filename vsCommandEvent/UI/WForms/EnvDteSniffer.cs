@@ -42,6 +42,11 @@ namespace net.r_eg.vsCE.UI.WForms
         protected EnvDTE.CommandEvents cmdEvents;
 
         /// <summary>
+        /// Size of buffer for existing records.
+        /// </summary>
+        protected int rcBuffer = 2048;
+
+        /// <summary>
         /// object synch.
         /// </summary>
         private Object _lock = new Object();
@@ -95,6 +100,11 @@ namespace net.r_eg.vsCE.UI.WForms
             if(dgvCESniffer == null) {
                 return;
             }
+
+            if(dgvCESniffer.Rows.Count > rcBuffer) {
+                dgvCESniffer.Rows.RemoveAt(0);
+            }
+
             string tFormat = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern + " .fff";
             dgvCESniffer.Rows.Add(DateTime.Now.ToString(tFormat), pre, guid, id, Value.pack(customIn), Value.pack(customOut), Util.enumViewBy(guid, id));
         }
