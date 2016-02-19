@@ -129,8 +129,8 @@ namespace net.r_eg.vsCE
             get
             {
                 if(String.IsNullOrWhiteSpace(workPath)) {
-                    workPath = "/";
-                    Log.Trace("WorkPath is empty or null, use '{0}' by default.", workPath);
+                    workPath = "".PathFormat();
+                    Log.Trace("WorkPath is empty or null, use `{0}` by default.", workPath);
                     //throw new SBEException("WorkPath is empty or null");
                 }
                 return workPath;
@@ -168,7 +168,13 @@ namespace net.r_eg.vsCE
         /// </summary>
         public ISolutionEvents Config
         {
-            get { return ConfigManager.Config.Data; }
+            get
+            {
+                if(ConfigManager.Config == null) {
+                    return null;
+                }
+                return ConfigManager.Config.Data;
+            }
         }
 
         /// <summary>
@@ -176,8 +182,29 @@ namespace net.r_eg.vsCE
         /// </summary>
         public IUserData UserConfig
         {
-            get { return ConfigManager.UserConfig.Data; }
+            get
+            {
+                if(ConfigManager.UserConfig == null) {
+                    return null;
+                }
+                return ConfigManager.UserConfig.Data;
+            }
         }
+
+        ///// <summary>
+        ///// Global configuration data.
+        ///// </summary>
+        //public IUserData GlobalConfig
+        //{
+        //    get
+        //    {
+        //        IConfig<IUserData> gcfg = ConfigManager.getUserConfigFor(ContextType.Static);
+        //        if(gcfg == null) {
+        //            return null;
+        //        }
+        //        return gcfg.Data;
+        //    }
+        //}
 
         /// <summary>
         /// Static alias. Manager of configurations.
@@ -202,6 +229,14 @@ namespace net.r_eg.vsCE
         {
             get { return _.UserConfig; }
         }
+
+        ///// <summary>
+        ///// Static alias. Global configuration data.
+        ///// </summary>
+        //public static IUserData CfgGlobal
+        //{
+        //    get { return _.GlobalConfig; }
+        //}
 
         /// <summary>
         /// Static alias. Working path for library.

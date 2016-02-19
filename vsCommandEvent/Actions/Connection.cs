@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+ * Copyright (c) 2013-2016  Denis Kuzmin (reg) <entry.reg@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -32,6 +32,16 @@ namespace net.r_eg.vsCE.Actions
     public class Connection
     {
         /// <summary>
+        /// The main handler of commands.
+        /// </summary>
+        protected ICommand cmd;
+
+        /// <summary>
+        /// object synch.
+        /// </summary>
+        private Object _lock = new Object();
+
+        /// <summary>
         /// Flag of permission for any actions.
         /// </summary>
         protected bool IsAllowActions
@@ -46,17 +56,6 @@ namespace net.r_eg.vsCE.Actions
         {
             get { return Settings.Cfg; }
         }
-
-        /// <summary>
-        /// Used handler.
-        /// </summary>
-        protected ICommand cmd;
-
-        /// <summary>
-        /// object synch.
-        /// </summary>
-        private Object _lock = new Object();
-
 
         /// <summary>
         /// Full process of building.

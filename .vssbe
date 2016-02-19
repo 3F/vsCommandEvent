@@ -23,6 +23,10 @@
       "Enabled": true
     },
     {
+      "ClassName": "NuGetComponent",
+      "Enabled": true
+    },
+    {
       "ClassName": "FunctionComponent",
       "Enabled": true
     },
@@ -39,7 +43,15 @@
       "Enabled": true
     },
     {
+      "ClassName": "SevenZipComponent",
+      "Enabled": true
+    },
+    {
       "ClassName": "ConditionComponent",
+      "Enabled": true
+    },
+    {
+      "ClassName": "MSBuildComponent",
       "Enabled": true
     },
     {
@@ -48,6 +60,40 @@
     }
   ],
   "PreBuild": [
+    {
+      "Enabled": true,
+      "Name": "RestorePkg",
+      "Caption": "To restore packages - nuget etc.",
+      "SupportMSBuild": true,
+      "SupportSBEScripts": true,
+      "IgnoreIfBuildFailed": false,
+      "BuildType": "Common",
+      "Confirmation": false,
+      "ToConfiguration": [],
+      "ExecutionOrder": {
+        "$type": "net.r_eg.vsSBE.Events.ExecutionOrder[], vsSolutionBuildEvent",
+        "$values": []
+      },
+      "Process": {
+        "$type": "net.r_eg.vsSBE.Events.EventProcess, vsSolutionBuildEvent",
+        "Waiting": true,
+        "Hidden": true,
+        "TimeLimit": 30
+      },
+      "Mode": {
+        "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
+        "Type": "Script",
+        "Command": "#[\" \n    To restore packages via GetNuTool\n    https://github.com/NuGet/Home/issues/522\n    https://github.com/NuGet/Home/issues/1521\n\"]\n#[NuGet gnt.raw(\"/p:ngconfig=\\\".gnt/packages.config\\\"\")]",
+        "Command__": [
+          "#[\" ",
+          "    To restore packages via GetNuTool",
+          "    https://github.com/NuGet/Home/issues/522",
+          "    https://github.com/NuGet/Home/issues/1521",
+          "\"]",
+          "#[NuGet gnt.raw(\"/p:ngconfig=\\\".gnt/packages.config\\\"\")]"
+        ]
+      }
+    },
     {
       "Enabled": true,
       "Name": "Definitions",
@@ -111,7 +157,7 @@
       "Mode": {
         "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
         "Type": "Script",
-        "Command": "#[( #[File exists.directory(\".git\")] && #[File exists.file(\"git.exe\", true)] )\n{\n    #[var branchSha1        = #[File sout(\"git\", \"rev-parse --short HEAD\")]]\n    #[var branchName        = #[File sout(\"git\", \"rev-parse --abbrev-ref HEAD\")]]\n    #[var branchRevCount    = #[File sout(\"git\", \"rev-list HEAD --count\")]]\n    \n    #[var csVersion = $(tplVersion.Replace(%branchName%, \"$(branchName)\").Replace(%branchSha1%, \"$(branchSha1)\").Replace(%branchRevCount%, \"$(branchRevCount)\"))]\n    \n    #[($(branchName) == \"HEAD\") {\n        #[var branchName = $(APPVEYOR_REPO_BRANCH)]\n    }]\n}\nelse {\n    #[var csVersion = $(tplVersion.Replace(%branchName%, \"-\").Replace(%branchSha1%, \"-\").Replace(%branchRevCount%, \"-\"))]\n}]\n\n#[var cs = $(csVersion.Replace(%Version%, \"$(numCE.Replace('.', ', ')), $(revBuild)\").Replace(%namespace%, \"\"))]\n#[var cs = $(cs.Replace(%VersionRevString%, \"$(numCE).$(revBuild)\").Replace(%VersionString%, \"$(numCE)\"))]\n#[File write(\"#[var pDir]Version.cs\"):#[var cs]]\n\n\n#[\"\n    .vsixmanifest\n\"]\n\n#[($(Configuration) ~= \"_with_revision\" || $(Configuration) ~= \"CI_\") {\n    #[var numCE = #[var numCE].#[var revBuild]]\n}]\n#[File replace.Regexp(\"#[var pDir]/source.extension.vsixmanifest\", \"<Version>[0-9\\.]+</Version>\", \"<Version>#[var numCE]</Version>\")]",
+        "Command": "#[( #[File exists.directory(\".git\")] && #[File exists.file(\"git.exe\", true)] )\n{\n    #[var branchSha1        = #[File sout(\"git\", \"rev-parse --short HEAD\")]]\n    #[var branchName        = #[File sout(\"git\", \"rev-parse --abbrev-ref HEAD\")]]\n    #[var branchRevCount    = #[File sout(\"git\", \"rev-list HEAD --count\")]]\n    \n    #[var csVersion = $(tplVersion.Replace(%branchName%, \"$(branchName)\").Replace(%branchSha1%, \"$(branchSha1)\").Replace(%branchRevCount%, \"$(branchRevCount)\"))]\n    \n    #[($(branchName) == \"HEAD\") {\n        #[var branchName = $(APPVEYOR_REPO_BRANCH)]\n    }]\n}\nelse {\n    #[var csVersion = $(tplVersion.Replace(%branchName%, \"-\").Replace(%branchSha1%, \"-\").Replace(%branchRevCount%, \"-\"))]\n}]\n\n#[var cs = $(csVersion.Replace(%Version%, \"$(numCE.Replace('.', ', ')), $(revBuild)\").Replace(%namespace%, \"\"))]\n#[var cs = $(cs.Replace(%VersionRevString%, \"$(numCE).$(revBuild)\").Replace(%VersionString%, \"$(numCE)\"))]\n#[File write(\"#[var pDir]Version.cs\"):#[var cs]]\n\n\n#[\"\n    .vsixmanifest\n\"]\n\n#[($(Configuration) ~= \"_with_revision\" || $(Configuration) ~= \"CI_\") {\n    #[var numCE = #[var numCE].#[var revBuild]]\n}]\n#[File replace.Regexp(\"$(pDir)/source.extension.vsixmanifest\", \"<Version>[0-9.]+</Version>\", \"<Version>$(numCE)</Version>\")]",
         "Command__": [
           "#[( #[File exists.directory(\".git\")] && #[File exists.file(\"git.exe\", true)] )",
           "{",
@@ -141,7 +187,7 @@
           "#[($(Configuration) ~= \"_with_revision\" || $(Configuration) ~= \"CI_\") {",
           "    #[var numCE = #[var numCE].#[var revBuild]]",
           "}]",
-          "#[File replace.Regexp(\"#[var pDir]/source.extension.vsixmanifest\", \"<Version>[0-9\\.]+</Version>\", \"<Version>#[var numCE]</Version>\")]"
+          "#[File replace.Regexp(\"$(pDir)/source.extension.vsixmanifest\", \"<Version>[0-9.]+</Version>\", \"<Version>$(numCE)</Version>\")]"
         ]
       }
     }
@@ -208,7 +254,7 @@
       "Mode": {
         "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
         "Type": "Script",
-        "Command": "#[var appzip    = $(SolutionDir)bin/7z/7za.exe]\n#[var odir      = $(SolutionDir)bin/Releases/]\n#[var cfg       = #[($(Configuration) ~= \"Release\"){Release}else{Debug}]]\n#[var cfgFull   = $(Configuration)]\n#[var vsixLib   = $(SolutionDir)VsixLib\\bin\\]\n\n#[var netStamp      = net$(TargetFrameworkVersion.Replace(\".\", \"\").Replace(\"v\", \"\"))]\n#[var netVerString  = $(TargetFrameworkVersion)]\n\n#[File sout(\"cmd\", \"/C mkdir \\\"#[var odir]\\\" 2>&1\")]\n#[File sout(\"cmd\", \"/C del /F/Q \\\"#[var odir]\\\" 2>&1\")]",
+        "Command": "#[var appzip    = $(SolutionDir)bin/7z/7za.exe]\n#[var odir      = $(SolutionDir)bin/Releases/]\n#[var cfg       = #[($(Configuration) ~= \"Release\"){Release}else{Debug}]]\n#[var cfgFull   = $(Configuration)]\n#[var vsixLib   = $(SolutionDir)VsixLib\\bin\\]\n\n#[var netStamp      = net$(TargetFrameworkVersion.Replace(\".\", \"\").Replace(\"v\", \"\"))]\n#[var netVerString  = $(TargetFrameworkVersion)]\n#[var msbuildver    = v$(MSBuildToolsVersion)]\n\n\n#[IO delete.directory(\"$(odir)\", true)]\n#[IO copy.directory(\"\", \"$(odir)\", true)]",
         "Command__": [
           "#[var appzip    = $(SolutionDir)bin/7z/7za.exe]",
           "#[var odir      = $(SolutionDir)bin/Releases/]",
@@ -218,9 +264,11 @@
           "",
           "#[var netStamp      = net$(TargetFrameworkVersion.Replace(\".\", \"\").Replace(\"v\", \"\"))]",
           "#[var netVerString  = $(TargetFrameworkVersion)]",
+          "#[var msbuildver    = v$(MSBuildToolsVersion)]",
           "",
-          "#[File sout(\"cmd\", \"/C mkdir \\\"#[var odir]\\\" 2>&1\")]",
-          "#[File sout(\"cmd\", \"/C del /F/Q \\\"#[var odir]\\\" 2>&1\")]"
+          "",
+          "#[IO delete.directory(\"$(odir)\", true)]",
+          "#[IO copy.directory(\"\", \"$(odir)\", true)]"
         ]
       }
     },
@@ -247,12 +295,13 @@
       "Mode": {
         "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
         "Type": "Script",
-        "Command": "#[File write(\"#[var odir]/Release_notes.txt\"):This assembled from:\n\n* Configuration:   '#[var cfgFull]' (Folders: #[var cfg])\n* .NET version:     #[var netVerString];\n* Build number:     #[var revBuild];\n* Branch Sha1:      #[var branchSha1];\n* Branch Name:      #[var branchName];\n* Branch revCount:  #[var branchRevCount];\n------------------------------------------\n\nVersions:\n\n* The 'vsCommandEvent': v#[var numCE];\n\n------------------------------------------\n\\t\\t\\t\\t Generated by vsSolutionBuildEvent\n]",
+        "Command": "#[File write(\"$(odir)/Release_notes.txt\"):This assembled from:\n\n* Configuration:   '#[var cfgFull]' (Folders: #[var cfg])\n* .NET version:     #[var netVerString];\n* MSBuild Tools:    #[var msbuildver];\n* Build number:     #[var revBuild];\n* Branch Sha1:      #[var branchSha1];\n* Branch Name:      #[var branchName];\n* Branch revCount:  #[var branchRevCount];\n------------------------------------------\n\nVersions:\n\n* The 'vsCommandEvent': v#[var numCE];\n\n------------------------------------------\n         Generated by vsSolutionBuildEvent\n------------------------------------------\n\nhttp://vssbe.r-eg.net\nhttp://vssbe.r-eg.net/Changelist/\nhttp://vssbe.r-eg.net/Downloads/\nhttp://visualstudiogallery.msdn.microsoft.com/0d1dbfd7-ed8a-40af-ae39-281bfeca2334/\n]",
         "Command__": [
-          "#[File write(\"#[var odir]/Release_notes.txt\"):This assembled from:",
+          "#[File write(\"$(odir)/Release_notes.txt\"):This assembled from:",
           "",
           "* Configuration:   '#[var cfgFull]' (Folders: #[var cfg])",
           "* .NET version:     #[var netVerString];",
+          "* MSBuild Tools:    #[var msbuildver];",
           "* Build number:     #[var revBuild];",
           "* Branch Sha1:      #[var branchSha1];",
           "* Branch Name:      #[var branchName];",
@@ -264,7 +313,13 @@
           "* The 'vsCommandEvent': v#[var numCE];",
           "",
           "------------------------------------------",
-          "\\t\\t\\t\\t Generated by vsSolutionBuildEvent",
+          "         Generated by vsSolutionBuildEvent",
+          "------------------------------------------",
+          "",
+          "http://vssbe.r-eg.net",
+          "http://vssbe.r-eg.net/Changelist/",
+          "http://vssbe.r-eg.net/Downloads/",
+          "http://visualstudiogallery.msdn.microsoft.com/0d1dbfd7-ed8a-40af-ae39-281bfeca2334/",
           "]"
         ]
       }
@@ -292,9 +347,9 @@
       "Mode": {
         "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
         "Type": "Script",
-        "Command": "#[File sout(\"cmd\", \"/C copy \\\"#[var pDir]bin\\#[var cfg]\\vsCommandEvent.vsix\\\" \\\"#[var odir]vsCommandEvent_v#[var numCE]_[#[var branchSha1]][#[var netStamp]].vsix\\\" /Y/V/B\")]",
+        "Command": "#[IO copy.file(\"$(pDir)bin\\$(cfg)\\vsCommandEvent.vsix\", \"$(odir)vsCommandEvent_v$(numCE)_[$(branchSha1)][$(netStamp)].vsix\", true)]",
         "Command__": [
-          "#[File sout(\"cmd\", \"/C copy \\\"#[var pDir]bin\\#[var cfg]\\vsCommandEvent.vsix\\\" \\\"#[var odir]vsCommandEvent_v#[var numCE]_[#[var branchSha1]][#[var netStamp]].vsix\\\" /Y/V/B\")]"
+          "#[IO copy.file(\"$(pDir)bin\\$(cfg)\\vsCommandEvent.vsix\", \"$(odir)vsCommandEvent_v$(numCE)_[$(branchSha1)][$(netStamp)].vsix\", true)]"
         ]
       }
     }
@@ -305,5 +360,7 @@
   "OWPBuild": [],
   "Transmitter": [],
   "CommandEvent": [],
-  "Logging": []
+  "Logging": [],
+  "SlnOpened": [],
+  "SlnClosed": []
 }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+ * Copyright (c) 2013-2016  Denis Kuzmin (reg) <entry.reg@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -47,25 +47,6 @@ namespace net.r_eg.vsCE
     public sealed class vsCommandEventPackage: Package, IDisposable, IVsSolutionEvents
     {
         /// <summary>
-        /// DTE2 Context
-        /// </summary>
-        public DTE2 Dte2
-        {
-            get{
-                return (DTE2)Package.GetGlobalService(typeof(SDTE));
-            }
-        }
-
-        /// <summary>
-        /// Binder of main events
-        /// </summary>
-        public IBinder PackageBinder
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// For IVsSolutionEvents events
         /// http://msdn.microsoft.com/en-us/library/microsoft.visualstudio.shell.interop.ivssolution.aspx
         /// </summary>
@@ -80,17 +61,36 @@ namespace net.r_eg.vsCE
         /// <summary>
         /// Listener of the OutputWindowsPane
         /// </summary>
-        private Receiver.Output.OWP _owpListener;
+        private Receiver.Output.OWP owpListener;
 
         /// <summary>
-        /// The command for menu - Build / Command Event
+        /// The command for menu - Tools / vsCommandEvent
         /// </summary>
         private MenuCommand _menuItemMain;
         
         /// <summary>
         /// main form of settings
         /// </summary>
-        private UI.WForms.EventsFrm _configFrm;
+        private UI.WForms.EventsFrm configFrm;
+
+        /// <summary>
+        /// DTE2 Context
+        /// </summary>
+        public DTE2 Dte2
+        {
+            get {
+                return (DTE2)Package.GetGlobalService(typeof(SDTE));
+            }
+        }
+
+        /// <summary>
+        /// Binder of main events
+        /// </summary>
+        public IBinder PackageBinder
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Priority call with SVsSolution.
@@ -150,9 +150,9 @@ namespace net.r_eg.vsCE
 
             _menuItemMain.Visible = true;
 
-            _owpListener = new Receiver.Output.OWP(PackageBinder.Environment);
-            _owpListener.attachEvents();
-            _owpListener.Receiving += (object sender, Receiver.Output.PaneArgs e) => {
+            owpListener = new Receiver.Output.OWP(PackageBinder.Environment);
+            owpListener.attachEvents();
+            owpListener.Receiving += (object sender, Receiver.Output.PaneArgs e) => {
                 ((Bridge.IEvent)PackageBinder).onBuildRaw(e.Raw, e.Guid, e.Item);
             };
         }
@@ -160,8 +160,7 @@ namespace net.r_eg.vsCE
         /// <summary>
         /// Loads data with common configuration.
         /// </summary>
-        /// <returns>true value if all loaded correctly.</returns>
-        private bool loadData()
+        private void loadData()
         {
             try
             {
@@ -174,26 +173,33 @@ namespace net.r_eg.vsCE
 
                 userConfig.load();
                 Log.Trace("UserConfig Link: '{0}'", userConfig.Link);
-
-                return true;
             }
             catch(Exception ex) {
                 Log.Fatal("Can't load data with common configuration: '{0}'", ex.Message);
+                throw;
             }
-            return false;
         }
 
         /// <summary>
         /// Safe variant for attaching pane in NoSolution context.
         /// </summary>
-        /// <param name="Window"></param>
-        private void attachToOutputWindow(Window Window)
+        /// <param name="wnd"></param>
+        private void attachToOutputWindow(Window wnd)
         {
-            if(Window.ObjectKind == EnvDTE.Constants.vsWindowKindOutput || Window.Type == EnvDTE.vsWindowType.vsWindowTypeOutput)
-            {
-                Log._.paneAttach(GetOutputPane(GuidList.OWP_SBE, Settings.OWP_ITEM_VSSBE));
-                Log.Trace("Pane has been attached: '{0}'", GuidList.OWP_SBE);
-                ((EnvDTE80.Events2)Dte2.Events).get_WindowVisibilityEvents().WindowShowing -= attachToOutputWindow;
+            if(wnd == null) {
+                Log.Warn("attachToOutputWindow: wnd is null");
+                return;
+            }
+
+            try {
+                if(wnd.ObjectKind == EnvDTE.Constants.vsWindowKindOutput || wnd.Type == vsWindowType.vsWindowTypeOutput) {
+                    Log._.paneAttach(GetOutputPane(GuidList.OWP_SBE, Settings.OWP_ITEM_VSSBE));
+                    Log.Trace("Pane has been attached: '{0}'", GuidList.OWP_SBE);
+                    ((Events2)Dte2.Events).get_WindowVisibilityEvents().WindowShowing -= attachToOutputWindow;
+                }
+            }
+            catch(Exception ex) {
+                Log.Error("Failed attachToOutputWindow: `{0}`", ex.Message);
             }
         }
 
@@ -204,11 +210,17 @@ namespace net.r_eg.vsCE
         /// <param name="e"></param>
         private void _menuMainCallback(object sender, EventArgs e)
         {
-            if(UI.Util.focusForm(_configFrm)) {
-                return;
+            try
+            {
+                if(UI.Util.focusForm(configFrm)) {
+                    return;
+                }
+                configFrm = new UI.WForms.EventsFrm(PackageBinder);
+                configFrm.Show();
             }
-            _configFrm = new UI.WForms.EventsFrm(PackageBinder);
-            _configFrm.Show();
+            catch(Exception ex) {
+                Log.Error("Failed UI: `{0}`", ex.Message);
+            }
         }
 
         #region unused
@@ -259,7 +271,7 @@ namespace net.r_eg.vsCE
 
         protected override void Initialize()
         {
-            Trace.WriteLine(String.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", this.ToString()));
+            Trace.WriteLine(String.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", ToString()));
             base.Initialize();
 
             try
@@ -284,7 +296,7 @@ namespace net.r_eg.vsCE
                                 "Try to restart IDE or reinstall current plugin in Extension Manager.", 
                                 ex.ToString());
 
-                Log.Fatal(msg);
+                Debug.WriteLine(msg);
                 
                 int res;
                 Guid id = Guid.Empty;
@@ -306,11 +318,16 @@ namespace net.r_eg.vsCE
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "_configFrm")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "configFrm")]
         protected override void Dispose(bool disposing)
         {
-            UI.Util.closeTool(_configFrm); //CA2213: we use Util for all System.Windows.Forms
-            Log._.paneDetach((IVsOutputWindow)GetGlobalService(typeof(SVsOutputWindow)));
+            try {
+                UI.Util.closeTool(configFrm); //CA2213: we use Util for all System.Windows.Forms
+                Log._.paneDetach((IVsOutputWindow)GetGlobalService(typeof(SVsOutputWindow)));
+            }
+            catch(Exception ex) {
+                Debug.WriteLine(ex.Message);
+            }
 
             if(spSolution != null && _pdwCookieSolution != 0) {
                 spSolution.UnadviseSolutionEvents(_pdwCookieSolution);

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+ * Copyright (c) 2013-2016  Denis Kuzmin (reg) <entry.reg@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -110,6 +110,8 @@ namespace net.r_eg.vsCE
 
             ConfigManager.switchOn((isNew || userConfig.Data.Global.IgnoreConfiguration)? ContextType.Common : ContextType.Solution);
 
+            refreshComponents();
+
             OpenedSolution(this, new EventArgs());
             return VSConstants.S_OK;
         }
@@ -187,7 +189,9 @@ namespace net.r_eg.vsCE
         /// <param name="type"></param>
         public void updateBuildType(Bridge.BuildType type)
         {
-            Environment.BuildType = type;
+            if(Environment != null) {
+                Environment.BuildType = type;
+            }
         }
 
         /// <param name="dte2"></param>
@@ -214,13 +218,20 @@ namespace net.r_eg.vsCE
             attachCommandEvents();
             this.Bootloader = new Bootloader(Environment, uvariable);
             this.Bootloader.register();
-            this.Bootloader.updateActivation(Settings.Cfg);
 
             Action = new Actions.Connection(
                             new Actions.Command(Environment,
                                          new Script(Bootloader),
                                          new MSBuild.Parser(Environment, uvariable))
             );
+        }
+
+        protected void refreshComponents()
+        {
+            if(this.Bootloader == null || Settings.CfgManager.Config == null) {
+                return;
+            }
+            this.Bootloader.updateActivation(Settings.CfgManager.Config.Data);
         }
 
         protected void attachCommandEvents()
@@ -232,9 +243,8 @@ namespace net.r_eg.vsCE
 
             cmdEvents = Environment.Events.CommandEvents; // protection from garbage collector
             lock(_lock) {
-                cmdEvents.BeforeExecute -= onCmdBeforeExecute;
+                detachCommandEvents();
                 cmdEvents.BeforeExecute += onCmdBeforeExecute;
-                cmdEvents.AfterExecute  -= onCmdAfterExecute;
                 cmdEvents.AfterExecute  += onCmdAfterExecute;
             }
         }
@@ -244,6 +254,7 @@ namespace net.r_eg.vsCE
             if(cmdEvents == null) {
                 return;
             }
+
             lock(_lock) {
                 cmdEvents.BeforeExecute -= onCmdBeforeExecute;
                 cmdEvents.AfterExecute  -= onCmdAfterExecute;

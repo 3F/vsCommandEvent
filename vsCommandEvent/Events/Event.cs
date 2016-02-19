@@ -40,10 +40,9 @@ namespace net.r_eg.vsCE.Events
         /// </summary>
         public string Name
         {
-            get { return name; }
-            set { name = value; }
+            get;
+            set;
         }
-        private string name = null;
 
         /// <summary>
         /// About event.
@@ -54,7 +53,7 @@ namespace net.r_eg.vsCE.Events
             set { caption = value; }
         }
         private string caption = String.Empty;
-        
+
         /// <summary>
         /// Support of the MSBuild engine.
         /// </summary>

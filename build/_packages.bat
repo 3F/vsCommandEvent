@@ -1,0 +1,1 @@
+%1 "%cd%/.gnt/gnt.core" /p:ngpath="%cd%/packages" /p:ngconfig="%cd%/.gnt/packages.config|%cd%/vsCommandEvent/packages.config|%cd%/vsCommandEventTest/packages.config"

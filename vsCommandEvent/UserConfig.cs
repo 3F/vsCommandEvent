@@ -117,6 +117,16 @@ namespace net.r_eg.vsCE
         }
 
         /// <summary>
+        /// Unload User data.
+        /// </summary>
+        public void unload()
+        {
+            Link = null;
+            Data = null;
+            Updated(this, new DataArgs<IUserData>() { Data = null });
+        }
+
+        /// <summary>
         /// Load settings by link to configuration file.
         /// </summary>
         /// <param name="link">Link to configuration file.</param>

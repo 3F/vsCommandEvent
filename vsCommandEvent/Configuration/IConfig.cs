@@ -75,5 +75,10 @@ namespace net.r_eg.vsCE.Configuration
         /// Save settings.
         /// </summary>
         void save();
+
+        /// <summary>
+        /// Unload User data.
+        /// </summary>
+        void unload();
     }
 }

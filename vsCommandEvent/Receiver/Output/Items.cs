@@ -29,6 +29,34 @@ namespace net.r_eg.vsCE.Receiver.Output
     public sealed class Items: IItems
     {
         /// <summary>
+        /// Thread-safe getting instance from Items.
+        /// </summary>
+        public static Items _
+        {
+            get { return _lazy.Value; }
+        }
+        private static readonly Lazy<Items> _lazy = new Lazy<Items>(() => new Items());
+
+        /// <summary>
+        /// Items based on errors/warnings container.
+        /// </summary>
+        private Dictionary<Ident, IItemEW> ItemEW
+        {
+            get { return itemEW; }
+        }
+        private Dictionary<Ident, IItemEW> itemEW = new Dictionary<Ident, IItemEW>();
+
+        /// <summary>
+        /// Get EW item for identifier.
+        /// </summary>
+        /// <param name="ident">Identifier of item.</param>
+        /// <returns>EW item.</returns>
+        public IItemEW getEW(Ident ident)
+        {
+            return (IItemEW)get(ItemType.EW, ident);
+        }
+
+        /// <summary>
         /// Get item for type and identifier.
         /// </summary>
         /// <param name="type">Type of item.</param>
@@ -62,34 +90,6 @@ namespace net.r_eg.vsCE.Receiver.Output
             }
             throw new NotFoundException("OWP Items: Type '{0}' is not supported.", type);
         }
-
-        /// <summary>
-        /// Get EW item for identifier.
-        /// </summary>
-        /// <param name="ident">Identifier of item.</param>
-        /// <returns>EW item.</returns>
-        public IItemEW getEW(Ident ident)
-        {
-            return (IItemEW)get(ItemType.EW, ident);
-        }
-
-        /// <summary>
-        /// Thread-safe getting instance from Items.
-        /// </summary>
-        public static Items _
-        {
-            get { return _lazy.Value; }
-        }
-        private static readonly Lazy<Items> _lazy = new Lazy<Items>(() => new Items());
-
-        /// <summary>
-        /// Items based on errors/warnings container.
-        /// </summary>
-        private Dictionary<Ident, IItemEW> ItemEW
-        {
-            get { return itemEW; }
-        }
-        private Dictionary<Ident, IItemEW> itemEW = new Dictionary<Ident, IItemEW>();
 
         private Items() { }
     }

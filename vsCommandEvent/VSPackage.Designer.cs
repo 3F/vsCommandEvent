@@ -70,7 +70,7 @@ namespace net.r_eg.vsCE {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Advanced handler of all commands and output data as manager of this. Based on vsSolutionBuildEvent engine and continues mission to providing flexible actions for your environment..
+        ///   Looks up a localized string similar to Advanced handler of all commands from Visual Studio and output data as manager of this. It based on vsSolutionBuildEvent engine and continues mission to provide flexible actions for your environment..
         /// </summary>
         internal static string _112 {
             get {

@@ -16,7 +16,6 @@
 */
 
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace net.r_eg.vsCE.Configuration.User
 {

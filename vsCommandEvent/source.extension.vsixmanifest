@@ -4,7 +4,7 @@
         <Name>vsCommandEvent</Name>
         <Author>entry.reg@gmail.com</Author>
         <Version>1.0.0</Version>
-        <Description xml:space="preserve">Advanced handler of all commands and output data as manager of this. Based on vsSolutionBuildEvent engine and continues mission to providing flexible actions for your environment.</Description>
+        <Description xml:space="preserve">Advanced handler of all commands from Visual Studio and output data as manager of this. It based on vsSolutionBuildEvent engine and continues mission to provide flexible actions for your environment.</Description>
         <Locale>1033</Locale>
         <MoreInfoUrl>https://visualstudiogallery.msdn.microsoft.com/ad9f19b2-04c0-46fe-9637-9a52ce4ca661/</MoreInfoUrl>
         <License>Resources/vsixinfo</License>

@@ -85,5 +85,11 @@ namespace net.r_eg.vsCE.Logger
         /// Show messages if it's possible.
         /// </summary>
         void show();
+
+        /// <summary>
+        /// To clear all available messages if it's possible.
+        /// </summary>
+        /// <param name="force">Including undelivered etc.</param>
+        void clear(bool force);
     }
 }

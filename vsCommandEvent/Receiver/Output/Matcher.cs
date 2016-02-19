@@ -26,9 +26,6 @@ namespace net.r_eg.vsCE.Receiver.Output
     /// </summary>
     public class Matcher
     {
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="filters">Specific filter for checking.</param>
         /// <param name="raw"></param>
         /// <param name="guid">Guid string of pane</param>

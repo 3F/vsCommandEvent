@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+ * Copyright (c) 2013-2016  Denis Kuzmin (reg) <entry.reg@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -57,7 +57,7 @@ namespace net.r_eg.vsCE
         private Event[] evt = new Event[] { };
 
         /// <summary>
-        /// Getting event by type.
+        /// The event by type.
         /// </summary>
         /// <param name="type">Available event.</param>
         /// <exception cref="NotFoundException"></exception>
@@ -71,7 +71,8 @@ namespace net.r_eg.vsCE
                     return Event;
                 }
             }
-            throw new NotFoundException("getEvent: Not found event type - '{0}'", type);
+
+            throw new NotFoundException("getEvent: the event type '{0}' is not found.", type);
         }
     }
 }

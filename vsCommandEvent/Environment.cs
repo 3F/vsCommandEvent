@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+ * Copyright (c) 2013-2016  Denis Kuzmin (reg) <entry.reg@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -127,16 +127,15 @@ namespace net.r_eg.vsCE
         {
             get
             {
-                if(!IsOpenedSolution) {
+                if(!IsOpenedSolution || Dte2.Solution.SolutionBuild.StartupProjects == null) {
                     return null;
                 }
 
                 foreach(string project in (Array)Dte2.Solution.SolutionBuild.StartupProjects)
                 {
-                    if(String.IsNullOrEmpty(project)) {
-                        continue;
+                    if(!String.IsNullOrEmpty(project)) {
+                        return project;
                     }
-                    return project;
                 }
                 return null;
             }
@@ -217,7 +216,7 @@ namespace net.r_eg.vsCE
                 foreach(EnvDTE.Project project in DTEProjectsRaw)
                 {
                     if(project.Kind == "{67294A52-A4F0-11D2-AA88-00C04F688DDE}" || project.ConfigurationManager == null) {
-                        Log.Debug("Unloaded project '{0}' has ignored", project.Name);
+                        Log.Trace("Unloaded project '{0}' has ignored", project.Name);
                         continue; // skip for all unloaded projects
                     }
                     yield return project;
@@ -356,7 +355,13 @@ namespace net.r_eg.vsCE
         /// <param name="args">Command arguments</param>
         public virtual void exec(string name, string args = "")
         {
-            ((EnvDTE.DTE)Dte2).ExecuteCommand(name, (args == null)? String.Empty : args);
+            try {
+                ((EnvDTE.DTE)Dte2).ExecuteCommand(name, args ?? String.Empty);
+            }
+            catch(OutOfMemoryException) {
+                // this can be from Devenv
+                Log.Debug("exec: We can't work with DTE commands at this moment in used environment. Command - '{0}'", name);
+            }
         }
 
         /// <summary>
@@ -548,11 +553,17 @@ namespace net.r_eg.vsCE
         /// <returns></returns>
         protected string getFullPathToSln(DTE2 dte2)
         {
-            string path = dte2.Solution.FullName; // can be is empty if it's a new solution
-            if(String.IsNullOrWhiteSpace(path)) {
-                return dte2.Solution.Properties.Item("Path").Value.ToString();
+            try {
+                string path = dte2.Solution.FullName; // can be empty if it is the new solution
+                if(String.IsNullOrWhiteSpace(path)) {
+                    return dte2.Solution.Properties.Item("Path").Value.ToString();
+                }
+                return path;
             }
-            return path;
+            catch(Exception ex) {
+                Log.Debug("getFullPathToSln returns null: `{0}`", ex.Message);
+                return null;
+            }
         }
     }
 }

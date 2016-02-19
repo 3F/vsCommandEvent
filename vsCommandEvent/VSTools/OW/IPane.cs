@@ -18,24 +18,30 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace net.r_eg.vsCE.Configuration
+namespace net.r_eg.vsCE.VSTools.OW
 {
-    [Guid("A55E2432-81B0-407E-B3B2-29958D76B09A")]
-    public enum ContextType
+    [Guid("9C9CEFB5-BECE-4DB8-87EF-5C38AFA5EBD7")]
+    public interface IPane
     {
         /// <summary>
-        /// Common configuration.
+        /// Gets the GUID for the pane.
         /// </summary>
-        Common,
+        Guid Guid { get; }
 
         /// <summary>
-        /// Configuration of specific solution.
+        /// Moves the focus to the current item.
         /// </summary>
-        Solution,
+        void Activate();
 
         /// <summary>
-        /// Unspecified static configuration.
+        /// Clears all text from pane.
         /// </summary>
-        Static,
+        void Clear();
+
+        /// <summary>
+        /// Sends a text string into pane.
+        /// </summary>
+        /// <param name="text"></param>
+        void OutputString(string text);
     }
 }

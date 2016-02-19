@@ -76,7 +76,7 @@ namespace net.r_eg.vsCE.Receiver.Output
             get { return warnings; }
         }
         protected List<string> warnings = new List<string>();
-        
+
         /// <summary>
         /// Gets current raw data or sets new.
         /// </summary>

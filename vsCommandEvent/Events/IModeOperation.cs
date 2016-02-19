@@ -29,7 +29,7 @@ namespace net.r_eg.vsCE.Events
     public interface IModeOperation: ICommandArray<Command>
     {
         /// <summary>
-        /// Abort operations on the first error
+        /// Abort operations on first error
         /// </summary>
         bool AbortOnFirstError { get; set; }
     }
