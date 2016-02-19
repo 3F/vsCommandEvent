@@ -1,6 +1,7 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using net.r_eg.vsCE.Events;
+using net.r_eg.vsCE.Exceptions;
+using net.r_eg.vsCE.SBEScripts;
 using net.r_eg.vsCE.SBEScripts.Components;
 using net.r_eg.vsCE.SBEScripts.Exceptions;
 
@@ -68,7 +69,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         ///A test for parse - stEvents
         ///</summary>
         [TestMethod()]
-        [ExpectedException(typeof(SyntaxIncorrectException))]
+        [ExpectedException(typeof(OperandNotFoundException))]
         public void stEventsParseTest1()
         {
             InternalComponent target = new InternalComponent();
@@ -93,17 +94,17 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         public void pEnabledParseTest1()
         {
             InternalComponentAccessor target = new InternalComponentAccessor();
-            Assert.AreEqual("true", target.parse("[vsCE events.Pre.item(1).Enabled]"));
-            Assert.AreEqual("true", target.parse("[vsCE events.Pre.item(\"Name1\").Enabled]"));
-            Assert.AreEqual("false", target.parse("[vsCE events.Pre.item(2).Enabled]"));
-            Assert.AreEqual("false", target.parse("[vsCE events.Pre.item(\"Name2\").Enabled]"));
+            Assert.AreEqual(Value.from(true), target.parse("[vsCE events.Pre.item(1).Enabled]"));
+            Assert.AreEqual(Value.from(true), target.parse("[vsCE events.Pre.item(\"Name1\").Enabled]"));
+            Assert.AreEqual(Value.from(false), target.parse("[vsCE events.Pre.item(2).Enabled]"));
+            Assert.AreEqual(Value.from(false), target.parse("[vsCE events.Pre.item(\"Name2\").Enabled]"));
         }
 
         /// <summary>
         ///A test for parse - stEventItem - pEnabled
         ///</summary>
         [TestMethod()]
-        [ExpectedException(typeof(OperandNotFoundException))]
+        [ExpectedException(typeof(IncorrectSyntaxException))]
         public void pEnabledParseTest2()
         {
             InternalComponentAccessor target = new InternalComponentAccessor();
@@ -117,20 +118,20 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         public void pEnabledParseTest3()
         {
             InternalComponentAccessor target = new InternalComponentAccessor();
-            Assert.AreEqual("true", target.parse("[vsCE events.Pre.item(1).Enabled]"));
-            Assert.AreEqual(String.Empty, target.parse("[vsCE events.Pre.item(1).Enabled = false]"));
-            Assert.AreEqual("false", target.parse("[vsCE events.Pre.item(1).Enabled]"));
+            Assert.AreEqual(Value.from(true), target.parse("[vsCE events.Pre.item(1).Enabled]"));
+            Assert.AreEqual(Value.Empty, target.parse("[vsCE events.Pre.item(1).Enabled = false]"));
+            Assert.AreEqual(Value.from(false), target.parse("[vsCE events.Pre.item(1).Enabled]"));
 
-            Assert.AreEqual("false", target.parse("[vsCE events.Pre.item(\"Name2\").Enabled]"));
-            Assert.AreEqual(String.Empty, target.parse("[vsCE events.Pre.item(\"Name2\").Enabled = true]"));
-            Assert.AreEqual("true", target.parse("[vsCE events.Pre.item(\"Name2\").Enabled]"));
+            Assert.AreEqual(Value.from(false), target.parse("[vsCE events.Pre.item(\"Name2\").Enabled]"));
+            Assert.AreEqual(Value.Empty, target.parse("[vsCE events.Pre.item(\"Name2\").Enabled = true]"));
+            Assert.AreEqual(Value.from(true), target.parse("[vsCE events.Pre.item(\"Name2\").Enabled]"));
         }
 
         /// <summary>
         ///A test for parse - stEventItem - pStatus
         ///</summary>
         [TestMethod()]
-        [ExpectedException(typeof(OperandNotFoundException))]
+        [ExpectedException(typeof(IncorrectNodeException))]
         public void pStatusParseTest1()
         {
             InternalComponentAccessor target = new InternalComponentAccessor();
@@ -151,11 +152,53 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         ///A test for parse - stEventItem - pStatus
         ///</summary>
         [TestMethod()]
-        [ExpectedException(typeof(SubtypeNotFoundException))]
+        [ExpectedException(typeof(IncorrectNodeException))]
         public void pStatusParseTest3()
         {
             InternalComponentAccessor target = new InternalComponentAccessor();
             target.parse("[vsCE events.Pre.item(1).Status.NotExistProp]");
+        }
+
+        /// <summary>
+        ///A test for parse - stEventItem - pStdout
+        ///</summary>
+        [TestMethod()]
+        [ExpectedException(typeof(IncorrectNodeException))]
+        public void pStdoutTest1()
+        {
+            var target = new InternalComponentAccessor();
+            target.parse("[Core events.Pre.item(1).stdout = true]");
+        }
+
+        /// <summary>
+        ///A test for parse - stEventItem - pStdout
+        ///</summary>
+        [TestMethod()]
+        public void pStdoutTest2()
+        {
+            var target = new InternalComponentAccessor();
+            Assert.AreNotEqual(null, target.parse("[Core events.Pre.item(1).stdout]"));
+        }
+
+        /// <summary>
+        ///A test for parse - stEventItem - pStderr
+        ///</summary>
+        [TestMethod()]
+        [ExpectedException(typeof(IncorrectNodeException))]
+        public void pStderrTest1()
+        {
+            var target = new InternalComponentAccessor();
+            target.parse("[Core events.Pre.item(1).stderr = true]");
+        }
+
+        /// <summary>
+        ///A test for parse - stEventItem - pStderr
+        ///</summary>
+        [TestMethod()]
+        public void pStderrTest2()
+        {
+            var target = new InternalComponentAccessor();
+            Assert.AreNotEqual(null, target.parse("[Core events.Pre.item(1).stderr]"));
         }
 
         private class InternalComponentAccessor: InternalComponent

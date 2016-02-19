@@ -6,16 +6,24 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectName>vsSolutionBuildEventTest</ProjectName>
+    <ProjectName>vsCommandEventTest</ProjectName>
     <ProjectGuid>{C00D04E8-8101-42F5-89DA-CBAD205CC1D3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>net.r_eg.vsCE.Test</RootNamespace>
     <AssemblyName>vsCommandEventTest</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <csprojPostfix>
+    </csprojPostfix>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">0</VisualStudioVersion>
+    <VsSDKVersion Condition="'$(VsSDKVersion)' == ''">0</VsSDKVersion>
+    <csprojPostfix Condition="'$(VisualStudioVersion)' == '14.0' or '$(VsSDKVersion)' == '14.0'">_2015</csprojPostfix>
+    <!-- <csprojPostfix Condition="'$(VisualStudioVersion)' == '12.0' or '$(VsSDKVersion)' == '12.0'">_2013</csprojPostfix> -->
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,15 +51,21 @@
     </Reference>
     <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     </Reference>
+    <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Moq, Version=4.2.1507.118, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SevenZipSharp, Version=0.64.3890.29348, Culture=neutral, PublicKeyToken=20de82c62b055c88, processorArchitecture=MSIL">
+      <HintPath>..\packages\SevenZipSharp.0.64\lib\SevenZipSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -67,25 +81,31 @@
     <Compile Include="SBEScripts\Components\FileComponentTest.cs" />
     <Compile Include="SBEScripts\Components\FunctionComponentTest.cs" />
     <Compile Include="SBEScripts\Components\InternalComponentTest.cs" />
-    <Compile Include="MSBuild\MSBuildParserTest.cs" />
+    <Compile Include="MSBuild\ParserTest.cs" />
+    <Compile Include="SBEScripts\Components\MSBuildComponentTest.cs" />
+    <Compile Include="SBEScripts\Components\NuGetComponentTest.cs" />
     <Compile Include="SBEScripts\Components\OWPComponentTest.cs" />
     <Compile Include="Receiver\Output\BuildItemTest.cs" />
     <Compile Include="Receiver\Output\MatcherTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SBEScripts\Components\SevenZipComponentTest.cs" />
     <Compile Include="SBEScripts\RPatternTest.cs" />
     <Compile Include="SBEScripts\ScriptTest.cs" />
+    <Compile Include="SBEScripts\SNode\LevelTest.cs" />
     <Compile Include="SBEScripts\SNode\PMTest.cs" />
     <Compile Include="SBEScripts\StringHandlerTest.cs" />
     <Compile Include="SBEScripts\Components\UserVariableComponentTest.cs" />
     <Compile Include="Scripts\UserVariableTest.cs" />
     <Compile Include="SBEScripts\ValueTest.cs" />
+    <Compile Include="StubEnv.cs" />
+    <Compile Include="TempFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bridge\Bridge.csproj">
       <Project>{73919171-44b6-4536-b892-f1fca653887c}</Project>
       <Name>Bridge</Name>
     </ProjectReference>
-    <ProjectReference Include="..\vsCommandEvent\vsCommandEvent.csproj">
+    <ProjectReference Include="..\vsCommandEvent\vsCommandEvent$(csprojPostfix).csproj">
       <Project>{32E44995-F621-4E77-B46A-8F65D64E7FEA}</Project>
       <Name>vsCommandEvent</Name>
     </ProjectReference>
@@ -94,10 +114,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
+  <Import Project="$(SolutionDir)\VsixLib\List.targets" />
   <Target Name="BeforeBuild">
+    <Copy SourceFiles="@(VsixLib)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" UseHardlinksIfPossible="true" />
   </Target>
+  <!--
   <Target Name="AfterBuild">
   </Target>
   -->

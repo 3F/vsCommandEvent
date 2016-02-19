@@ -70,16 +70,20 @@
     <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0">
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.1.2\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="SevenZipSharp, Version=0.64.3890.29348, Culture=neutral, PublicKeyToken=20de82c62b055c88, processorArchitecture=MSIL">
+      <HintPath>..\packages\SevenZipSharp.0.64\lib\SevenZipSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
@@ -89,6 +93,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="Ude, Version=0.1.1.0, Culture=neutral, PublicKeyToken=dd537652db4726a9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Ude.Signed.0.1.1\lib\net40\Ude.dll</HintPath>
@@ -153,10 +158,12 @@
     <Compile Include="Events\Types\Command.cs" />
     <Compile Include="Extensions\StringExtension.cs" />
     <Compile Include="IAppSettings.cs" />
+    <Compile Include="IsolatedEnv.cs" />
     <Compile Include="ISolutionEvents.cs" />
     <Compile Include="Logger\ILog.cs" />
     <Compile Include="Logger\Initializer.cs" />
     <Compile Include="Logger\MessageArgs.cs" />
+    <Compile Include="MSBuild\Exceptions\PossibleLoopException.cs" />
     <Compile Include="Receiver\Output\ItemType.cs" />
     <Compile Include="Receiver\Output\EWType.cs" />
     <Compile Include="Receiver\Output\IItems.cs" />
@@ -164,6 +171,11 @@
     <Compile Include="Receiver\Output\Ident.cs" />
     <Compile Include="Receiver\Output\PaneArgs.cs" />
     <Compile Include="SBEScripts\Components\Build\ProjectsMap.cs" />
+    <Compile Include="SBEScripts\Components\MSBuildComponent.cs" />
+    <Compile Include="SBEScripts\Components\NuGetComponent.cs" />
+    <Compile Include="SBEScripts\Components\NuGet\GetNuTool\Core.cs" />
+    <Compile Include="SBEScripts\Components\NuGet\GetNuTool\GNT.cs" />
+    <Compile Include="SBEScripts\Components\SevenZipComponent.cs" />
     <Compile Include="SBEScripts\Exceptions\ArgumentPMException.cs" />
     <Compile Include="SBEScripts\Exceptions\IncorrectNodeException.cs" />
     <Compile Include="SBEScripts\SNode\Argument.cs" />
@@ -175,6 +187,7 @@
     <Compile Include="SBEScripts\SNode\LevelType.cs" />
     <Compile Include="SBEScripts\SNode\PM.cs" />
     <Compile Include="UI\ITransferCommand.cs" />
+    <Compile Include="SolutionParser.cs" />
     <Compile Include="UI\Resource.Designer.cs">
       <DependentUpon>Resource.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -568,13 +581,6 @@
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v12.0\VSSDK\Microsoft.VsSDK.targets" Condition="false" />
   <Import Project="$(VsixCompressTargets)" Condition="Exists('$(VsixCompressTargets)')" Label="VsixCompress" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
   <Import Project="$(SolutionDir)\VsixLib\List.targets" />
   <ItemGroup>
     <Content Include="@(VsixLib)">
@@ -592,4 +598,11 @@
       <Name>Bridge</Name>
     </ProjectReference>
   </ItemGroup>
+  <Target Name="BeforeBuild">
+    <Copy SourceFiles="@(VsixLib)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" />
+  </Target>
+  <!--
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

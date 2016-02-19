@@ -61,7 +61,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         ///A test for parse - exec
         ///</summary>
         [TestMethod()]
-        [ExpectedException(typeof(OperandNotFoundException))]
+        [ExpectedException(typeof(InvalidArgumentException))]
         public void parseExecTest3()
         {
             DTEComponentAccessor target = new DTEComponentAccessor();
@@ -75,7 +75,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         public void parseExecTest4()
         {
             DTEComponentAccessor target = new DTEComponentAccessor();
-            Assert.AreEqual(String.Empty, target.parse("[DTE exec: command]"));
+            Assert.AreEqual(Value.Empty, target.parse("[DTE exec: command]"));
         }
 
         /// <summary>
@@ -85,14 +85,14 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         public void parseExecTest5()
         {
             DTEComponentAccessor target = new DTEComponentAccessor();
-            Assert.AreEqual(String.Empty, target.parse("[DTE exec: command(args)]"));
+            Assert.AreEqual(Value.Empty, target.parse("[DTE exec: command(args)]"));
         }
 
         /// <summary>
         ///A test for parse - events.LastCommand
         ///</summary>
         [TestMethod()]
-        [ExpectedException(typeof(OperandNotFoundException))]
+        [ExpectedException(typeof(IncorrectNodeException))]
         public void parseLastCommandTest1()
         {
             DTEComponentAccessor target = new DTEComponentAccessor();
@@ -159,7 +159,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         ///A test for parse - events.LastCommand
         ///</summary>
         [TestMethod()]
-        [ExpectedException(typeof(OperationNotFoundException))]
+        [ExpectedException(typeof(IncorrectNodeException))]
         public void parseLastCommandTest5()
         {
             DTEComponentAccessor target = new DTEComponentAccessor();
@@ -210,7 +210,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
             DTEComponentAccessor target = new DTEComponentAccessor();
             target.parse("[DTE NotExist.test]");
         }
-        
+
         /// <summary>
         ///A test for parse - raise
         ///</summary>

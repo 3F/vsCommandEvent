@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using net.r_eg.vsCE.Exceptions;
 using net.r_eg.vsCE.SBEScripts.Exceptions;
 using net.r_eg.vsCE.SBEScripts.SNode;
@@ -221,17 +222,13 @@ namespace net.r_eg.vsCE.Test.SBEScripts.SNode
                 IPM pm = new PM("solution(123, ).right");
                 Assert.Fail("1");
             }
-            catch(SyntaxIncorrectException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(SyntaxIncorrectException), ex.GetType().ToString()); }
 
             try {
                 IPM pm = new PM("solution(, 123).right");
                 Assert.Fail("2");
             }
-            catch(SyntaxIncorrectException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(SyntaxIncorrectException), ex.GetType().ToString()); }
         }
 
         /// <summary>
@@ -395,9 +392,9 @@ namespace net.r_eg.vsCE.Test.SBEScripts.SNode
             Assert.AreEqual(pm.Levels[1].Data, "path");
             Assert.AreEqual(pm.Levels[1].Args.Length, 3);
             Assert.AreEqual(pm.Levels[1].Args[0].type, ArgumentType.StringDouble);
-            Assert.AreEqual(pm.Levels[1].Args[0].data, "\\\"D:/app/(name)).sln\\\"");
+            Assert.AreEqual(pm.Levels[1].Args[0].data, "\"D:/app/(name)).sln\"");
             Assert.AreEqual(pm.Levels[1].Args[1].type, ArgumentType.StringDouble);
-            Assert.AreEqual(pm.Levels[1].Args[1].data, "\\\"test\\\"");
+            Assert.AreEqual(pm.Levels[1].Args[1].data, "\"test\"");
             Assert.AreEqual(pm.Levels[1].Args[2].type, ArgumentType.StringSingle);
             Assert.AreEqual(pm.Levels[1].Args[2].data, "\\\"12 34\\\"");
 
@@ -405,7 +402,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.SNode
             Assert.AreEqual(pm.Levels[2].Data, "projectBy");
             Assert.AreEqual(pm.Levels[2].Args.Length, 1);
             Assert.AreEqual(pm.Levels[2].Args[0].type, ArgumentType.StringDouble);
-            Assert.AreEqual(pm.Levels[2].Args[0].data, "\\\"426(2)A1DC\\\"");
+            Assert.AreEqual(pm.Levels[2].Args[0].data, "\"426(2)A1DC\"");
 
             Assert.AreEqual(pm.Levels[3].Type, LevelType.RightOperandColon);
             Assert.AreEqual(pm.Levels[3].Data, " \"\\\"test 123\\\"\", '\\\"true\\\"'");
@@ -456,6 +453,40 @@ namespace net.r_eg.vsCE.Test.SBEScripts.SNode
         }
 
         /// <summary>
+        ///A test for It
+        ///</summary>
+        [TestMethod()]
+        public void ItTest1()
+        {
+            IPM pm = new PM("solution.m1().right");
+
+            Assert.AreEqual(true, pm.It(LevelType.Property, "solution"));
+            Assert.AreEqual(true, pm.It(LevelType.Method, "m1"));
+            Assert.AreEqual(false, pm.It(LevelType.Property, "notRealProperty"));
+            Assert.AreEqual(true, pm.It(LevelType.Property, "right"));
+            Assert.AreEqual(true, pm.It(LevelType.RightOperandEmpty));
+
+            Assert.AreEqual(0, pm.Levels.Count);
+            Assert.AreEqual(false, pm.It(LevelType.RightOperandEmpty));
+            Assert.AreEqual(false, pm.Is(0, LevelType.RightOperandEmpty));
+        }
+
+        /// <summary>
+        ///A test for It
+        ///</summary>
+        [TestMethod()]
+        public void ItTest2()
+        {
+            IPM pm = new PM("solution.m1().Prop1.right");
+
+            Assert.AreEqual(true, pm.It(LevelType.Property, "solution"));
+            Assert.AreEqual(true, pm.Is(LevelType.Method, "m1"));
+            Assert.AreEqual(false, pm.It(LevelType.Property, "Prop1"));
+            Assert.AreEqual(true, pm.It(1, LevelType.Property, "Prop1"));
+            Assert.AreEqual(true, pm.It(LevelType.Property, "right"));
+        }
+
+        /// <summary>
         ///A test for FinalIs
         ///</summary>
         [TestMethod()]
@@ -478,18 +509,14 @@ namespace net.r_eg.vsCE.Test.SBEScripts.SNode
                 Assert.AreEqual(pm.FinalIs(1, LevelType.Property, "solution"), true);
                 Assert.Fail("1");
             }
-            catch(NotSupportedOperationException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
 
             try {
                 IPM pm = new PM("left.solution.right");
-                Assert.AreEqual(pm.FinalIs(0, LevelType.Property, "left"), true);
+                Assert.AreEqual(pm.FinalIs(LevelType.Property, "left"), true);
                 Assert.Fail("2");
             }
-            catch(NotSupportedOperationException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
         }
 
         /// <summary>
@@ -550,36 +577,28 @@ namespace net.r_eg.vsCE.Test.SBEScripts.SNode
                 Assert.AreEqual(pm.FinalEmptyIs(1, LevelType.Property, "right"), true);
                 Assert.Fail("1");
             }
-            catch(NotSupportedOperationException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
 
             try {
                 IPM pm = new PM("solution.right : ");
                 Assert.AreEqual(pm.FinalEmptyIs(1, LevelType.Property, "right"), true);
                 Assert.Fail("2");
             }
-            catch(NotSupportedOperationException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
 
             try {
                 IPM pm = new PM("solution.right . prop");
                 Assert.AreEqual(pm.FinalEmptyIs(1, LevelType.Property, "right"), true);
                 Assert.Fail("3");
             }
-            catch(NotSupportedOperationException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
 
             try {
                 IPM pm = new PM("solution.right mixed data");
                 Assert.AreEqual(pm.FinalEmptyIs(1, LevelType.Property, "right"), true);
                 Assert.Fail("4");
             }
-            catch(NotSupportedOperationException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
         }
 
         /// <summary>
@@ -648,27 +667,21 @@ namespace net.r_eg.vsCE.Test.SBEScripts.SNode
                 pm.pinTo(100);
                 Assert.Fail("1");
             }
-            catch(InvalidArgumentException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(InvalidArgumentException), ex.GetType().ToString()); }
 
             try {
                 IPM pm = new PM("left.solution.right");
                 pm.pinTo(-1);
                 Assert.Fail("2");
             }
-            catch(InvalidArgumentException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(InvalidArgumentException), ex.GetType().ToString()); }
 
             try {
                 IPM pm = new PM("left.solution.right"); //4
                 pm.pinTo(4);
                 Assert.Fail("4");
             }
-            catch(InvalidArgumentException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(InvalidArgumentException), ex.GetType().ToString()); }
 
             try {
                 IPM pm = new PM("left.solution.right"); //4
@@ -677,9 +690,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.SNode
                 pm.pinTo(1);
                 Assert.Fail("5");
             }
-            catch(InvalidArgumentException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(InvalidArgumentException), ex.GetType().ToString()); }
         }
 
         /// <summary>
@@ -690,7 +701,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.SNode
         {
             IPM pm = new PM("solution(\"str data\", 'str data2', 12, -12, 1.5, -1.5, STDOUT, TestEnum.SpecialType, mixed * data, true)");
             
-            Assert.AreEqual(pm.Is(0, LevelType.Method, "solution"), true);
+            Assert.AreEqual(pm.Is(LevelType.Method, "solution"), true);
             Assert.AreEqual(pm.Levels[0].Args.Length, 10);
 
             Argument[] args = pm.Levels[0].Args;
@@ -733,7 +744,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.SNode
         {
             IPM pm = new PM(" solution (1.5, -1.5, 1.5f, -1.5f, 1.5d, -1.5d) ");
             
-            Assert.AreEqual(pm.Is(0, LevelType.Method, "solution"), true);
+            Assert.AreEqual(pm.Is(LevelType.Method, "solution"), true);
             Assert.AreEqual(pm.Levels[0].Args.Length, 6);
 
             Argument[] args = pm.Levels[0].Args;
@@ -764,7 +775,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.SNode
         {
             IPM pm = new PM(" m77(\"guid\", 12, {\"p1\", {4, \"test\", 8, 'y'}, true}, {false, 'p2'}) ");
 
-            Assert.AreEqual(pm.Is(0, LevelType.Method, "m77"), true);
+            Assert.AreEqual(pm.Is(LevelType.Method, "m77"), true);
 
             Argument[] args = pm.Levels[0].Args;
             Assert.AreEqual(args.Length, 4);
@@ -818,5 +829,143 @@ namespace net.r_eg.vsCE.Test.SBEScripts.SNode
             }
         }
 
+        /// <summary>
+        ///A test for detectArgument /quotes
+        ///</summary>
+        [TestMethod()]
+        public void detectArgumentTest4()
+        {
+            IPM pm = new PM("solution(\"str \\\" data1 \\\" \", \"str \\' data2 \\' \", 'str \\' data3 \\' ', 'str \\\" data4 \\\" ')");
+            
+            Assert.AreEqual(pm.Is(LevelType.Method, "solution"), true);
+            Assert.AreEqual(pm.Levels[0].Args.Length, 4);
+
+            Argument[] args = pm.Levels[0].Args;
+            Assert.AreEqual(args[0].type, ArgumentType.StringDouble);
+            Assert.AreEqual(args[0].data, "str \" data1 \" ");
+
+            Assert.AreEqual(args[1].type, ArgumentType.StringDouble);
+            Assert.AreEqual(args[1].data, "str \\' data2 \\' ");
+
+            Assert.AreEqual(args[2].type, ArgumentType.StringSingle);
+            Assert.AreEqual(args[2].data, "str ' data3 ' ");
+
+            Assert.AreEqual(args[3].type, ArgumentType.StringSingle);
+            Assert.AreEqual(args[3].data, "str \\\" data4 \\\" ");
+        }
+
+        /// <summary>
+        ///A test for IsMethodWithArgs
+        ///</summary>
+        [TestMethod()]
+        public void IsMethodWithArgsTest1()
+        {
+            IPM pm = new PM("solution(\"str data\", 12, true).data.right(false, 1).end()");
+
+            Assert.AreEqual(true, pm.IsMethodWithArgs("solution", ArgumentType.StringDouble, ArgumentType.Integer, ArgumentType.Boolean));
+            Assert.AreEqual(false, pm.IsMethodWithArgs(1, "data"));
+            Assert.AreEqual(true, pm.IsMethodWithArgs(2, "right", ArgumentType.Boolean, ArgumentType.Integer));
+            Assert.AreEqual(true, pm.IsMethodWithArgs(3, "end"));
+        }
+
+        /// <summary>
+        ///A test for IsRight
+        ///</summary>
+        [TestMethod()]
+        public void IsRightTest1()
+        {
+            IPM pm = new PM("pname = true");
+
+            Assert.AreEqual(true, pm.It(LevelType.Property, "pname"));
+            Assert.AreEqual(false, pm.IsRight(LevelType.RightOperandEmpty));
+            Assert.AreEqual(false, pm.IsRight(LevelType.RightOperandColon));
+            Assert.AreEqual(true, pm.IsRight(LevelType.RightOperandStd));
+        }
+
+        /// <summary>
+        ///A test for IsRight
+        ///</summary>
+        [TestMethod()]
+        public void IsRightTest2()
+        {
+            IPM pm = new PM("pname.m1(): mixed data");
+
+            Assert.AreEqual(true, pm.It(LevelType.Property, "pname"));
+            Assert.AreEqual(true, pm.It(LevelType.Method, "m1"));
+            Assert.AreEqual(false, pm.IsRight(LevelType.RightOperandEmpty));
+            Assert.AreEqual(true, pm.IsRight(LevelType.RightOperandColon));
+            Assert.AreEqual(false, pm.IsRight(LevelType.RightOperandStd));
+        }
+
+        /// <summary>
+        ///A test for IsData
+        ///</summary>
+        [TestMethod()]
+        public void IsDataTest1()
+        {
+            IPM pm = new PM("pname . m1(true, 123).right = true");
+
+            Assert.AreEqual(true, pm.IsData("pname"));
+            Assert.AreEqual(false, pm.IsData("pname "));
+            pm.pinTo(1);
+
+            Assert.AreEqual(true, pm.IsData("m1"));
+            pm.pinTo(1);
+
+            Assert.AreEqual(true, pm.IsData("right"));
+            pm.pinTo(1);
+
+            Assert.AreEqual(true, pm.IsData(" true"));
+        }
+
+        /// <summary>
+        ///A test for IsData
+        ///</summary>
+        [TestMethod()]
+        public void IsDataTest2()
+        {
+            IPM pm = new PM("pname = true");
+
+            Assert.AreEqual(false, pm.IsData("property1", "property2", "property2", "property3"));
+            Assert.AreEqual(true, pm.IsData("property1", "property2", "pname", "property3"));
+        }
+
+        /// <summary>
+        ///A test for getRightOperand
+        ///</summary>
+        [TestMethod()]
+        public void getRightOperandTest1()
+        {
+            try {
+                new PM("pname.... = true");
+                Assert.Fail("1");
+            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(SyntaxIncorrectException), ex.GetType().ToString()); }
+
+            try {
+                new PM("pname @ = false");
+                Assert.Fail("2");
+            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(SyntaxIncorrectException), ex.GetType().ToString()); }
+        }
+
+        /// <summary>
+        ///A test for getRightOperand
+        ///</summary>
+        [TestMethod()]
+        public void getRightOperandTest2()
+        {
+            IPM pm = new PM("pname = true ");
+
+            Assert.AreEqual(true, pm.It(LevelType.Property, "pname"));
+            Assert.AreEqual(true, pm.IsRight(LevelType.RightOperandStd));
+            Assert.AreEqual(" true ", pm.Levels[0].Data);
+
+            pm = new PM("m(): mixed\ndata ");
+
+            Assert.AreEqual(true, pm.It(LevelType.Method, "m"));
+            Assert.AreEqual(true, pm.IsRight(LevelType.RightOperandColon));
+            Assert.AreEqual(" mixed\ndata ", pm.Levels[0].Data);
+        }
     }
 }

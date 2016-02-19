@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+ * Copyright (c) 2013-2016  Denis Kuzmin (reg) <entry.reg@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,11 +16,27 @@
 */
 
 using System;
+using System.Text.RegularExpressions;
 
 namespace net.r_eg.vsCE.MSBuild
 {
     public static class RPattern
     {
+        /// <summary>
+        /// Compiled ContainerIn.
+        /// </summary>
+        public static readonly Regex ContainerInCompiled = new Regex(ContainerIn, 
+                                                                        RegexOptions.IgnorePatternWhitespace |
+                                                                        RegexOptions.Compiled);
+
+        /// <summary>
+        /// Compiled ContainerIn with naming the left definitions.
+        /// </summary>
+        public static readonly Regex ContainerInNamedCompiled = new Regex(
+                                                                        getContainerIn(@"\s*(?'name'[^$\s).:]+)"), // $( name ... 
+                                                                        RegexOptions.IgnorePatternWhitespace |
+                                                                        RegexOptions.Compiled);
+
         /// <summary>
         /// State of the container
         /// </summary>
@@ -39,6 +55,45 @@ namespace net.r_eg.vsCE.MSBuild
             /// </summary>
             Unclear
         }
+
+        /// <summary>
+        /// Property item of MSBuild expression.
+        /// </summary>
+        public static Regex PItem
+        {
+            get
+            {
+                if(pitem == null) {
+                    pitem = new Regex(
+                                    String.Format(@"^\(  
+                                                       (?:
+                                                         \s*
+                                                         (?'tsign'-|\+)?
+                                                         ([A-Za-z_0-9]+) # 1 -> variable name (optional)
+                                                         \s*=\s*
+                                                         (?: {0}         # 2 -> string data inside double quotes
+                                                             |
+                                                             {1}         # 3 -> string data inside single quotes
+                                                         )? 
+                                                       )?
+                                                       (?:
+                                                          (.+)           # 4 -> unevaluated data
+                                                          (?<!:):
+                                                          ([^:)]+)       # 5 -> specific project for variable if 1 is present or for unevaluated data
+                                                        |                # or:
+                                                          (.+)           # 6 -> unevaluated data
+                                                       )?
+                                                   \)$",
+                                                   DoubleQuotesContent,
+                                                   SingleQuotesContent
+                                    ),
+                                    RegexOptions.IgnorePatternWhitespace |
+                                    RegexOptions.Compiled);
+                }
+                return pitem;
+            }
+        }
+        private static Regex pitem;
 
         /// <summary>
         /// Escaped outer container, e.g.: -} $$(.. $(..) ...) {-
@@ -139,6 +194,15 @@ namespace net.r_eg.vsCE.MSBuild
         private static string singleQuotesContent;
 
         /// <summary>
+        /// Deepest container, e.g.: $(.. -} $(..) {- ...)
+        /// </summary>
+        /// <param name="left">Condition of left bracket - `$(left`</param>
+        public static string getContainerIn(string left)
+        {
+            return container(ContainerType.Normal, true, left);
+        }
+
+        /// <summary>
         /// Content for present symbol of quotes
         /// Escaping is a \ for used symbol
         /// e.g.: \', \"
@@ -173,8 +237,9 @@ namespace net.r_eg.vsCE.MSBuild
         /// </summary>
         /// <param name="type"></param>
         /// <param name="upward">all or only internal(deepest)</param>
+        /// <param name="left">Condition of left bracket - `$(left`</param>
         /// <returns></returns>
-        private static string container(ContainerType type, bool upward)
+        private static string container(ContainerType type, bool upward, string left = "")
         {
             /* PCRE:
                  (
@@ -196,9 +261,9 @@ namespace net.r_eg.vsCE.MSBuild
                                      \${{{2}}}
                                    )
                                    (
-                                     \(
+                                     \({3}
                                        (?>
-                                         {3}[^()]
+                                         {4}[^()]
                                          |
                                          \((?<R>)
                                          |
@@ -210,7 +275,8 @@ namespace net.r_eg.vsCE.MSBuild
                                    (type == ContainerType.Unclear)? String.Empty : "?:",
                                    (type == ContainerType.Normal)? @"(?<!\$)" : String.Empty,
                                    (type == ContainerType.Unclear)? "1,2" : (type == ContainerType.Normal)? "1" : "2",
-                                   (upward)? @"(?!\$\()" : String.Empty);
+                                   left,
+                                   (upward) ? @"(?!\$\()" : String.Empty);
         }
     }
 }

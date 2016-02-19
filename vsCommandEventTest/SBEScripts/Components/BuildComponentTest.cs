@@ -9,6 +9,7 @@ using net.r_eg.vsCE.Actions;
 using net.r_eg.vsCE.Bridge;
 using net.r_eg.vsCE.Events;
 using net.r_eg.vsCE.Exceptions;
+using net.r_eg.vsCE.SBEScripts;
 using net.r_eg.vsCE.SBEScripts.Components;
 using net.r_eg.vsCE.SBEScripts.Components.Build;
 using net.r_eg.vsCE.SBEScripts.Exceptions;
@@ -139,22 +140,43 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         public void stCancelTest3()
         {
             BuildComponentAccessor target = new BuildComponentAccessor();
-            Assert.AreEqual(String.Empty, target.parse("[Build cancel = true]"));
-            Assert.AreEqual(String.Empty, target.parse("[Build cancel = 1]"));
-            Assert.AreEqual(String.Empty, target.parse("[Build cancel = false]"));
-            Assert.AreEqual(String.Empty, target.parse("[Build cancel = 0]"));
-            Assert.AreEqual(String.Empty, target.parse("[Build cancel = true ] "));
+            Assert.AreEqual(Value.Empty, target.parse("[Build cancel = true]"));
+            Assert.AreEqual(Value.Empty, target.parse("[Build cancel = 1]"));
+            Assert.AreEqual(Value.Empty, target.parse("[Build cancel = false]"));
+            Assert.AreEqual(Value.Empty, target.parse("[Build cancel = 0]"));
+            Assert.AreEqual(Value.Empty, target.parse("[Build cancel = true ] "));
         }
 
         /// <summary>
         ///A test for parse -> stCancel
         ///</summary>
         [TestMethod()]
-        [ExpectedException(typeof(OperationNotFoundException))]
+        [ExpectedException(typeof(IncorrectSyntaxException))]
         public void stCancelTest4()
         {
             BuildComponentAccessor target = new BuildComponentAccessor();
             target.parse("[Build cancel = 1true]");
+        }
+
+        /// <summary>
+        ///A test for parse -> stCancel
+        ///</summary>
+        [TestMethod()]
+        public void stCancelTest5()
+        {
+            var target = new BuildComponentAccessor();
+
+            try {
+                target.parse("[Build cancel]");
+                Assert.Fail("1");
+            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(IncorrectNodeException), ex.GetType().ToString()); }
+
+            try {
+                target.parse("[Build cancel : true]");
+                Assert.Fail("2");
+            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(IncorrectNodeException), ex.GetType().ToString()); }
         }
 
         /// <summary>
@@ -176,11 +198,22 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         }
 
         /// <summary>
+        ///A test for parse -> stType
+        ///</summary>
+        [TestMethod()]
+        [ExpectedException(typeof(IncorrectNodeException))]
+        public void stTypeTest2()
+        {
+            BuildComponent target = new BuildComponent(Env);
+            target.parse("[Build type = true]");
+        }
+
+        /// <summary>
         ///A test for parse -> stProjects
         ///#[Build projects.find("name")]
         ///</summary>
         [TestMethod()]
-        [ExpectedException(typeof(SyntaxIncorrectException))]
+        [ExpectedException(typeof(ArgumentPMException))]
         public void stProjectsTest1()
         {
             BuildComponentAccessor target = new BuildComponentAccessor();
@@ -192,7 +225,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         ///#[Build projects.find("name")]
         ///</summary>
         [TestMethod()]
-        [ExpectedException(typeof(NotFoundException))]
+        [ExpectedException(typeof(SyntaxIncorrectException))]
         public void stProjectsTest2()
         {
             BuildComponent target = new BuildComponent(Env);
@@ -203,7 +236,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         ///A test for parse -> stProjectConf
         ///</summary>
         [TestMethod()]
-        [ExpectedException(typeof(SyntaxIncorrectException))]
+        [ExpectedException(typeof(IncorrectSyntaxException))]
         public void stProjectConfTest1()
         {
             BuildComponent target = new BuildComponent(Env);
@@ -214,7 +247,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         ///A test for parse -> stProjectConf
         ///</summary>
         [TestMethod()]
-        [ExpectedException(typeof(OperationNotFoundException))]
+        [ExpectedException(typeof(IncorrectNodeException))]
         public void stProjectConfTest2()
         {
             BuildComponent target = new BuildComponent(Env);
@@ -228,7 +261,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         public void isBuildableTest1()
         {
             BuildComponent target = new BuildComponent(Env);
-            Assert.AreEqual(String.Empty, target.parse("[Build projects.find(\"project1\").IsBuildable = true]"));
+            Assert.AreEqual(Value.Empty, target.parse("[Build projects.find(\"project1\").IsBuildable = true]"));
         }
 
         /// <summary>
@@ -249,7 +282,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         public void isDeployableTest1()
         {
             BuildComponent target = new BuildComponent(Env);
-            Assert.AreEqual(String.Empty, target.parse("[Build projects.find(\"project1\").IsDeployable = true]"));
+            Assert.AreEqual(Value.Empty, target.parse("[Build projects.find(\"project1\").IsDeployable = true]"));
         }
 
         /// <summary>
@@ -269,23 +302,19 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         [TestMethod()]
         public void stSolutionTest1()
         {
-            try {
-                BuildComponent target = new BuildComponentAccessor(Env);
-                Assert.AreEqual(String.Empty, target.parse("[Build solution.current]"));
-                Assert.Fail("1");
-            }
-            catch(OperationNotFoundException) {
-                Assert.IsTrue(true);
-            }
+            var target = new BuildComponentAccessor(Env);
 
             try {
-                BuildComponent target = new BuildComponentAccessor(Env);
-                Assert.AreEqual(String.Empty, target.parse("[Build solution.path(\"path.sln\")]"));
+                target.parse("[Build solution.current]");
+                Assert.Fail("1");
+            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(IncorrectNodeException), ex.GetType().ToString()); }
+
+            try {
+                target.parse("[Build solution.path(\"path.sln\")]");
                 Assert.Fail("2");
             }
-            catch(OperationNotFoundException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(IncorrectNodeException), ex.GetType().ToString()); }
         }
 
         /// <summary>
@@ -296,18 +325,18 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         public void stSolutionTest2()
         {
             BuildComponent target = new BuildComponentAccessor(Env);
-            Assert.AreEqual(String.Empty, target.parse("[Build solution.path()]"));
+            Assert.AreEqual(Value.Empty, target.parse("[Build solution.path()]"));
         }
 
         /// <summary>
         ///A test for parse - stSolution
         ///</summary>
         [TestMethod()]
-        [ExpectedException(typeof(OperationNotFoundException))]
+        [ExpectedException(typeof(IncorrectNodeException))]
         public void stSolutionTest3()
         {
             BuildComponent target = new BuildComponent(Env);
-            Assert.AreEqual(String.Empty, target.parse("[Build solution.NotExistProperty]"));
+            Assert.AreEqual(Value.Empty, target.parse("[Build solution.NotRealProperty]"));
         }
 
         /// <summary>
@@ -316,50 +345,37 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         [TestMethod()]
         public void stSlnPMapTest1()
         {
+            var target = new BuildComponentAccessor(Env);
+
             try {
-                BuildComponent target = new BuildComponentAccessor(Env);
-                Assert.AreEqual(String.Empty, target.parse("[Build solution.current.NotExistProperty]"));
+                target.parse("[Build solution.current.NotExistProperty]");
                 Assert.Fail("1");
             }
-            catch(OperationNotFoundException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(IncorrectNodeException), ex.GetType().ToString()); }
 
             try {
-                BuildComponent target = new BuildComponentAccessor(Env);
-                Assert.AreEqual(String.Empty, target.parse("[Build solution.current.First]"));
+                target.parse("[Build solution.current.First]");
                 Assert.Fail("2");
             }
-            catch(OperationNotFoundException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(IncorrectNodeException), ex.GetType().ToString()); }
 
             try {
-                BuildComponent target = new BuildComponentAccessor(Env);
-                Assert.AreEqual(String.Empty, target.parse("[Build solution.current.Last]"));
+                target.parse("[Build solution.current.Last]");
                 Assert.Fail("3");
             }
-            catch(OperationNotFoundException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(IncorrectNodeException), ex.GetType().ToString()); }
 
             try {
-                BuildComponent target = new BuildComponentAccessor(Env);
-                Assert.AreEqual(String.Empty, target.parse("[Build solution.current.LastRaw]"));
+                target.parse("[Build solution.current.LastRaw]");
                 Assert.Fail("4");
             }
-            catch(OperationNotFoundException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(IncorrectNodeException), ex.GetType().ToString()); }
 
             try {
-                BuildComponent target = new BuildComponentAccessor(Env);
-                Assert.AreEqual(String.Empty, target.parse("[Build solution.current.projectBy(\"" + EXIST_GUID + "\")]"));
+                target.parse("[Build solution.current.projectBy(\"" + EXIST_GUID + "\")]");
                 Assert.Fail("5");
             }
-            catch(OperationNotFoundException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(IncorrectNodeException), ex.GetType().ToString()); }
         }
 
         /// <summary>
@@ -368,41 +384,31 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         [TestMethod()]
         public void stSlnPMapTest2()
         {
+            var target = new BuildComponentAccessor(Env);
+
             try {
-                BuildComponent target = new BuildComponentAccessor(Env);
-                Assert.AreEqual(String.Empty, target.parse("[Build solution.path(\"stub.sln\").First]"));
+                target.parse("[Build solution.path(\"stub.sln\").First]");
                 Assert.Fail("1");
             }
-            catch(OperationNotFoundException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(IncorrectNodeException), ex.GetType().ToString()); }
 
             try {
-                BuildComponent target = new BuildComponentAccessor(Env);
-                Assert.AreEqual(String.Empty, target.parse("[Build solution.path(\"stub.sln\").Last]"));
+                target.parse("[Build solution.path(\"stub.sln\").Last]");
                 Assert.Fail("2");
             }
-            catch(OperationNotFoundException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(IncorrectNodeException), ex.GetType().ToString()); }
 
             try {
-                BuildComponent target = new BuildComponentAccessor(Env);
-                Assert.AreEqual(String.Empty, target.parse("[Build solution.path(\"stub.sln\").LastRaw]"));
+                target.parse("[Build solution.path(\"stub.sln\").LastRaw]");
                 Assert.Fail("3");
             }
-            catch(OperationNotFoundException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(IncorrectNodeException), ex.GetType().ToString()); }
 
             try {
-                BuildComponent target = new BuildComponentAccessor(Env);
-                Assert.AreEqual(String.Empty, target.parse("[Build solution.path(\"stub.sln\").projectBy(\"" + EXIST_GUID + "\")]"));
+                target.parse("[Build solution.path(\"stub.sln\").projectBy(\"" + EXIST_GUID + "\")]");
                 Assert.Fail("4");
             }
-            catch(OperationNotFoundException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(IncorrectNodeException), ex.GetType().ToString()); }
         }
 
         /// <summary>
@@ -413,7 +419,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         public void stSlnPMapTest3()
         {
             BuildComponent target = new BuildComponentAccessor(Env);
-            Assert.AreEqual(String.Empty, target.parse("[Build solution.current.projectBy(\"" + NOTEXIST_GUID + "\")]"));
+            Assert.AreEqual(Value.Empty, target.parse("[Build solution.current.projectBy(\"" + NOTEXIST_GUID + "\")]"));
         }
 
         /// <summary>
@@ -435,7 +441,7 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         public void stSlnPMapTest5()
         {
             BuildComponent target = new BuildComponentAccessor(Env);
-            Assert.AreEqual(String.Empty, target.parse("[Build solution.current.projectBy()]"));
+            Assert.AreEqual(Value.Empty, target.parse("[Build solution.current.projectBy()]"));
         }
 
         /// <summary>
@@ -474,23 +480,19 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
         [TestMethod()]
         public void projectsMapTest2()
         {
-            try {
-                BuildComponent target = new BuildComponentAccessor(Env);
-                Assert.AreEqual(String.Empty, target.parse("[Build solution.path(\"stub.sln\").First.NotRealProperty]"));
-                Assert.Fail("1");
-            }
-            catch(OperationNotFoundException) {
-                Assert.IsTrue(true);
-            }
+            var target = new BuildComponentAccessor(Env);
 
             try {
-                BuildComponent target = new BuildComponentAccessor(Env);
-                Assert.AreEqual(String.Empty, target.parse("[Build solution.current.First.NotRealProperty]"));
+                target.parse("[Build solution.path(\"stub.sln\").First.NotRealProperty]");
+                Assert.Fail("1");
+            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(IncorrectNodeException), ex.GetType().ToString()); }
+
+            try {
+                target.parse("[Build solution.current.First.NotRealProperty]");
                 Assert.Fail("2");
             }
-            catch(OperationNotFoundException) {
-                Assert.IsTrue(true);
-            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(IncorrectNodeException), ex.GetType().ToString()); }
         }
 
         /// <summary>
@@ -509,17 +511,17 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
                 return true;
             };
 
-            try { h("current", "First"); Assert.Fail("1"); } catch(NotSupportedOperationException) { Assert.IsTrue(true); }
-            try { h("current", "Last"); Assert.Fail("2"); } catch(NotSupportedOperationException) { Assert.IsTrue(true); }
-            try { h("current", "FirstRaw"); Assert.Fail("3"); } catch(NotSupportedOperationException) { Assert.IsTrue(true); }
-            try { h("current", "LastRaw"); Assert.Fail("4"); } catch(NotSupportedOperationException) { Assert.IsTrue(true); }
-            try { h("current", "projectBy(\"" + EXIST_GUID + "\")"); Assert.Fail("5"); } catch(NotSupportedOperationException) { Assert.IsTrue(true); }
+            try { h("current", "First"); Assert.Fail("1"); } catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
+            try { h("current", "Last"); Assert.Fail("2"); } catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
+            try { h("current", "FirstRaw"); Assert.Fail("3"); } catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
+            try { h("current", "LastRaw"); Assert.Fail("4"); } catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
+            try { h("current", "projectBy(\"" + EXIST_GUID + "\")"); Assert.Fail("5"); } catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
 
-            try { h("path(\"path\\to.sln\")", "First"); Assert.Fail("6"); } catch(NotSupportedOperationException) { Assert.IsTrue(true); }
-            try { h("path(\"path\\to.sln\")", "Last"); Assert.Fail("7"); } catch(NotSupportedOperationException) { Assert.IsTrue(true); }
-            try { h("path(\"path\\to.sln\")", "FirstRaw"); Assert.Fail("8"); } catch(NotSupportedOperationException) { Assert.IsTrue(true); }
-            try { h("path(\"path\\to.sln\")", "LastRaw"); Assert.Fail("9"); } catch(NotSupportedOperationException) { Assert.IsTrue(true); }
-            try { h("path(\"path\\to.sln\")", "projectBy(\"" + EXIST_GUID + "\")"); Assert.Fail("10"); } catch(NotSupportedOperationException) { Assert.IsTrue(true); }
+            try { h("path(\"path\\to.sln\")", "First"); Assert.Fail("6"); } catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
+            try { h("path(\"path\\to.sln\")", "Last"); Assert.Fail("7"); } catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
+            try { h("path(\"path\\to.sln\")", "FirstRaw"); Assert.Fail("8"); } catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
+            try { h("path(\"path\\to.sln\")", "LastRaw"); Assert.Fail("9"); } catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
+            try { h("path(\"path\\to.sln\")", "projectBy(\"" + EXIST_GUID + "\")"); Assert.Fail("10"); } catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
         }
 
         private class BuildComponentAccessor: BuildComponent

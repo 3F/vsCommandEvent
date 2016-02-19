@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+ * Copyright (c) 2013-2016  Denis Kuzmin (reg) <entry.reg@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -118,9 +118,12 @@ namespace net.r_eg.vsCE.SBEScripts
             register(new OWPComponent(Env));
             register(new DTEComponent(Env));
             register(new InternalComponent());
+            register(new MSBuildComponent(this));
             register(new BuildComponent(Env));
-            register(new FunctionComponent());
-            register(new FileComponent());
+            register(new FunctionComponent(this));
+            register(new FileComponent(this));
+            register(new NuGetComponent(this));
+            register(new SevenZipComponent(this));
         }
 
         /// <summary>
@@ -150,7 +153,7 @@ namespace net.r_eg.vsCE.SBEScripts
         public void updateActivation(ISolutionEvents data)
         {
             if(data == null) {
-                Log.Debug("Configuration: activation with IBootloader has been ignored.");
+                Log.Debug("Bootloader: Changing of activation has been ignored.");
                 return;
             }
 
@@ -162,9 +165,16 @@ namespace net.r_eg.vsCE.SBEScripts
                 }
 
                 Configuration.Component found = data.Components.Where(p => p.ClassName == c.GetType().Name).FirstOrDefault();
-                if(found != null) {
-                    c.Enabled = found.Enabled;
+                if(found == null) {
+                    continue;
                 }
+
+#if DEBUG
+                if(c.Enabled != found.Enabled) {
+                    Log.Trace("Bootloader - Component '{0}': Changing of activation status '{1}' -> '{2}'", found.ClassName, c.Enabled, found.Enabled);
+                }
+#endif
+                c.Enabled = found.Enabled;
             }
         }
 
