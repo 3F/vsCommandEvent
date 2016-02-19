@@ -112,8 +112,8 @@ namespace net.r_eg.vsCE.UI.WForms
         {
             string exDate   = DateTime.Now.AddDays((new Random()).Next(-30, -2)).ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
             _editor.Text    = Resource.StringScriptExampleSBE.Replace("%mdate%", exDate);
-            textEditor.colorize(TextEditor.ColorSchema.SBEScript);
-            textEditor.codeCompletionInit(context.inspector);
+            textEditor.colorize(TextEditor.ColorSchema.SBEScripts);
+            textEditor.codeCompletionInit(context.inspector, context.msbuild);
         }
 
         protected void fillComponents()
@@ -184,11 +184,16 @@ namespace net.r_eg.vsCE.UI.WForms
                 else {
                     ret = context.script.parse(data);
                 }
-                updateVariableList();
                 return ret;
             }
             catch(Exception ex) {
+                if(chkStackTrace.Checked) {
+                    return String.Format("Fail: `{0}`\n\n{1}\n{2}", ex.Message, new String('-', 15), ex.StackTrace);
+                }
                 return String.Format("Fail: {0}", ex.Message);
+            }
+            finally {
+                updateVariableList();
             }
         }
 

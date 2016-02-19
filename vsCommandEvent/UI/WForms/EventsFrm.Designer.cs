@@ -186,6 +186,8 @@
             this.radioModeFiles = new System.Windows.Forms.RadioButton();
             this.panelStatusSide = new System.Windows.Forms.Panel();
             this.dgvOutput = new net.r_eg.vsCE.UI.WForms.Components.DataGridViewExt();
+            this.menuWizards = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuWizardVersion = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuActions.SuspendLayout();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericTimeLimit)).BeginInit();
@@ -293,9 +295,9 @@
             this.toolStripMenuHelp,
             this.toolStripMenuBug,
             this.toolStripMenuVersion});
-            this.statusStrip.Location = new System.Drawing.Point(708, 1);
+            this.statusStrip.Location = new System.Drawing.Point(677, 1);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(158, 22);
+            this.statusStrip.Size = new System.Drawing.Size(189, 22);
             this.statusStrip.SizingGrip = false;
             this.statusStrip.TabIndex = 81;
             // 
@@ -310,6 +312,7 @@
             this.menuConfiguration,
             this.toolStripSeparator6,
             this.toolStripMenuTools,
+            this.menuWizards,
             this.menuComponents,
             this.toolStripMenuTpl,
             this.toolStripSeparator11,
@@ -591,7 +594,7 @@
             // 
             this.toolStripMenuSources.Name = "toolStripMenuSources";
             this.toolStripMenuSources.Size = new System.Drawing.Size(187, 22);
-            this.toolStripMenuSources.Text = "Sources";
+            this.toolStripMenuSources.Text = "Source code";
             this.toolStripMenuSources.Click += new System.EventHandler(this.toolStripMenuSources_Click);
             // 
             // toolStripSeparator4
@@ -1845,6 +1848,21 @@
             this.dgvOutput.TabIndex = 7;
             this.dgvOutput.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewOutput_CellClick);
             // 
+            // menuWizards
+            // 
+            this.menuWizards.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuWizardVersion});
+            this.menuWizards.Name = "menuWizards";
+            this.menuWizards.Size = new System.Drawing.Size(185, 22);
+            this.menuWizards.Text = "Wizards";
+            // 
+            // menuWizardVersion
+            // 
+            this.menuWizardVersion.Name = "menuWizardVersion";
+            this.menuWizardVersion.Size = new System.Drawing.Size(236, 22);
+            this.menuWizardVersion.Text = "Automatic Version Numbering";
+            this.menuWizardVersion.Click += new System.EventHandler(this.menuWizardVersion_Click);
+            // 
             // EventsFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2045,6 +2063,7 @@
         private System.Windows.Forms.DataGridViewButtonColumn dgvOpColumnRemove;
         private System.Windows.Forms.LinkLabel linkAddAction;
         private System.Windows.Forms.ToolStripMenuItem menuCommonCfgDir;
-
+        private System.Windows.Forms.ToolStripMenuItem menuWizards;
+        private System.Windows.Forms.ToolStripMenuItem menuWizardVersion;
     }
 }

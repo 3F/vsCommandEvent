@@ -37,7 +37,7 @@ namespace net.r_eg.vsCE.UI.WForms
     /// <summary>
     /// TODO: !Most important! This from vsSBE 'as is', need refact.
     /// </summary>
-    public partial class EventsFrm: Form, ITransferProperty, ITransferCommand
+    public partial class EventsFrm: Form, ITransfer
     {
         /// <summary>
         /// Operations with events etc.,
@@ -78,6 +78,11 @@ namespace net.r_eg.vsCE.UI.WForms
         /// For work with Components of SBE-Scripts core
         /// </summary>
         protected ComponentsFrm frmComponents;
+
+        /// <summary>
+        /// Wizard - Automatic Version Numbering
+        /// </summary>
+        protected Wizards.VersionFrm frmWizVersion;
 
         /// Mapper of available components
         /// </summary>
@@ -138,6 +143,29 @@ namespace net.r_eg.vsCE.UI.WForms
         }
 
         /// <summary>
+        /// Implements transport for new action by event type.
+        /// </summary>
+        /// <param name="type">The type of event.</param>
+        /// <param name="cfg">The event configuration for action.</param>
+        public void action(SolutionEventType type, ISolutionEvent cfg)
+        {
+            ISolutionEvent evt = addAction(-1);
+
+            if(evt == null || cfg == null) {
+                Log.Debug("UI.action for `{0}` - cfg or evt is null /skip", type);
+                return;
+            }
+
+            cfg.CloneByReflectionInto(evt, true);
+
+            refreshActions(true);
+            refreshSettings();
+            notice(true);
+
+            MessageBox.Show(String.Format("The new action `{0}`:\n`{1}` has been added.", evt.Name, evt.Caption), "New action");
+        }
+
+        /// <summary>
         /// Implements transport for EnvDTE command
         /// </summary>
         /// <param name="guid"></param>
@@ -159,7 +187,7 @@ namespace net.r_eg.vsCE.UI.WForms
             inspector   = new Inspector(binder.Bootloader);
             logic       = new Logic.Events(binder.Bootloader);
 
-            textEditor.codeCompletionInit(inspector);
+            textEditor.codeCompletionInit(inspector, new MSBuild.Parser(binder.Bootloader.Env, binder.Bootloader.UVariable));
 
             Icon = Resource.Package_32;
             toolTip.SetToolTip(pictureBoxWarnWait, Resource.StringWarnForWaiting);
@@ -178,12 +206,10 @@ namespace net.r_eg.vsCE.UI.WForms
 
             btnApply.Location = new Point((statusStrip.Location.X - btnApply.Width) - 10, btnApply.Location.Y);
 
-            // Fixes for dataGridView component with the height property
-            Util.fixDGVRowHeight(dgvOWP);
-            Util.fixDGVRowHeight(dgvActions);
-            Util.fixDGVRowHeight(dgvCEFilters);
-            Util.fixDGVRowHeight(dgvEnvCmd);
-            Util.fixDGVRowHeight(dgvOperations);
+            //TODO: it was before with original dataGridView... need to check with DataGridViewExt and move it inside if still needed
+            foreach(Control ctrl in Util.getControls(this, c => c.GetType() == typeof(DataGridViewExt))) {
+                Util.fixDGVRowHeight((DataGridViewExt)ctrl); // solves problem with the height property
+            }
         }
 
         /// <summary>
@@ -589,17 +615,21 @@ namespace net.r_eg.vsCE.UI.WForms
             refreshSettings();
         }
 
-        protected void addAction(int copyFrom = -1)
+        protected ISolutionEvent addAction(int copyFrom = -1)
         {
             try {
                 ISolutionEvent evt = logic.addEventItem(copyFrom);
                 dgvActions.Rows.Add(evt.Enabled, evt.Name, evt.Caption);
                 selectAction(dgvActions.Rows.Count - 1, true);
-                notice(true);
+                return evt;
             }
             catch(Exception ex) {
                 Log.Error("Failed to add event-item: '{0}'", ex.Message);
             }
+            finally {
+                notice(true);
+            }
+            return null;
         }
 
         protected void removeRow(DataGridViewExt dgv, DataGridViewButtonColumn btn, DataGridViewCellEventArgs idx)
@@ -840,7 +870,7 @@ namespace net.r_eg.vsCE.UI.WForms
         {
             if(!App.IsCfgExists)
             {
-                Log.Fatal("Configuration data is corrupt. User: {0} / Main: {1}", (App.UserConfig == null), (App.Config == null));
+                Log.Fatal("Configuration data is corrupt. User: {0} / Main: {1}", (App.UserConfig != null), (App.Config != null));
                 MessageBox.Show("We can't continue. See details in log.", "Configuration data is corrupt");
                 FormClosing -= EventsFrm_FormClosing;
                 Close();
@@ -944,7 +974,7 @@ namespace net.r_eg.vsCE.UI.WForms
                 return;
             }
             uiViewMode(ModeType.Script);
-            textEditor.colorize(TextEditor.ColorSchema.SBEScript);
+            textEditor.colorize(TextEditor.ColorSchema.SBEScripts);
             textEditor._.ShowLineNumbers        = true;
             textEditor.CodeCompletionEnabled    = true;
         }
@@ -1175,8 +1205,17 @@ namespace net.r_eg.vsCE.UI.WForms
             if(Util.focusForm(frmComponents)) {
                 return;
             }
-            frmComponents = new ComponentsFrm(logic.bootloader, inspector);
+            frmComponents = new ComponentsFrm(logic.Bootloader, inspector);
             frmComponents.Show();
+        }
+
+        private void menuWizardVersion_Click(object sender, EventArgs e)
+        {
+            if(Util.focusForm(frmWizVersion)) {
+                return;
+            }
+            frmWizVersion = new Wizards.VersionFrm(logic.Bootloader, this);
+            frmWizVersion.Show();
         }
 
         private void EventsFrm_FormClosing(object sender, FormClosingEventArgs e)
@@ -1188,6 +1227,7 @@ namespace net.r_eg.vsCE.UI.WForms
             Util.closeTool(frmSBEScript);
             Util.closeTool(frmSniffer);
             Util.closeTool(frmComponents);
+            Util.closeTool(frmWizVersion);
             logic.restoreData();
 
             binder.OpenedSolution -= onSolutionChanged;
@@ -1425,7 +1465,8 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void menuCfgClone_Click(object sender, EventArgs e)
         {
-            logic.cloneCfg((App.ConfigManager.Context == ContextType.Solution) ? ContextType.Common : ContextType.Solution); updateFormData();
+            logic.cloneCfg((App.ConfigManager.Context == ContextType.Solution) ? ContextType.Common : ContextType.Solution);
+            updateFormData();
             notice(true);
         }
 

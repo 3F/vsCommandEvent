@@ -34,7 +34,7 @@ namespace net.r_eg.vsCE.UI.WForms
         /// <summary>
         /// Transport support
         /// </summary>
-        protected ITransferCommand link;
+        protected ITransfer link;
 
         /// <summary>
         /// Provides command events for automation clients
@@ -74,7 +74,7 @@ namespace net.r_eg.vsCE.UI.WForms
             }
         }
 
-        public EnvDteSniffer(IEnvironment env, ITransferCommand link)
+        public EnvDteSniffer(IEnvironment env, ITransfer link)
         {
             this.env    = env;
             this.link   = link;

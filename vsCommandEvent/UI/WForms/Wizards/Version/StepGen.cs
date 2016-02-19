@@ -15,13 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace net.r_eg.vsCE.UI
+namespace net.r_eg.vsCE.UI.WForms.Wizards.Version
 {
-    public interface ITransferProperty
+    internal sealed class StepGen: IStep
     {
         /// <summary>
-        /// Basic view of property
+        /// The type of generation.
         /// </summary>
-        void property(string name, string project);
+        public GenType gtype = GenType.CSharpStruct;
+
+        /// <summary>
+        /// The type of step.
+        /// </summary>
+        public StepsType Type
+        {
+            get { return StepsType.Gen; }
+        }
     }
 }

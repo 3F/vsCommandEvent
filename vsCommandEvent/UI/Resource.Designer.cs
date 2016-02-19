@@ -93,7 +93,7 @@ namespace net.r_eg.vsCE.UI {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        ///&lt;Project ToolsVersion=&quot;12.0&quot; xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&gt;
+        ///&lt;Project ToolsVersion=&quot;4.0&quot; xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&gt;
         ///
         ///    &lt;Target Name=&quot;Init&quot;&gt;
         ///        &lt;!-- ... --&gt;
@@ -121,7 +121,7 @@ namespace net.r_eg.vsCE.UI {
         ///   Looks up a localized string similar to #[&quot;
         ///    Sample
         ///&quot;]
-        ///#[var v = v1.2.3]
+        ///#[var v = 1.2.3]
         ///#[var log = $(TMP)/v.txt]
         ///
         ///#[($(Configuration) ~= Deb || true)
@@ -132,7 +132,7 @@ namespace net.r_eg.vsCE.UI {
         ///    #[var v         = #[var v].$([MSBuild]::Modulo(#[var revBuild], $([System.Math]::Pow(2, 14))))]
         ///}]
         ///
-        ///#[File write(&quot;#[var log]&quot;):&gt; [rest of string was truncated]&quot;;.
+        ///#[var v = $([System.String]:: [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string StringScriptExampleSBE {
             get {
@@ -141,13 +141,108 @@ namespace net.r_eg.vsCE.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This option means a wait for completion action with main thread! therefore:
-        ///* [Performance] - For repeated events probably need a more time for services of your all defined actions. Remember this!
+        ///   Looks up a localized string similar to This option is means a wait for completion action with main thread! therefore:
+        ///* [Performance] - For repeated events such as EW, OWP, Logging etc. probably need a more time for services of your all defined actions. Remember this!
         ///* [Compatibility] - However, some your actions can require a lock of the main thread for waiting to the next steps, otherwise some actions can lose a some technical data for processes of your script on next step..
         /// </summary>
         internal static string StringWarnForWaiting {
             get {
                 return ResourceManager.GetString("StringWarnForWaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #pragma once
+        ///
+        ///#ifndef VSCE_VERSION_H_
+        ///#define VSCE_VERSION_H_
+        ///
+        ///#define VER_NUMBER_STRING           L&quot;0.12.4&quot;;
+        ///#define VER_NUMBER_WITH_REV_STRING  L&quot;0.12.4.17639&quot;;
+        ///#define VER_BRANCH_NAME             L&quot;develop&quot;;
+        ///#define VER_BRANCH_SHA1             L&quot;e3de826&quot;;
+        ///#define VER_BRANCH_REV_COUNT        L&quot;296&quot;;
+        ///#define VER_INFORMATIONAL           L&quot;0.12.4.17639 [ e3de826 ]&quot;;
+        ///#define VER_INFORMATIONAL_FULL      L&quot;0.12.4.17639 [ e3de826 ] /&apos;develop&apos;:296&quot;;
+        ///
+        ///#endif.
+        /// </summary>
+        internal static string WizardVerCppDefine {
+            get {
+                return ResourceManager.GetString("WizardVerCppDefine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #pragma once
+        ///
+        ///#ifndef VSCE_VERSION_H_
+        ///#define VSCE_VERSION_H_
+        ///
+        ///#include &lt;string&gt;
+        ///
+        ///namespace example
+        ///{
+        ///    struct Version
+        ///    {
+        ///        struct TNum
+        ///        {
+        ///            const int major;
+        ///            const int minor;
+        ///            const int build;
+        ///            const int revision;
+        ///
+        ///            TNum(int major, int minor, int build = 0, int revision = 0) 
+        ///                : major(major), minor(minor), build(build), revision(revision) { }
+        ///
+        ///            TNum() : TNum(0, 12, 4, 17639) { }
+        ///
+        ///      [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string WizardVerCppStruct {
+            get {
+                return ResourceManager.GetString("WizardVerCppStruct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to namespace example
+        ///{
+        ///    internal struct Version
+        ///    {
+        ///        public static readonly System.Version number    = new System.Version(0, 12, 4, 17639);
+        ///        public const string numberString                = &quot;0.12.4&quot;;
+        ///        public const string numberWithRevString         = &quot;0.12.4.17639&quot;;
+        ///        public const string branchName                  = &quot;develop&quot;;
+        ///        public const string branchSha1                  = &quot;e3de826&quot;;
+        ///        public const string branchRevCount              = &quot;296&quot;;
+        ///         [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string WizardVerCSharpStruct {
+            get {
+                return ResourceManager.GetString("WizardVerCSharpStruct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;!-- the mixed format --&gt;
+        ///&lt;Identifier Id=&quot;C972EFAB-8642-444F-8033-FF5C3720E97F&quot;&gt;
+        ///    &lt;Name&gt;AwesomeApp&lt;/Name&gt;
+        ///    &lt;Author&gt;Mr.Smith&lt;/Author&gt;
+        ///&gt;&gt;&gt; &lt;Version&gt;0.12.4.17639&lt;/Version&gt; &lt;&lt;&lt;
+        ///    &lt;Description xml:space=&quot;preserve&quot;&gt;&lt;/Description&gt;
+        ///    &lt;Locale&gt;1033&lt;/Locale&gt;
+        ///    &lt;InstalledByMsi&gt;false&lt;/InstalledByMsi&gt;
+        ///    &lt;SupportedProducts&gt;
+        ///        &lt;VisualStudio Version=&quot;14.0&quot;&gt;
+        ///            &lt;Edition&gt;Enterprise&lt;/Edition&gt;
+        ///            &lt;Edition&gt;Ultimate&lt;/Edition&gt;
+        ///            &lt;Edition&gt;Premium&lt;/Edition&gt;
+        ///            &lt;Ed [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string WizardVerDirectRepl {
+            get {
+                return ResourceManager.GetString("WizardVerDirectRepl", resourceCulture);
             }
         }
     }

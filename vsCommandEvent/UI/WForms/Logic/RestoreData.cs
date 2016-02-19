@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+ * Copyright (c) 2013-2016  Denis Kuzmin (reg) <entry.reg@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -27,6 +27,16 @@ namespace net.r_eg.vsCE.UI.WForms.Logic
     /// </summary>
     public sealed class RestoreData
     {
+        /// <summary>
+        /// All instances of Config.
+        /// </summary>
+        private Dictionary<ContextType, ISolutionEvents> configs = new Dictionary<ContextType, ISolutionEvents>();
+
+        /// <summary>
+        /// All instances of UserConfig.
+        /// </summary>
+        private Dictionary<ContextType, IUserData> userConfigs = new Dictionary<ContextType, IUserData>();
+
         /// <summary>
         /// Get Configuration data for selected context.
         /// </summary>
@@ -72,15 +82,5 @@ namespace net.r_eg.vsCE.UI.WForms.Logic
         {
             userConfigs[context] = data;
         }
-
-        /// <summary>
-        /// All instances of Config.
-        /// </summary>
-        private Dictionary<ContextType, ISolutionEvents> configs = new Dictionary<ContextType, ISolutionEvents>();
-
-        /// <summary>
-        /// All instances of UserConfig.
-        /// </summary>
-        private Dictionary<ContextType, IUserData> userConfigs = new Dictionary<ContextType, IUserData>();
     }
 }

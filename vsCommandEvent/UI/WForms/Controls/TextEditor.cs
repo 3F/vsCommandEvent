@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+ * Copyright (c) 2013-2016  Denis Kuzmin (reg) <entry.reg@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -33,6 +33,7 @@ using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Rendering;
 using ICSharpCode.AvalonEdit.Search;
 using net.r_eg.vsCE.Configuration.User;
+using net.r_eg.vsCE.MSBuild;
 using net.r_eg.vsCE.SBEScripts.Dom;
 using net.r_eg.vsCE.UI.WForms.Controls.TextEditorElements;
 using AvalonEditorWPF = ICSharpCode.AvalonEdit.TextEditor;
@@ -52,9 +53,10 @@ namespace net.r_eg.vsCE.UI.WForms.Controls
             OperationMode,
             InterpreterMode,
             ScriptMode,            
-            SBEScript,
+            SBEScripts,
             MSBuildTargets,
             CSharpLang,
+            CppLang,
         }
 
         /// <summary>
@@ -153,9 +155,9 @@ namespace net.r_eg.vsCE.UI.WForms.Controls
         /// Updating model of the data for code completion
         /// </summary>
         /// <param name="inspector"></param>
-        public void codeCompletionInit(IInspector inspector)
+        public void codeCompletionInit(IInspector inspector, IMSBuild msbuild = null)
         {
-            dom = new DomParser(inspector);
+            dom = new DomParser(inspector, msbuild);
             Log.Trace("Code completion has been initialized for '{0}'", Name);
         }
 
@@ -166,7 +168,7 @@ namespace net.r_eg.vsCE.UI.WForms.Controls
             switch(schema)
             {
                 case ColorSchema.ScriptMode:
-                case ColorSchema.SBEScript: {
+                case ColorSchema.SBEScripts: {
                     def = HighlightingManager.Instance.GetDefinition("SBEScripts");
                     break;
                 }
@@ -189,6 +191,10 @@ namespace net.r_eg.vsCE.UI.WForms.Controls
                 }
                 case ColorSchema.CSharpLang: {
                     def = HighlightingManager.Instance.GetDefinition("CSharpLang");
+                    break;
+                }
+                case ColorSchema.CppLang: {
+                    def = HighlightingManager.Instance.GetDefinition("CppLang");
                     break;
                 }
                 default: {
@@ -279,7 +285,8 @@ namespace net.r_eg.vsCE.UI.WForms.Controls
                 }
                 case ColorSchema.InterpreterMode:
                 case ColorSchema.ScriptMode:
-                case ColorSchema.SBEScript:
+                case ColorSchema.SBEScripts:
+                case ColorSchema.CppLang:
                 case ColorSchema.CSharpLang:
                 {
                     if(braceFoldingStrategy == null) {
@@ -354,7 +361,8 @@ namespace net.r_eg.vsCE.UI.WForms.Controls
             loadXshdSchema(xshd.XshdResource.InterpreterMode, "InterpreterMode");
             loadXshdSchema(xshd.XshdResource.MSBuildTargets, "MSBuildTargets");
             loadXshdSchema(xshd.XshdResource.CSharpLang, "CSharpLang");
-            
+            loadXshdSchema(xshd.XshdResource.CppLang, "CppLang");
+
             colorize(ColorSchema.Default);
 
             _.Options.ConvertTabsToSpaces                       = true;
@@ -421,6 +429,9 @@ namespace net.r_eg.vsCE.UI.WForms.Controls
             }
             else if(e.Text == " ") {
                 cmd = DomParser.KeysCommand.Space;
+            }
+            else if(e.Text == "(" && _.TextArea.Document.Text[Math.Max(0, _.TextArea.Caret.Offset - 2)] == '$') {
+                cmd = DomParser.KeysCommand.MSBuildContainer;
             }
 
             if(cmd != DomParser.KeysCommand.Default) {

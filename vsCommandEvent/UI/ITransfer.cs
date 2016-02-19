@@ -15,14 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+using net.r_eg.vsCE.Events;
+
 namespace net.r_eg.vsCE.UI
 {
-    public interface ITransferCommand
+    public interface ITransfer
     {
         /// <summary>
         /// Various commands such as a DTE, etc.
         /// </summary>
         void command(string data);
+
+        /// <summary>
+        /// Basic view of property by name/project.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="project"></param>
+        void property(string name, string project = null);
+
+        /// <summary>
+        /// Provides the action by event type.
+        /// </summary>
+        /// <param name="type">The type of event.</param>
+        /// <param name="cfg">The event configuration for action.</param>
+        void action(SolutionEventType type, ISolutionEvent cfg);
 
         /// <summary>
         /// EnvDTE command.

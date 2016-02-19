@@ -46,11 +46,6 @@ namespace net.r_eg.vsCE.UI.WForms.Logic
         public const string ACTION_PREFIX_CLONE = "CopyOf";
 
         /// <summary>
-        /// Used loader
-        /// </summary>
-        public IBootloader bootloader;
-
-        /// <summary>
         /// Registered used SBE-events
         /// </summary>
         protected List<SBEWrap> events = new List<SBEWrap>();
@@ -79,6 +74,15 @@ namespace net.r_eg.vsCE.UI.WForms.Logic
         /// Provides operations with environment
         /// </summary>
         public IEnvironment Env
+        {
+            get;
+            protected set;
+        }
+
+        /// <summary>
+        /// Used loader
+        /// </summary>
+        public IBootloader Bootloader
         {
             get;
             protected set;
@@ -249,7 +253,9 @@ namespace net.r_eg.vsCE.UI.WForms.Logic
         
         public void restoreData()
         {
-            Settings.CfgUser.avoidRemovingFromCache();
+            if(Settings.CfgUser != null) {
+                Settings.CfgUser.avoidRemovingFromCache();
+            }
             backupRestore();
         }
         
@@ -505,9 +511,9 @@ namespace net.r_eg.vsCE.UI.WForms.Logic
                 Log.Info("No actions to execution. Add new, then try again.");
                 return;
             }
-            Actions.ICommand cmd = new Actions.Command(bootloader.Env,
-                                                        new Script(bootloader),
-                                                        new MSBuild.Parser(bootloader.Env, bootloader.UVariable));
+            Actions.ICommand cmd = new Actions.Command(Bootloader.Env,
+                                                        new Script(Bootloader),
+                                                        new MSBuild.Parser(Bootloader.Env, Bootloader.UVariable));
 
             ISolutionEvent evt      = SBEItem;
             SolutionEventType type  = SBE.type;
@@ -524,7 +530,7 @@ namespace net.r_eg.vsCE.UI.WForms.Logic
 
         public Events(IBootloader bootloader)
         {
-            this.bootloader = bootloader;
+            this.Bootloader = bootloader;
             Env             = bootloader.Env;
             backupUpdate();
         }

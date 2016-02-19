@@ -63,6 +63,24 @@ namespace net.r_eg.vsCE.xshd {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
         ///&lt;!-- 
+        ///     https://github.com/icsharpcode/SharpDevelop/blob/5c45af5/src/Libraries/AvalonEdit/ICSharpCode.AvalonEdit/Highlighting/Resources/CPP-Mode.xshd
+        ///  --&gt;
+        ///
+        ///&lt;!-- syntaxdefinition for C/C++ 2001 by Andrea Paatz and Mike Krueger --&gt;
+        ///&lt;!-- converted to AvalonEdit format by Siegfried Pammer in 2010 --&gt;
+        ///&lt;SyntaxDefinition name=&quot;C++&quot; extensions=&quot;.c;.h;.cc;.cpp;.hpp&quot; xmlns=&quot;http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008&quot;&gt;
+        ///	&lt;Color name=&quot;Comment&quot; foreground=&quot;Green&quot; /&gt;
+        ///	&lt;Col [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string CppLang {
+            get {
+                return ResourceManager.GetString("CppLang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;!-- 
         ///     https://github.com/icsharpcode/SharpDevelop/blob/354b7a4/src/Libraries/AvalonEdit/ICSharpCode.AvalonEdit/Highlighting/Resources/CSharp-Mode.xshd
         ///  --&gt;
         ///     
