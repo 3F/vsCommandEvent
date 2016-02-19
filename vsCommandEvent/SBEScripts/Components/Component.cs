@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+ * Copyright (c) 2013-2016  Denis Kuzmin (reg) <entry.reg@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,13 +15,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using net.r_eg.vsCE.MSBuild;
+using net.r_eg.vsCE.SBEScripts.Exceptions;
 using net.r_eg.vsCE.Scripts;
 
 namespace net.r_eg.vsCE.SBEScripts.Components
 {
     public abstract class Component: IComponent
     {
+        /// <summary>
+        /// For evaluation with SBE-Scripts
+        /// </summary>
+        protected ISBEScript script;
+
+        /// <summary>
+        /// For evaluation with MSBuild
+        /// </summary>
+        protected IMSBuild msbuild;
+
+        /// <summary>
+        /// Provides operation with environment
+        /// </summary>
+        protected IEnvironment env;
+
+        /// <summary>
+        /// Current container of user-variables
+        /// </summary>
+        protected IUserVariable uvariable;
+
         /// <summary>
         /// Ability to work with data for current component
         /// </summary>
@@ -74,33 +98,13 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         protected bool postParse = false;
 
         /// <summary>
-        /// Disabled regex engine for property - condition
+        /// Using of the regex engine for property - Condition
         /// </summary>
         public virtual bool CRegex
         {
             get { return cregex; }
         }
         protected bool cregex = false;
-
-        /// <summary>
-        /// For evaluating with SBE-Script
-        /// </summary>
-        protected ISBEScript script;
-
-        /// <summary>
-        /// For evaluating with MSBuild
-        /// </summary>
-        protected IMSBuild msbuild;
-
-        /// <summary>
-        /// Provides operation with environment
-        /// </summary>
-        protected IEnvironment env;
-
-        /// <summary>
-        /// Current container of user-variables
-        /// </summary>
-        protected IUserVariable uvariable;
 
         /// <param name="env">Used environment</param>
         /// <param name="uvariable">Instance of user-variables</param>
@@ -122,11 +126,17 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         /// <param name="script">Instance of SBE-Scripts core</param>
         /// <param name="msbuild">Instance of MSBuild core</param>
         public Component(ISBEScript script, IMSBuild msbuild)
+            : this(msbuild)
+        {
+            this.script = script;
+        }
+
+        /// <param name="msbuild">Instance of MSBuild core</param>
+        public Component(IMSBuild msbuild)
             : this()
         {
-            env             = script.Bootloader.Env;
-            uvariable       = script.Bootloader.UVariable;
-            this.script     = script;
+            env             = msbuild.Env;
+            uvariable       = msbuild.UVariable;
             this.msbuild    = msbuild;
         }
 
@@ -147,6 +157,35 @@ namespace net.r_eg.vsCE.SBEScripts.Components
             this.env        = env;
             this.uvariable  = uvariable;
             msbuild         = new MSBuild.Parser(env, uvariable);
+        }
+
+        /// <summary>
+        /// Default entry point to start analysis.
+        /// </summary>
+        /// <param name="data">Raw data.</param>
+        /// <param name="opt">Additional options to engine.</param>
+        /// <returns></returns>
+        protected virtual KeyValuePair<string, string> entryPoint(string data, RegexOptions opt = RegexOptions.None)
+        {
+            Match m = Regex.Match(data, 
+                                    String.Format(@"^\[{0}
+                                                        \s*
+                                                        (?'request'
+                                                           (?'type'
+                                                              [A-Za-z_0-9]+
+                                                           )
+                                                           .*
+                                                        )
+                                                     \]$", 
+                                                     (CRegex)? Condition : Condition.Replace(" ", @"\s")
+                                    ),
+                                    RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | opt);
+
+            if(!m.Success) {
+                throw new SyntaxIncorrectException("Failed {0} - `{1}`", GetType().FullName, data);
+            }
+
+            return new KeyValuePair<string, string>(m.Groups["type"].Value, m.Groups["request"].Value);
         }
     }
 }

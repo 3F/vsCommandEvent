@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+ * Copyright (c) 2013-2016  Denis Kuzmin (reg) <entry.reg@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,6 +17,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 using net.r_eg.vsCE.Exceptions;
 using net.r_eg.vsCE.SBEScripts.Components;
@@ -33,49 +34,8 @@ namespace net.r_eg.vsCE.SBEScripts
         const int DEPTH_LIMIT = 70;
 
         /// <summary>
-        /// General container of SBE-Script
-        /// </summary>
-        public string ContainerPattern
-        {
-            get
-            {
-                /*
-                     (
-                       \#{1,2}
-                     )
-                     (?=
-                       (
-                         \[
-                           (?>
-                             [^\[\]]
-                             |
-                             (?2)
-                           )*
-                         \]
-                       )
-                     )            -> for .NET: v
-                */
-                return @"(?:\r?\n\x20*)?\r?\n?(
-                            \#{1,2}   #1 - # or ##
-                          )
-                          (           #2 - mixed data of SBE-Script
-                            \[
-                              (?>
-                                [^\[\]]
-                                |
-                                \[(?<R>)
-                                |
-                                \](?<-R>)
-                              )*
-                              (?(R)(?!))
-                            \]
-                          )\r?\n?";
-            }
-        }
-
-        /// <summary>
         /// Getting instance of used loader.
-        /// Initialization with default loader if not selected.
+        /// Default initialization if it still is not used.
         /// </summary>
         public IBootloader Bootloader
         {
@@ -95,7 +55,7 @@ namespace net.r_eg.vsCE.SBEScripts
         protected IBootloader bootloader;
 
         /// <summary>
-        /// Work with user-variables
+        /// Support of User-variables.
         /// </summary>
         protected IUserVariable uvariable;
 
@@ -105,16 +65,11 @@ namespace net.r_eg.vsCE.SBEScripts
         protected IEnvironment env;
 
         /// <summary>
-        /// Basic operations with strings
+        /// Flag of post-processing with MSBuild core.
+        /// In general, some components can require immediate processing with evaluation before passing control to next level.
+        /// This flag allows processing if needed.
         /// </summary>
-        protected StringHandler hString;
-
-        /// <summary>
-        /// Flag of required post-processing with MSBuild core.
-        /// In general, some components can require immediate processing with evaluation, before passing control to next level
-        /// (e.g. FileComponent etc.) For such components need additional flag about allowed processing, if this used of course...
-        /// </summary>
-        protected bool postProcessingMSBuild;
+        protected bool postMSBuild;
 
         /// <summary>
         /// Current level of nesting data.
@@ -141,9 +96,9 @@ namespace net.r_eg.vsCE.SBEScripts
             lock(_lock)
             {
                 _depthLevel = 0;
-                postProcessingMSBuild = allowMSBuild;
+                postMSBuild = allowMSBuild;
                 StringHandler hString = new StringHandler();
-                return hString.recovery(parse(hString.protectMixedQuotes(data), _depthLevel, hString));
+                return hString.recovery(parse(hString.protect(data), _depthLevel, hString));
             }
         }
 
@@ -180,30 +135,29 @@ namespace net.r_eg.vsCE.SBEScripts
 
         /// <param name="data">Mixed data</param>
         /// <param name="level">Nesting level</param>
-        /// <param name="hString">Handler of strings if exist</param>
-        /// <returns>Prepared & evaluated data</returns>
+        /// <param name="hString">Handler of strings if exists</param>
+        /// <returns>Prepared and evaluated data</returns>
         protected string parse(string data, int level, StringHandler hString = null)
         {
             if(level >= DEPTH_LIMIT) {
                 _depthLevel = 0;
                 throw new LimitException("Nesting level of '{0}' reached. Aborted.", DEPTH_LIMIT);
             }
+            var rcon = RPattern.Container;
 
-            return Regex.Replace(data, ContainerPattern, delegate(Match m)
-            {
-                if(m.Groups[1].Value.Length > 1) { //escape
-                    Log.Debug("SBEScripts: escape - '{0}'", m.Groups[2].Value);
-                    return "#" + escapeMSBuildData(m.Groups[2].Value, true);
-                }
-                string raw = m.Groups[2].Value;
+            return rcon.Replace(data, 
+                                delegate(Match m)
+                                {
+                                    string escape   = m.Groups[1].Value;
+                                    string raw      = m.Groups[2].Value;
 
-                Log.Trace("SBEScripts-data: to parse '{0}'", raw);
-                if(hString != null) {
-                    return selector(hString.recovery(raw));
-                }
-                return selector(raw);
-            }, 
-            RegexOptions.IgnorePatternWhitespace);
+                                    if(escape.Length > 1) {
+                                        Log.Trace("SBEScripts-Container: escape `{0}`", (raw.Length > 40)? raw.Substring(0, 40) + "..." : raw);
+                                        return "#" + escapeMSBuildData(raw, true);
+                                    }
+
+                                    return selector((hString != null)? hString.recovery(raw) : raw);
+                                });
         }
 
         /// <summary>
@@ -250,18 +204,15 @@ namespace net.r_eg.vsCE.SBEScripts
             return Regex.IsMatch(data, String.Format("^\\[{0}", c.Condition), RegexOptions.IgnorePatternWhitespace);
         }
 
-        /// <summary>
-        /// Work with SBE-Script by components
-        /// </summary>
         /// <param name="data">mixed data</param>
-        /// <returns>prepared & evaluated data</returns>
+        /// <returns>prepared and evaluated data</returns>
         protected string selector(string data)
         {
-            Log.Debug("SBEScripts-selector: started with '{0}'", data);
+            Log.Trace("Selector: started with `{0}`", data);
 
             foreach(IComponent c in Bootloader.Components)
             {
-                c.PostProcessingMSBuild = postProcessingMSBuild;
+                c.PostProcessingMSBuild = postMSBuild;
 
                 if(!c.BeforeDeepen) {
                     continue;
@@ -289,12 +240,15 @@ namespace net.r_eg.vsCE.SBEScripts
                 }
             }
 
-            throw new SelectorMismatchException("SBEScripts-selector: not found component for handling - '{0}'", data);
+            throw new SelectorMismatchException("Selector: cannot find component. {0}/{1} :: `{2}`", 
+                                                                    Bootloader.Components.Count(), 
+                                                                    Bootloader.Registered.Count(),
+                                                                    data);
         }
 
         protected bool deepen(ref string data)
         {
-            return Regex.IsMatch(data, ContainerPattern, RegexOptions.IgnorePatternWhitespace);
+            return RPattern.Container.IsMatch(data);
         }
     }
 }

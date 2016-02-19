@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+ * Copyright (c) 2013-2016  Denis Kuzmin (reg) <entry.reg@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,10 +17,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using net.r_eg.vsCE.Exceptions;
+using net.r_eg.vsCE.MSBuild;
 using net.r_eg.vsCE.SBEScripts.Exceptions;
+using net.r_eg.vsCE.Scripts;
 
 namespace net.r_eg.vsCE.SBEScripts.SNode
 {
@@ -29,6 +32,9 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
     /// </summary>
     public class PM: IPM
     {
+        protected IMSBuild msbuild;
+        protected EvalType teval = EvalType.None;
+
         /// <summary>
         /// Condition for analyzer.
         /// </summary>
@@ -59,6 +65,23 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
         }
         protected List<ILevel> levels = new List<ILevel>();
 
+        /// <summary>
+        /// Compiled rules of nodes.
+        /// </summary>
+        protected Regex Rcon
+        {
+            get
+            {
+                if(rcon == null) {
+                    rcon = new Regex(Condition,
+                                        RegexOptions.IgnorePatternWhitespace |
+                                        RegexOptions.Singleline |
+                                        RegexOptions.Compiled);
+                }
+                return rcon;
+            }
+        }
+        private Regex rcon;
 
         /// <summary>
         /// Checks equality for level.
@@ -140,19 +163,194 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
         /// <returns>Self reference.</returns>
         public IPM pinTo(int level)
         {
-            if(level < 0 || level >= Levels.Count) {
-                throw new InvalidArgumentException("pinTo: the level '{0}' should be >= 0 && < Levels({1})", level, Levels.Count);
-            }
-
-            Log.Trace("PM-pinTo: '{0}' /Levels: {1}", level, Levels.Count);
-            levels = new List<ILevel>(levels.Skip(level));
+            levels = sliceLevels(level);
             return this;
         }
 
-        /// <param name="raw">Initial raw data.</param>
-        public PM(string raw)
+        /// <summary>
+        /// Get all levels from selected.
+        /// </summary>
+        /// <param name="level">Start position.</param>
+        /// <returns>New instance of IPM.</returns>
+        public IPM getFrom(int level)
         {
+            return new PM(sliceLevels(level));
+        }
+
+        /// <summary>
+        /// The string of diagnostic information about level.
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        public string traceLevel(int level = 0)
+        {
+            if(level < 0 || level >= Levels.Count) {
+                return String.Format("Level '{0}' is not exists. /{1}", level, Levels.Count);
+            }
+            ILevel l = Levels[level];
+            return String.Format("Data({0}), Type({1}), LevelType({2}), Args = {3}, Level({4}/{5})", 
+                                    l.Data, l.DataType, l.Type, (l.Args == null) ? 0 : l.Args.Length, level, Levels.Count);
+        }
+
+        /// <summary>
+        /// Throws error for level.
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="ident">Custom id of place where occurred.</param>
+        /// <exception cref="IncorrectNodeException"></exception>
+        public void fail(int level = 0, string ident = null)
+        {
+            string stMethod = ident ?? (new StackTrace()).GetFrame(1).GetMethod().Name;
+            throw new IncorrectNodeException("`{0}` Node - {1} is not correct for this way.", stMethod, traceLevel(level));
+        }
+
+        /// <summary>
+        /// Checks equality for zero level.
+        /// </summary>
+        /// <param name="type">Level should be with type.</param>
+        /// <param name="data">Level should be with data.</param>
+        /// <returns>true value if selected level is equal to selected type and data, otherwise false.</returns>
+        public bool Is(LevelType type, string data = null)
+        {
+            return Is(0, type, data);
+        }
+
+        /// <summary>
+        /// Checks equality for zero level with additional checking of finalization in levels chain.
+        /// </summary>
+        /// <param name="type">Level should be with type.</param>
+        /// <param name="data">Level should be with data.</param>
+        /// <returns>true value if selected level is equal to selected type and data, otherwise false.</returns>
+        public bool FinalIs(LevelType type, string data = null)
+        {
+            return FinalIs(0, type, data);
+        }
+
+        /// <summary>
+        /// Checks equality for zero level with additional checking of finalization as RightOperandEmpty in levels chain.
+        /// </summary>
+        /// <param name="type">Level should be with type.</param>
+        /// <param name="data">Level should be with data.</param>
+        /// <returns>true value if selected level is equal to selected type and data, otherwise false.</returns>
+        public bool FinalEmptyIs(LevelType type, string data = null)
+        {
+            return FinalEmptyIs(0, type, data);
+        }
+
+        /// <summary>
+        /// Checks equality for specific level and move to next level if it is equal to this data.
+        /// </summary>
+        /// <param name="level">Selected level.</param>
+        /// <param name="type">Level should be with type.</param>
+        /// <param name="data">Level should be with data.</param>
+        /// <returns>true value if selected level is equal to selected type and data, otherwise false.</returns>
+        public bool It(int level, LevelType type, string data = null)
+        {
+            if(!Is(level, type, data)) {
+                return false;
+            }
+
+            if(Levels.Count == 1) {
+                Levels.Clear(); // current level is already checked
+            }
+            else {
+                pinTo(level + 1); // move to next
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Checks equality for zero level and move to next level if it is equal to this data.
+        /// </summary>
+        /// <param name="type">Level should be with type.</param>
+        /// <param name="data">Level should be with data.</param>
+        /// <returns>true value if selected level is equal to selected type and data, otherwise false.</returns>
+        public bool It(LevelType type, string data = null)
+        {
+            return It(0, type, data);
+        }
+
+        /// <summary>
+        /// Checks equality of method for specific level.
+        /// </summary>
+        /// <param name="level">Selected level.</param>
+        /// <param name="name">Method name.</param>
+        /// <param name="types">The arguments that should be.</param>
+        /// <returns></returns>
+        public bool IsMethodWithArgs(int level, string name, params ArgumentType[] types)
+        {
+            return Is(level, LevelType.Method, name) && Levels[level].Is(types);
+        }
+
+        /// <summary>
+        /// Checks equality of method for zero level.
+        /// </summary>
+        /// <param name="name">Method name.</param>
+        /// <param name="types">The arguments that should be.</param>
+        /// <returns></returns>
+        public bool IsMethodWithArgs(string name, params ArgumentType[] types)
+        {
+            return IsMethodWithArgs(0, name, types);
+        }
+
+        /// <summary>
+        /// Checks type of right operand for zero level.
+        /// </summary>
+        /// <param name="type">The right operand should be with level type.</param>
+        /// <returns>true value if the right operand is equal to selected level type, otherwise false.</returns>
+        public bool IsRight(LevelType type)
+        {
+            return Levels.Count > 0 && Levels[0].Type == type;
+        }
+
+        /// <summary>
+        /// Checks equality of data for zero level.
+        /// </summary>
+        /// <param name="data">Level should be with data.</param>
+        /// <param name="variants">Alternative variants that can be.</param>
+        /// <returns>true value if selected level is equal to selected data, otherwise false.</returns>
+        public bool IsData(string data, params string[] variants)
+        {
+            if(Levels.Count < 1) {
+                return false;
+            }
+            string ldata = Levels[0].Data;
+
+            if(ldata == data) {
+                return true;
+            }
+
+            if(variants.Any(v => ldata == v)) {
+                return true;
+            }
+
+            return false;
+        }
+
+        ///// <param name="raw">Initial raw data.</param>
+        //public PM(string raw)
+        //{
+        //    detect(raw);
+        //}
+
+        /// <param name="raw">Initial raw data.</param>
+        /// <param name="msbuild">To evaluate data with MSBuild engine where it's allowed.</param>
+        /// <param name="type">Allowed types of evaluation with MSBuild.</param>
+        public PM(string raw, IMSBuild msbuild = null, EvalType type = EvalType.ArgStringD /*| EvalType.RightOperandStd*/)
+        {
+            //if(msbuild == null) {
+            //    throw new InvalidArgumentException("PM: The `msbuild` argument cannot be null");
+            //}
+            this.msbuild    = msbuild;
+            teval           = type;
+
             detect(raw);
+        }
+
+        /// <param name="levels">predefined levels.</param>
+        public PM(List<ILevel> levels)
+        {
+            this.levels = levels;
         }
 
         /// <summary>
@@ -166,7 +364,7 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
             StringHandler h = new StringHandler();
             data            = h.protectMixedQuotes(data);
 
-            Match m = Regex.Match(data, Condition, RegexOptions.IgnorePatternWhitespace);
+            Match m = Rcon.Match(data);
             if(!m.Success) {
                 levels.Add(getRightOperand(data, h));
                 return;
@@ -232,7 +430,7 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
         /// <returns>Prepared struct.</returns>
         protected Argument detectArgument(string raw)
         {
-            // Array - { "p1", true, 12 }
+            // Object - { "p1", true, 12 }
 
             Match m = Regex.Match(raw, String.Format("^{0}$", RPattern.ObjectContent), RegexOptions.IgnorePatternWhitespace);
             if(m.Success)
@@ -267,10 +465,13 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
                              RegexOptions.IgnorePatternWhitespace);
             if(m.Success)
             {
-                return new Argument() { 
-                    type = (m.Groups[1].Success)? ArgumentType.StringDouble : ArgumentType.StringSingle,
-                    data = (m.Groups[1].Success)? m.Groups[1].Value : m.Groups[2].Value
-                };
+                if(m.Groups[1].Success) {
+                    return new Argument() { type = ArgumentType.StringDouble,
+                                            data = eval(EvalType.ArgStringD, Tokens.unescapeQuotes('"', m.Groups[1].Value)) };
+                }
+
+                return new Argument() { type = ArgumentType.StringSingle,
+                                        data = eval(EvalType.ArgStringS, Tokens.unescapeQuotes('\'', m.Groups[2].Value)) };
             }
 
             // Integer
@@ -342,13 +543,13 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
         /// <param name="data">raw data</param>
         /// <param name="handler">Handler of string if used.</param>
         /// <returns></returns>
-        protected Level getRightOperand(string data, StringHandler handler = null)
+        protected ILevel getRightOperand(string data, StringHandler handler = null)
         {
             if(String.IsNullOrWhiteSpace(data)) {
                 return new Level() { Type = LevelType.RightOperandEmpty };
             }
 
-            Match m = Regex.Match(data, @"\s*(=|:)(.*)$");
+            Match m = Regex.Match(data, @"^\s*(=|:)(.*)$", RegexOptions.Singleline);
             if(!m.Success) {
                 throw new SyntaxIncorrectException("PM - getRightOperand: incorrect data '{0}'", data);
             }
@@ -356,10 +557,21 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
             string type = m.Groups[1].Value;
             string raw  = m.Groups[2].Value;
 
-            return new Level() {
-                Type = (type == ":")? LevelType.RightOperandColon : LevelType.RightOperandStd,
-                Data = (handler == null)? raw : handler.recovery(raw)
-            };
+            string ldata = (handler == null)? raw : handler.recovery(raw);
+
+            if(type == ":") {
+                return new Level() { Type = LevelType.RightOperandColon, Data = eval(EvalType.RightOperandColon, ldata) };
+            }
+            return new Level() { Type = LevelType.RightOperandStd, Data = eval(EvalType.RightOperandStd, ldata) };
+        }
+
+        protected string eval(EvalType type, string raw)
+        {
+            if(type == EvalType.None || msbuild == null) {
+                return raw;
+            }
+
+            return ((teval & type) == type)? msbuild.parse(raw) : raw;
         }
 
         /// <summary>
@@ -378,6 +590,16 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
                 }
             }
             return false;
+        }
+
+        /// <param name="level">Start position of slicing.</param>
+        /// <returns></returns>
+        protected List<ILevel> sliceLevels(int level)
+        {
+            if(level < 0 || level >= Levels.Count) {
+                throw new InvalidArgumentException("PM: The level '{0}' should be >= 0 && < Levels({1})", level, Levels.Count);
+            }
+            return new List<ILevel>(levels.Skip(level));
         }
     }
 }

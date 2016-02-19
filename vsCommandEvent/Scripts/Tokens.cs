@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+ * Copyright (c) 2013-2016  Denis Kuzmin (reg) <entry.reg@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,6 +17,7 @@
 
 using System;
 using System.Text.RegularExpressions;
+using net.r_eg.vsCE.SBEScripts.Exceptions;
 
 namespace net.r_eg.vsCE.Scripts
 {
@@ -45,7 +46,8 @@ namespace net.r_eg.vsCE.Scripts
             string ret;
 
             if(!limited) {
-                ret = Regex.Unescape(data);
+                // https://msdn.microsoft.com/en-us/library/system.text.regularexpressions.regex.unescape.aspx
+                ret = Regex.Unescape(data); //inc.: \, *, +, ?, |, {, }, [, ], (,), ^, $,., #, and white space characters
                 Log.Trace("Tokens: processed characters '{0}'", ret);
                 return ret;
             }
@@ -68,6 +70,29 @@ namespace net.r_eg.vsCE.Scripts
 
             Log.Trace("Tokens: limited processed characters '{0}'", ret);
             return ret;
+        }
+
+        /// <summary>
+        /// Unescape quote symbols from string.
+        /// </summary>
+        /// <param name="type">Quote symbol.</param>
+        /// <param name="data"></param>
+        /// <returns>String with unescaped quote symbols.</returns>
+        public static string unescapeQuotes(char type, string data)
+        {
+            if(String.IsNullOrWhiteSpace(data)) {
+                return String.Empty;
+            }
+
+            switch(type)
+            {
+                case '\'':
+                case '"': {
+                    return data.Replace("\\" + type, type.ToString());
+                }
+            }
+
+            throw new NotSupportedOperationException("The quote symbol ({0}) is not supported.", type);
         }
     }
 }

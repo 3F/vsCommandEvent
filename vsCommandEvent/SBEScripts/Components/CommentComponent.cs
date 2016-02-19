@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-using System;
 using System.Text.RegularExpressions;
 using net.r_eg.vsCE.SBEScripts.Dom;
 using net.r_eg.vsCE.SBEScripts.Exceptions;
@@ -23,9 +22,9 @@ using net.r_eg.vsCE.SBEScripts.Exceptions;
 namespace net.r_eg.vsCE.SBEScripts.Components
 {
     /// <summary>
-    /// Any supported comments for scripts
+    /// The comments for scripts.
     /// </summary>
-    [Definition("\" \"", "Multiline comment")]
+    [Definition("\" \"", "The multiline comment.")]
     public class CommentComponent: Component, IComponent
     {
         /// <summary>
@@ -36,7 +35,8 @@ namespace net.r_eg.vsCE.SBEScripts.Components
             get { return "\""; }
         }
 
-        public CommentComponent(): base()
+        public CommentComponent()
+            : base()
         {
             beforeDeepen = true; // Should be located before deepening
         }
@@ -56,7 +56,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
                 throw new SyntaxIncorrectException("Failed CommentComponent - '{0}'", data);
             }
 
-            return String.Empty; // silent
+            return Value.Empty; // silent
         }
     }
 }
