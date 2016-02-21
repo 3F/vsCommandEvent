@@ -148,6 +148,8 @@ namespace net.r_eg.vsCE.Scripts
                 definitions[defindex] = new TUserVariable() {
                     unevaluated = unevaluated,
                     ident       = defindex,
+                    name        = name,
+                    project     = project,
                     status      = TUserVariable.StatusType.Unevaluated,
                     prev        = (definitions.ContainsKey(defindex))? definitions[defindex] : new TUserVariable(),
                     evaluated   = null

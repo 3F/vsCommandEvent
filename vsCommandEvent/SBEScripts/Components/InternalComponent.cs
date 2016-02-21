@@ -75,15 +75,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         /// <param name="pm"></param>
         /// <returns></returns>
         [Property("events", "Work with events")]
-        [Property("Pre", "Pre-Build\nBefore assembling", "events", "stEvents"), Property("", "Pre", "stEvents")]
-        [Property("Post", "Post-Build\nAfter assembling", "events", "stEvents"), Property("", "Post", "stEvents")]
-        [Property("Cancel", "Cancel-Build\nby user or when occurs error", "events", "stEvents"), Property("", "Cancel", "stEvents")]
-        [Property("CommandEvent", "CommandEvent (DTE)\nAll Command Events from EnvDTE", "events", "stEvents"), Property("", "CommandEvent", "stEvents")]
-        [Property("Warnings", "Warnings-Build\nWarnings during assembly processing", "events", "stEvents"), Property("", "Warnings", "stEvents")]
-        [Property("Errors", "Errors-Build\nErrors during assembly processing", "events", "stEvents"), Property("", "Errors", "stEvents")]
-        [Property("OWP", "Output-Build customization\nFull control", "events", "stEvents"), Property("", "OWP", "stEvents")]
-        [Property("Transmitter", "Transmitter\nTransmission of the build-data to outer handler", "events", "stEvents"), Property("", "Transmitter", "stEvents")]
-        [Property("Logging", "Logging\nAll processes with internal logging", "events", "stEvents"), Property("", "Logging", "stEvents")]
+        [Property("Common", "Common event for this assembly", "events", "stEvents"), Property("", "Common", "stEvents")]
         protected string stEvents(IPM pm)
         {
             if(!pm.Is(LevelType.Property, "events")) {

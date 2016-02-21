@@ -104,9 +104,9 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         /// </summary>
         /// <param name="pm"></param>
         /// <returns></returns>
-        [Property("log", "Provides data from events of logging.")]
-        [Property("Message", "Current message from log.", "log", "stLog", CValueType.String)]
-        [Property("Level", "The Level of current Message.", "log", "stLog", CValueType.String)]
+        //[Property("log", "Provides data from events of logging.")]
+        //[Property("Message", "Current message from log.", "log", "stLog", CValueType.String)]
+        //[Property("Level", "The Level of current Message.", "log", "stLog", CValueType.String)]
         protected string stLog(IPM pm)
         {
             if(pm.It(LevelType.Property, "log"))

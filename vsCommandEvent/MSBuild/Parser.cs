@@ -496,7 +496,7 @@ namespace net.r_eg.vsCE.MSBuild
                 uvariable.evaluate(prepared.variable.name, prepared.variable.project, new EvaluatorBlank(), true);
 
                 if(prepared.variable.operation == PreparedData.VariableType.DefProperty) {
-                    defProperty(prepared.variable);
+                    defProperty(prepared.variable, evaluated);
                 }
                 else if(prepared.variable.operation == PreparedData.VariableType.UndefProperty) {
                     undefProperty(prepared.variable);
@@ -559,10 +559,11 @@ namespace net.r_eg.vsCE.MSBuild
             }
         }
 
-        protected void defProperty(PreparedData.Variable variable)
+        protected void defProperty(PreparedData.Variable variable, string evaluated)
         {
             Log.Debug("Set MSBuild property: `{0}`:`{1}`", variable.name, variable.project);
-            defProperty(uvariable.getVariable(variable.name, variable.project), getProject(variable.project));
+            //defProperty(uvariable.getVariable(variable.name, variable.project), getProject(variable.project));
+            setGlobalProperty(getProject(variable.project), variable.name, evaluated);
         }
 
         protected bool undefProperty(PreparedData.Variable variable)
@@ -570,8 +571,8 @@ namespace net.r_eg.vsCE.MSBuild
             Log.Debug("Unset MSBuild property: `{0}`:`{1}`", variable.name, variable.project);
             Project project = getProject(variable.project);
 
-            var uvar = uvariable.getVariable(variable.name, variable.project);
-            return removeGlobalProperty(project, uvar.ident);
+            //uvariable.unset(variable.name, variable.project); //leave for sbe-scripts
+            return removeGlobalProperty(project, variable.name);
         }
 
         /// <returns>Returns true if the value changes, otherwise returns false.</returns>
