@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+ * Copyright (c) 2013-2016  Denis Kuzmin (reg) <entry.reg@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,6 +17,7 @@
 
 using System;
 using System.Windows.Forms;
+using net.r_eg.vsCE.Extensions;
 using net.r_eg.vsCE.SBEScripts;
 using net.r_eg.vsCE.UI.WForms.Controls;
 using CEAfterEventHandler = EnvDTE._dispCommandEvents_AfterExecuteEventHandler;
@@ -27,7 +28,7 @@ namespace net.r_eg.vsCE.UI.WForms
     public partial class EnvDteSniffer: Form
     {
         /// <summary>
-        /// Used loader
+        /// Used environment
         /// </summary>
         protected IEnvironment env;
 
@@ -149,6 +150,40 @@ namespace net.r_eg.vsCE.UI.WForms
             detachCommandEvents(commandEventBefore, commandEventAfter);
         }
 
+        private void btnRaise_Click(object sender, EventArgs e)
+        {
+            if(dgvCESniffer.Rows.Count < 1 || dgvCESniffer.SelectedRows.Count < 1) {
+                return;
+            }
+
+            int id = -1;
+            string guid = null;
+
+            try
+            {
+                foreach(DataGridViewRow rc in dgvCESniffer.SelectedRows)
+                {
+                    object cId      = rc.Cells[dgvCESnifferColumnId.Name].Value;
+                    object cGuid    = rc.Cells[dgvCESnifferColumnGuid.Name].Value;
+                    object cIn      = Value.packArgument(rc.Cells[dgvCESnifferColumnCustomIn.Name].Value);
+                    object cOut     = Value.packArgument(rc.Cells[dgvCESnifferColumnCustomOut.Name].Value);
+
+                    object customIn     = cIn.IsNullOrEmptyString()? String.Empty : cIn;
+                    object customOut    = cOut.IsNullOrEmptyString()? String.Empty : cOut;
+
+                    env.raise(
+                        ((string)cGuid).Trim(), 
+                        Convert.ToInt32(cId), 
+                        ref customIn, 
+                        ref customOut
+                    );
+                }
+            }
+            catch(Exception ex) {
+                Log.Error("Raise: problem with command: '{0}', '{1}' :: '{2}'", guid, id, ex.Message);
+            }
+        }
+
         private void buttonFlush_Click(object sender, EventArgs e)
         {
             dgvCESniffer.Rows.Clear();
@@ -192,6 +227,11 @@ namespace net.r_eg.vsCE.UI.WForms
                     dgvCESniffer.Rows.Remove(row);
                 }
             }
+        }
+
+        private void menuRaise_Click(object sender, EventArgs e)
+        {
+            btnRaise_Click(sender, e);
         }
 
         private void menuFlush_Click(object sender, EventArgs e)

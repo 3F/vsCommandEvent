@@ -1057,19 +1057,9 @@ namespace net.r_eg.vsCE.UI.WForms
             Util.openUrl("https://github.com/3F/vsCommandEvent/issues");
         }
 
-        private void toolStripMenuSources_Click(object sender, EventArgs e)
-        {
-            Util.openUrl("https://bitbucket.org/3F/vscommandevent/commits/all");
-        }
-
         private void toolStripMenuForkGithub_Click(object sender, EventArgs e)
         {
             Util.openUrl("https://github.com/3F/vsCommandEvent");
-        }
-
-        private void toolStripMenuForkBitbucket_Click(object sender, EventArgs e)
-        {
-            Util.openUrl("https://bitbucket.org/3F/vscommandevent/overview");
         }
 
         private void toolStripMenuLicense_Click(object sender, EventArgs e)

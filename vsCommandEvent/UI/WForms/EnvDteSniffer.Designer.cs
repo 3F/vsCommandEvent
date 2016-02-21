@@ -32,6 +32,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.chkActivate = new System.Windows.Forms.CheckBox();
             this.groupBoxCESniffer = new System.Windows.Forms.GroupBox();
+            this.btnRaise = new System.Windows.Forms.Button();
             this.btnAddToFilters = new System.Windows.Forms.Button();
             this.buttonFlush = new System.Windows.Forms.Button();
             this.labelSep1 = new System.Windows.Forms.Label();
@@ -48,11 +49,12 @@
             this.dgvCESnifferColumnEnum = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuMain = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuAddToFilters = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuFlush = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuRaise = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuRemove = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuFlush = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxCESniffer.SuspendLayout();
             this.panelTop.SuspendLayout();
             this.panelMain.SuspendLayout();
@@ -76,6 +78,7 @@
             // 
             // groupBoxCESniffer
             // 
+            this.groupBoxCESniffer.Controls.Add(this.btnRaise);
             this.groupBoxCESniffer.Controls.Add(this.btnAddToFilters);
             this.groupBoxCESniffer.Controls.Add(this.buttonFlush);
             this.groupBoxCESniffer.Controls.Add(this.labelSep1);
@@ -90,6 +93,16 @@
             this.groupBoxCESniffer.TabIndex = 64;
             this.groupBoxCESniffer.TabStop = false;
             // 
+            // btnRaise
+            // 
+            this.btnRaise.Location = new System.Drawing.Point(173, 10);
+            this.btnRaise.Name = "btnRaise";
+            this.btnRaise.Size = new System.Drawing.Size(75, 23);
+            this.btnRaise.TabIndex = 70;
+            this.btnRaise.Text = "Raise";
+            this.btnRaise.UseVisualStyleBackColor = true;
+            this.btnRaise.Click += new System.EventHandler(this.btnRaise_Click);
+            // 
             // btnAddToFilters
             // 
             this.btnAddToFilters.Location = new System.Drawing.Point(92, 10);
@@ -102,7 +115,7 @@
             // 
             // buttonFlush
             // 
-            this.buttonFlush.Location = new System.Drawing.Point(173, 10);
+            this.buttonFlush.Location = new System.Drawing.Point(254, 10);
             this.buttonFlush.Name = "buttonFlush";
             this.buttonFlush.Size = new System.Drawing.Size(75, 23);
             this.buttonFlush.TabIndex = 68;
@@ -263,51 +276,59 @@
             // 
             this.contextMenuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuAddToFilters,
+            this.menuRaise,
             this.toolStripSeparator1,
             this.menuCopy,
             this.menuRemove,
             this.toolStripSeparator2,
             this.menuFlush});
             this.contextMenuMain.Name = "contextMenuMain";
-            this.contextMenuMain.Size = new System.Drawing.Size(153, 126);
+            this.contextMenuMain.Size = new System.Drawing.Size(143, 126);
             // 
             // menuAddToFilters
             // 
             this.menuAddToFilters.Name = "menuAddToFilters";
-            this.menuAddToFilters.Size = new System.Drawing.Size(152, 22);
+            this.menuAddToFilters.Size = new System.Drawing.Size(142, 22);
             this.menuAddToFilters.Text = "Add to filters";
             this.menuAddToFilters.Click += new System.EventHandler(this.menuAddToFilters_Click);
             // 
-            // menuFlush
+            // menuRaise
             // 
-            this.menuFlush.Name = "menuFlush";
-            this.menuFlush.Size = new System.Drawing.Size(152, 22);
-            this.menuFlush.Text = "Flush";
-            this.menuFlush.Click += new System.EventHandler(this.menuFlush_Click);
+            this.menuRaise.Name = "menuRaise";
+            this.menuRaise.Size = new System.Drawing.Size(142, 22);
+            this.menuRaise.Text = "Raise";
+            this.menuRaise.Click += new System.EventHandler(this.menuRaise_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(139, 6);
             // 
             // menuCopy
             // 
             this.menuCopy.Name = "menuCopy";
-            this.menuCopy.Size = new System.Drawing.Size(152, 22);
+            this.menuCopy.Size = new System.Drawing.Size(142, 22);
             this.menuCopy.Text = "Copy";
             this.menuCopy.Click += new System.EventHandler(this.menuCopy_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
             // 
             // menuRemove
             // 
             this.menuRemove.Name = "menuRemove";
-            this.menuRemove.Size = new System.Drawing.Size(152, 22);
+            this.menuRemove.Size = new System.Drawing.Size(142, 22);
             this.menuRemove.Text = "Remove";
             this.menuRemove.Click += new System.EventHandler(this.menuRemove_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(139, 6);
+            // 
+            // menuFlush
+            // 
+            this.menuFlush.Name = "menuFlush";
+            this.menuFlush.Size = new System.Drawing.Size(142, 22);
+            this.menuFlush.Text = "Flush";
+            this.menuFlush.Click += new System.EventHandler(this.menuFlush_Click);
             // 
             // EnvDteSniffer
             // 
@@ -357,6 +378,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuRemove;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem menuFlush;
-
+        private System.Windows.Forms.Button btnRaise;
+        private System.Windows.Forms.ToolStripMenuItem menuRaise;
     }
 }

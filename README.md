@@ -15,7 +15,7 @@ Advanced handler of all commands from Visual Studio and output data as manager o
 
 *Components*:
 
-* [![vsSolutionBuildEvent](https://img.shields.io/badge/vsSolutionBuildEvent-v0.12.7-68217A.svg)](http://vssbe.r-eg.net/Changelist/#vsix)
+* [![vsSolutionBuildEvent](http://vsce.r-eg.net/etc/badges/vsSolutionBuildEvent.svg)](http://vssbe.r-eg.net/Changelist/#vsix)
 
 -------
 
@@ -23,9 +23,9 @@ The vsCommandEvent (vsCE) - based on [vsSolutionBuildEvent](http://vssbe.r-eg.ne
 
 It also presents advanced handler of most events, but unlike the first it specializes for MS Visual Studio for advanced work with all commands and output data as manager of this.
 
-And in general, this also contains all or most action types from [vsSolutionBuildEvent](http://vssbe.r-eg.net) engine. Yes, you still may feel free with different modes for all of what you want:
+And in general this also contains all or most action types from [vsSolutionBuildEvent](http://vssbe.r-eg.net) engine. Yes, you still may feel free with different modes for all of what you want:
 
-* Files Mode, Operation Mode, Interpreter Mode, [Script Mode](http://vsce.r-eg.net/doc/Modes/Script/), [Targets Mode](http://vsce.r-eg.net/doc/Modes/Targets/), [C# Mode](http://vsce.r-eg.net/doc/Modes/CSharp/), [EnvCommand Mode](http://vsce.r-eg.net/doc/Modes/EnvCommand/)
+* Files Mode, Operation Mode, Interpreter Mode, [Script Mode](http://vsce.r-eg.net/doc/Modes/Script/), [Targets Mode](http://vsce.r-eg.net/doc/Modes/Targets/), [C# Mode](http://vsce.r-eg.net/doc/Modes/CSharp/), and more like [EnvCommand](http://vsce.r-eg.net/doc/Modes/EnvCommand/) etc.
 
 Supports additional MSBuild & SBE-Scripts engine for advanced usage. And supports a lot of features for the convenience of your work with the build, tests, versioning, IO operations, etc., ... see the documentation
 
