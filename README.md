@@ -1,4 +1,4 @@
-# vsCommandEvent (vsCE)
+# vsCommandEvent
 
 Advanced handler of all commands from Visual Studio and output data as manager of this. It based on vsSolutionBuildEvent engine and continues mission to provide flexible actions for your environment.
 
