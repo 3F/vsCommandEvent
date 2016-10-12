@@ -250,7 +250,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         protected string pStdout(ISolutionEvent evt, IPM pm)
         {
             if(pm.FinalEmptyIs(LevelType.RightOperandEmpty)) {
-                return Value.from(HProcess.stdout(evt.Id));
+                return Value.from(HProcess.Stdout(evt.Id));
             }
 
             throw new IncorrectNodeException(pm);
@@ -260,7 +260,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         protected string pStderr(ISolutionEvent evt, IPM pm)
         {
             if(pm.FinalEmptyIs(LevelType.RightOperandEmpty)) {
-                return Value.from(HProcess.stderr(evt.Id));
+                return Value.from(HProcess.Stderr(evt.Id));
             }
 
             throw new IncorrectNodeException(pm);
