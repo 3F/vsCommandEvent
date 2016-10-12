@@ -84,7 +84,8 @@ namespace net.r_eg.vsCE.UI.WForms
         /// </summary>
         protected Wizards.VersionFrm frmWizVersion;
 
-        /// Mapper of available components
+        /// <summary>
+        /// Mapper of available components.
         /// </summary>
         protected IInspector inspector;
 

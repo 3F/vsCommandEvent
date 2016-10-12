@@ -16,14 +16,9 @@ namespace net.r_eg.vsCE
         public const string PACKAGE_LOGGER      = "0440C4E8-5557-4E9C-9DB2-778851CA08F5";
 
         /// <summary>
-        /// Command of main UI
+        /// The Command of main UI.
         /// </summary>
-        public const string MAIN_CMD_STRING     = "C587CC93-95F6-4E7D-B6D2-A5B5A854A9FC";
-
-        /// <summary>
-        /// Command of StatusPanel
-        /// </summary>
-        public const string PANEL_CMD_STRING    = "EC56D265-4229-46BC-9E88-07DDC1F07444";
+        public const string CMD_MAIN_STRING     = "C587CC93-95F6-4E7D-B6D2-A5B5A854A9FC";
 
         /// <summary>
         /// Identifier for StatusPanel
@@ -43,12 +38,7 @@ namespace net.r_eg.vsCE
         /// <summary>
         /// Guid of main UI command
         /// </summary>
-        public static readonly Guid MAIN_CMD_SET = new Guid(MAIN_CMD_STRING);
-
-        /// <summary>
-        /// Guid of StatusPanel command
-        /// </summary>
-        public static readonly Guid PANEL_CMD_SET = new Guid(PANEL_CMD_STRING);
+        public static readonly Guid CMD_MAIN = new Guid(CMD_MAIN_STRING);
 
         /// <summary>
         /// Guid of main item for OutputWindow

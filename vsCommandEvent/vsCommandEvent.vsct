@@ -37,40 +37,64 @@
     group; your package should define its own command set in order to avoid collisions  
     with command ids defined by other packages. -->
 
-        
-    <!--Buttons section. -->
-    <!--This section defines the elements the user can interact with, like a menu command or a button 
-        or combo box in a toolbar. -->
-    <Buttons>
-      <!--To define a menu group you have to specify its ID, the parent menu and its display priority. 
-          The command is visible and enabled by default. If you need to change the visibility, status, etc, you can use
-          the CommandFlag node.
-          You can add more than one CommandFlag node e.g.:
-              <CommandFlag>DefaultInvisible</CommandFlag>
-              <CommandFlag>DynamicVisibility</CommandFlag>
-          If you do not want an image next to your command, remove the Icon node or set it to <Icon guid="guidOfficeIcon" id="msotcidNoIcon" /> -->
+    <!-- 
+         https://msdn.microsoft.com/en-us/library/bb165748.aspx
+         https://msdn.microsoft.com/en-us/library/bb165739.aspx
+         https://msdn.microsoft.com/en-us/library/cc826118.aspx
+      -->
 
-      <Button guid="GUID_MAIN_CMD" id="CMD_MAIN" priority="0x0100" type="Button">
-        <Parent guid="guidSHLMainMenu" id="IDG_VS_TOOLS_OPTIONS" />
+    <Menus>
+      <Menu guid="GUID_MAIN_CMD" id="CMD_MENU" priority="0x0100" type="MenuController">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_MM_WINDOWHELP" />
+        <!--<Parent guid="guidSHLMainMenu" id="IDG_VS_TOOLS_OPTIONS" />-->
+        <CommandFlag>IconAndText</CommandFlag>
+        <CommandFlag>DontCache</CommandFlag>
+        <Strings>
+          <ButtonText> </ButtonText>
+          <MenuText> </MenuText>
+        </Strings>
+      </Menu>
+    </Menus>
+
+    <Groups>
+      <Group guid="GUID_MAIN_CMD" id="CMD_GROUP" priority="0x000">
+        <Parent guid="GUID_MAIN_CMD" id="CMD_MENU" />
+      </Group>
+    </Groups>
+    
+    <Buttons>
+      <Button guid="GUID_MAIN_CMD" id="CMD_MAIN" priority="0x0000" type="Button">
+        <Parent guid="GUID_MAIN_CMD" id="CMD_GROUP" />
         <Icon guid="guidImages" id="package16" />
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
-            <CommandName>vsCommandEvent</CommandName>
-            <ButtonText>vsCommandEvent</ButtonText>
-            <MenuText>vsCommandEvent</MenuText>
-            <CanonicalName>vsCE.Settings</CanonicalName>
+          <CommandName>vsCommandEvent</CommandName>
+          <ButtonText>vsCommandEvent</ButtonText>
+          <MenuText>vsCommandEvent</MenuText>
+          <CanonicalName>vsCE.Settings</CanonicalName>
+          <ToolTipText>vsCommandEvent - Settings</ToolTipText>
         </Strings>
       </Button>
-
+      <Button guid="GUID_MAIN_CMD" id="CMD_UNWARN" priority="0x0002" type="Button">
+        <Parent guid="GUID_MAIN_CMD" id="CMD_GROUP" />
+        <Icon guid="ImgCfgUnwarn" id="unwarn16" />
+        <CommandFlag>Pict</CommandFlag>
+        <Strings>
+          <CommandName>vsCE.Cfg.RemoveWarnings</CommandName>
+          <ButtonText>Remove Warnings from ErrorList</ButtonText>
+          <MenuText>Remove Warnings from ErrorList</MenuText>
+          <CanonicalName>vsCE.Cfg.RemoveWarnings</CanonicalName>
+          <ToolTipText>vsCommandEvent - Remove Warnings from ErrorList</ToolTipText>
+        </Strings>
+      </Button>
     </Buttons>
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
     <Bitmaps>
-          
         <!-- usedList="pic1 pic2" -->
         <Bitmap guid="guidImages" href="Resources\Package_16.png" usedList="package16" />
-
+        <Bitmap guid="ImgCfgUnwarn" href="Resources\vsmenu_unwarn.png" usedList="unwarn16" />
     </Bitmaps>
  
   </Commands>
@@ -82,14 +106,20 @@
   <Symbols>
     <!-- This is the package guid. -->
     <GuidSymbol name="GUID_PACKAGE" value="{DA5CEB32-1E09-44A5-A6AA-71D3149A53B7}" />
-    
-    <!-- This is the guid used to group the menu commands together -->
+
     <GuidSymbol name="GUID_MAIN_CMD" value="{C587CC93-95F6-4E7D-B6D2-A5B5A854A9FC}">
       <IDSymbol name="CMD_MAIN" value="0x0100" />
+      <IDSymbol name="CMD_MENU" value="0x0101" />
+      <IDSymbol name="CMD_GROUP" value="0x0102" />
+      <IDSymbol name="CMD_UNWARN" value="0x0110" />
     </GuidSymbol>
 
     <GuidSymbol name="guidImages" value="{107B52CD-0C46-4A0F-A0BE-9B3A205466CF}" >
         <IDSymbol name="package16" value="1" />
+    </GuidSymbol>
+
+    <GuidSymbol name="ImgCfgUnwarn" value="{0B60E867-6BBD-4C7A-86BC-2F920323F2EF}" >
+      <IDSymbol name="unwarn16" value="1" />
     </GuidSymbol>
         
   </Symbols>

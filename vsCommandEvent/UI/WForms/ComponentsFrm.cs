@@ -35,7 +35,8 @@ namespace net.r_eg.vsCE.UI.WForms
         /// </summary>
         protected IBootloader bootloader;
 
-        /// Mapper of the available components
+        /// <summary>
+        /// Mapper of the available components.
         /// </summary>
         protected IInspector inspector;
 

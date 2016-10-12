@@ -218,6 +218,13 @@ namespace net.r_eg.vsCE
             }
         }
 
+        private void _menuCfgUnwarnCallback(object sender, EventArgs e)
+        {
+            if(errorList != null) {
+                errorList.clear();
+            }
+        }
+
         private void onLogReceived(object sender, Logger.MessageArgs e)
         {
             if(Log._.isError(e.Level)) {
@@ -287,10 +294,17 @@ namespace net.r_eg.vsCE
 
                 OleMenuCommandService mcs = (OleMenuCommandService)GetService(typeof(IMenuCommandService));
 
-                // Tools / App settings
-                _menuItemMain = new MenuCommand(_menuMainCallback, new CommandID(GuidList.MAIN_CMD_SET, (int)PkgCmdIDList.CMD_MAIN));
+                // Top Menu
+                _menuItemMain = new MenuCommand(_menuMainCallback, new CommandID(GuidList.CMD_MAIN, PkgCmdIDList.CMD_MAIN));
                 _menuItemMain.Visible = false;
                 mcs.AddCommand(_menuItemMain);
+
+                mcs.AddCommand(
+                    new MenuCommand(
+                        _menuCfgUnwarnCallback, 
+                        new CommandID(GuidList.CMD_MAIN, PkgCmdIDList.CMD_UNWARN)
+                    )
+                );
 
                 // To listen events that fired as a IVsSolutionEvents
                 spSolution = (IVsSolution)ServiceProvider.GlobalProvider.GetService(typeof(SVsSolution));

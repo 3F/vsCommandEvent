@@ -68,7 +68,7 @@ namespace net.r_eg.vsCE.Actions
         /// Raise commands for EnvDTE.
         /// </summary>
         /// <param name="commands">Atomic DTE-commands for handling.</param>
-        /// <pparam name="abortOnFirstError">Abort commands on first error if true.</pparam>
+        /// <param name="abortOnFirstError">Abort commands on first error if true.</param>
         /// <returns>true value if all raised without errors.</returns>
         protected bool raise(CommandDte[] commands, bool abortOnFirstError)
         {

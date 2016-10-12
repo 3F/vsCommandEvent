@@ -1,11 +1,10 @@
-﻿// PkgCmdID.cs
-// MUST match PkgCmdID.h
-using System;
-
-namespace net.r_eg.vsCE
+﻿namespace net.r_eg.vsCE
 {
-    static class PkgCmdIDList
+    internal static class PkgCmdIDList
     {
-        public const uint CMD_MAIN = 0x0100;
-    };
+        public const int CMD_MAIN       = 0x0100;
+        public const int CMD_MENU       = 0x0101;
+        public const int CMD_GROUP      = 0x0102;
+        public const int CMD_UNWARN     = 0x0110;
+    }
 }
