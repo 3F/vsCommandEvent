@@ -5,12 +5,12 @@ using net.r_eg.vsCE;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("vsCommandEvent")]
+[assembly: AssemblyTitle("vsCommandEvent [ github.com/3F/vsCommandEvent ]")]
 [assembly: AssemblyDescription("Based on vsSolutionBuildEvent")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("vsCommandEvent")]
-[assembly: AssemblyCopyright("Denis Kuzmin (reg) <entry.reg@gmail.com>")]
+[assembly: AssemblyCopyright("Denis Kuzmin - entry.reg@gmail.com")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

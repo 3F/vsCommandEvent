@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+ * Copyright (c) 2013-2016  Denis Kuzmin (reg) <entry.reg@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -23,10 +23,11 @@ using System.Windows.Forms;
 using net.r_eg.vsCE.SBEScripts;
 using net.r_eg.vsCE.SBEScripts.Components;
 using net.r_eg.vsCE.SBEScripts.Dom;
-using DomIcon = net.r_eg.vsCE.SBEScripts.Dom.Icon;
 
 namespace net.r_eg.vsCE.UI.WForms
 {
+    using DomIcon = net.r_eg.vsCE.SBEScripts.Dom.Icon;
+
     public partial class ComponentsFrm: Form
     {
         /// <summary>
@@ -210,17 +211,24 @@ namespace net.r_eg.vsCE.UI.WForms
         /// </summary>
         protected void componentApply()
         {
-            List<Configuration.Component> list = new List<Configuration.Component>();
+            var list = new List<Configuration.Component>();
             foreach(DataGridViewRow row in dgvComponents.Rows)
             {
                 if(row.ReadOnly) {
                     continue;
                 }
+
+                var c = row.Cells[dgvComponentsClass.Name].Value?.ToString();
+                if(c == null || list.Any(p => p.ClassName == c)) {
+                    continue;
+                }
+
                 list.Add(new Configuration.Component() { 
-                    ClassName   = (row.Cells[dgvComponentsClass.Name].Value == null)? "" : row.Cells[dgvComponentsClass.Name].Value.ToString(),
+                    ClassName   = c,
                     Enabled     = Boolean.Parse(row.Cells[dgvComponentsEnabled.Name].Value.ToString()),
                 });
             }
+
             updateComponents(list.ToArray());
         }
 

@@ -48,6 +48,18 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         }
         protected LogData logcopy;
 
+        /// <summary>
+        /// OutputWindowPane
+        /// </summary>
+        protected virtual IOW OWP
+        {
+            get {
+                if(env.OutputWindowPane == null) {
+                    throw new NotSupportedException("The OW pane is not available for current environment.");
+                }
+                return env.OutputWindowPane;
+            }
+        }
 
         /// <param name="env">Used environment</param>
         public OWPComponent(IEnvironment env)
@@ -144,7 +156,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
             if(!pm.Is(LevelType.Method, "item")) {
                 throw new IncorrectNodeException(pm);
             }
-            ILevel level = pm.Levels[0]; // level of the item() method
+            ILevel level = pm.FirstLevel; // level of the item() method
 
             if(!level.Is(ArgumentType.StringDouble)) {
                 throw new ArgumentPMException(level, "item(string name)");
@@ -158,7 +170,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
             }
 
             pm.pinTo(1);
-            switch(pm.Levels[0].Data)
+            switch(pm.FirstLevel.Data)
             {
                 case "write": {
                     return stItemWrite(name, false, pm);
@@ -185,7 +197,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         ///     `item("name").write(true): content`
         ///     `item("name").writeLine(true): content`
         /// </summary>
-        /// <param name="raw"></param>
+        /// <param name="name"></param>
         /// <param name="newline">Flag of new line symbol</param>
         /// <param name="pm"></param>
         /// <returns></returns>
@@ -216,7 +228,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
             {
                 throw new IncorrectNodeException(pm);
             }
-            bool createIfNotExist = (bool)pm.Levels[0].Args[0].data;
+            bool createIfNotExist = (bool)pm.FirstLevel.Args[0].data;
 
             if(pm.Levels[1].Type != LevelType.RightOperandColon) {
                 throw new IncorrectNodeException(pm);
@@ -228,14 +240,14 @@ namespace net.r_eg.vsCE.SBEScripts.Components
             if(!createIfNotExist)
             {
                 try {
-                    pane = env.OutputWindowPane.getByName(name, false);
+                    pane = OWP.getByName(name, false);
                 }
                 catch(ArgumentException) {
                     throw new NotFoundException("The item '{0}' does not exist. Use 'force' flag for automatic creation if needed.", name);
                 }
             }
             else {
-                pane = env.OutputWindowPane.getByName(name, true);
+                pane = OWP.getByName(name, true);
             }
 
             if(newline) {
@@ -267,7 +279,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
                 throw new IncorrectNodeException(pm);
             }
 
-            if(!Value.toBoolean(pm.Levels[0].Data)) {
+            if(!Value.toBoolean(pm.FirstLevel.Data)) {
 #if DEBUG
                 Log.Trace("skip removing '{0}'", name);
 #endif
@@ -276,7 +288,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
 
             Log.Debug("removing the item '{0}'", name);
             try {
-                env.OutputWindowPane.deleteByName(name);
+                OWP.deleteByName(name);
                 return Value.from(true);
             }
             catch(ArgumentException) {
@@ -307,7 +319,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
                 throw new IncorrectNodeException(pm);
             }
 
-            if(!Value.toBoolean(pm.Levels[0].Data)) {
+            if(!Value.toBoolean(pm.FirstLevel.Data)) {
 #if DEBUG
                 Log.Trace("skip clearing '{0}'", name);
 #endif
@@ -316,7 +328,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
 
             Log.Debug("Clearing the item '{0}'", name);
             try {
-                env.OutputWindowPane.getByName(name, false).Clear();
+                OWP.getByName(name, false).Clear();
                 return Value.from(true);
             }
             catch(ArgumentException) {
@@ -347,7 +359,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
                 throw new IncorrectNodeException(pm);
             }
 
-            if(!Value.toBoolean(pm.Levels[0].Data)) {
+            if(!Value.toBoolean(pm.FirstLevel.Data)) {
 #if DEBUG
                 Log.Trace("skip activation of pane '{0}'", name);
 #endif
@@ -356,7 +368,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
 
             Log.Debug("Activation the item '{0}'", name);
             try {
-                env.OutputWindowPane.getByName(name, false).Activate();
+                OWP.getByName(name, false).Activate();
                 return Value.from(true);
             }
             catch(ArgumentException) {
@@ -408,7 +420,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
 
             if(pm.Is(LevelType.Method, "out"))
             {
-                ILevel lvlOut = pm.Levels[0];
+                ILevel lvlOut = pm.FirstLevel;
                 if(!lvlOut.Is(ArgumentType.StringDouble)
                     && !lvlOut.Is(ArgumentType.StringDouble, ArgumentType.Boolean))
                 {

@@ -193,8 +193,7 @@ namespace net.r_eg.vsCE.UI.WForms
 
             space = new DeepSpace(pictureBoxSpace.CreateGraphics(), pictureBoxSpace.Width, pictureBoxSpace.Height);
 
-            int act = Math.Max(2015, DateTime.Now.Year);
-            labelCopyright.Text = String.Format("Copyright (c) 2015{0}  Denis Kuzmin (reg) < entry.reg@gmail.com >", (act == 2015)? "" : String.Format("-{0}", act));
+            labelCopyright.Text = String.Format("Copyright (c) 2015-{0}  Denis Kuzmin < entry.reg@gmail.com >", Math.Max(2016, DateTime.Now.Year));
 
 #if !DEBUG
             labelVersionVal.Text = String.Format("v{0} [ {1} ]", Version.numberWithRevString, Version.branchSha1);
@@ -257,7 +256,7 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void pictureBoxDonation_Click(object sender, EventArgs e)
         {
-            Util.openUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P2HRG52AJSA9N&lc=US&item_name=vsCommandEvent%20%28vsCE%29%20Open%20Source%20Project&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted");
+            Util.openUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=entry%2ereg%40gmail%2ecom&lc=US&item_name=3F%2dOpenSource%20%5b%20github%2ecom%2f3F&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted");
         }
 
         private void pictureBoxDonation_MouseHover(object sender, EventArgs e)

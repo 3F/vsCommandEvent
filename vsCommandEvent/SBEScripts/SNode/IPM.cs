@@ -31,6 +31,11 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
         List<ILevel> Levels { get; }
 
         /// <summary>
+        /// Access to first level.
+        /// </summary>
+        ILevel FirstLevel { get; set; }
+
+        /// <summary>
         /// Condition for analyzer.
         /// </summary>
         string Condition { get; }
@@ -162,5 +167,13 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
         /// <param name="variants">Alternative variants that can be.</param>
         /// <returns>true value if selected level is equal to selected data, otherwise false.</returns>
         bool IsData(string data, params string[] variants);
+
+        /// <summary>
+        /// Extracts all arguments from raw data.
+        /// </summary>
+        /// <param name="raw">Raw data of arguments.</param>
+        /// <param name="splitter">A character that delimits arguments.</param>
+        /// <returns>List of parsed arguments or null value if data is empty or null.</returns>
+        Argument[] arguments(string raw, char splitter = ',');
     }
 }

@@ -31,7 +31,7 @@ using net.r_eg.vsCE.SBEScripts;
 namespace net.r_eg.vsCE.UI.WForms.Logic
 {
     /// <summary>
-    /// TODO: !Most important! This from vsSBE 'as is', need refact.
+    /// TODO: !Most important! This from vsSBE 'as is', need to refactor.
     /// </summary>
     public class Events
     {

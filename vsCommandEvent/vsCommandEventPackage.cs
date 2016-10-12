@@ -59,6 +59,11 @@ namespace net.r_eg.vsCE
         private uint _pdwCookieSolution;
 
         /// <summary>
+        /// For work with ErrorList pane of Visual Studio.
+        /// </summary>
+        private VSTools.ErrorList.IPane errorList;
+
+        /// <summary>
         /// Listener of the OutputWindowsPane
         /// </summary>
         private Receiver.Output.OWP owpListener;
@@ -94,7 +99,7 @@ namespace net.r_eg.vsCE
 
         /// <summary>
         /// Priority call with SVsSolution.
-        /// Part of IVsSolutionEvents - that the solution has been opened.
+        /// Part of IVsSolutionEvents - that the solution has been opened (Before initializing projects).
         /// http://msdn.microsoft.com/en-us/library/microsoft.visualstudio.shell.interop.ivssolutionevents.onafteropensolution.aspx
         /// </summary>
         /// <param name="pUnkReserved"></param>
@@ -127,16 +132,6 @@ namespace net.r_eg.vsCE
                 Log.Error("Problem with closing solution: '{0}'", ex.Message);
             }
             return VSConstants.S_FALSE;
-        }
-
-        /// <summary>
-        /// CA1001: well, the VisualStudio.Shell.Package is already uses `void Dispose(bool disposing)`
-        ///         And this will never be used at all... but in addition and for CA we also implemented IDisposable
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         private void initAppEvents()
@@ -223,6 +218,16 @@ namespace net.r_eg.vsCE
             }
         }
 
+        private void onLogReceived(object sender, Logger.MessageArgs e)
+        {
+            if(Log._.isError(e.Level)) {
+                errorList.error(e.Message);
+            }
+            else if(Log._.isWarn(e.Level)) {
+                errorList.warn(e.Message);
+            }
+        }
+
         #region unused
 
         int IVsSolutionEvents.OnAfterLoadProject(IVsHierarchy pStubHierarchy, IVsHierarchy pRealHierarchy)
@@ -276,6 +281,10 @@ namespace net.r_eg.vsCE
 
             try
             {
+                errorList       = new VSTools.ErrorList.Pane(this);
+                Log._.Received  -= onLogReceived;
+                Log._.Received  += onLogReceived;
+
                 OleMenuCommandService mcs = (OleMenuCommandService)GetService(typeof(IMenuCommandService));
 
                 // Tools / App settings
@@ -318,11 +327,37 @@ namespace net.r_eg.vsCE
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "configFrm")]
+        #endregion
+
+        #region IDisposable
+
+        // To detect redundant calls
+        private bool disposed = false;
+
+        // To correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
         protected override void Dispose(bool disposing)
         {
-            try {
-                UI.Util.closeTool(configFrm); //CA2213: we use Util for all System.Windows.Forms
+            if(disposed) {
+                return;
+            }
+            disposed = true;
+            //...
+
+            try
+            {
+                if(configFrm != null && !configFrm.IsDisposed) {
+                    configFrm.Close();
+                }
+
+                if(errorList != null) {
+                    ((IDisposable)errorList).Dispose();
+                }
+
                 Log._.paneDetach((IVsOutputWindow)GetGlobalService(typeof(SVsOutputWindow)));
             }
             catch(Exception ex) {

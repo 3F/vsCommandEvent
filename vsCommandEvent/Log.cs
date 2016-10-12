@@ -34,9 +34,9 @@ namespace net.r_eg.vsCE
     internal class Log: ILog
     {
         /// <summary>
-        /// When is receiving message.
+        /// When message has been received.
         /// </summary>
-        public event EventHandler<MessageArgs> Receiving = delegate(object sender, MessageArgs e) { };
+        public event EventHandler<MessageArgs> Received = delegate(object sender, MessageArgs e) { };
 
         /// <summary>
         /// DTE context
@@ -207,6 +207,34 @@ namespace net.r_eg.vsCE
         }
 
         /// <summary>
+        /// Checks specific level on error type.
+        /// </summary>
+        /// <param name="level"></param>
+        public bool isError(string level)
+        {
+            if(String.IsNullOrWhiteSpace(level)) {
+                return false;
+            }
+
+            // TODO: 
+            return level.Equals($"{LogLevel.Error}", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Checks specific level on warning type.
+        /// </summary>
+        /// <param name="level"></param>
+        public bool isWarn(string level)
+        {
+            if(String.IsNullOrWhiteSpace(level)) {
+                return false;
+            }
+
+            // TODO: 
+            return level.Equals($"{LogLevel.Warn}", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
         /// Entry point for NLog messages.
         /// https://github.com/nlog/nlog/wiki/MethodCall-target
         /// </summary>
@@ -331,7 +359,7 @@ namespace net.r_eg.vsCE
             }
 
             //if(Thread.CurrentThread.Name != LoggingEvent.IDENT_TH) {
-                Receiving(this, new MessageArgs() { Message =  message,  Level = (level)?? String.Empty });
+                Received(this, new MessageArgs() { Message =  message,  Level = (level)?? String.Empty });
             //}
 
             try {
@@ -343,8 +371,24 @@ namespace net.r_eg.vsCE
                 message = String.Format("Log - COMException '{0}' :: Message - '{1}'", ex.Message, message);
             }
 
-            Console.Write(message);
+            conwrite(message, level);
+
+#if DEBUG
             System.Diagnostics.Debug.Write(message);
+#endif
+        }
+
+        protected virtual void conwrite(string message, string level)
+        {
+            if(Log._.isError(level)) {
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
+            else if(Log._.isWarn(level)) {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            }
+
+            Console.Write(message);
+            Console.ResetColor();
         }
 
         /// <summary>

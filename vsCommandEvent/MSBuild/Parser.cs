@@ -17,7 +17,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Microsoft.Build.Evaluation;
 using net.r_eg.vsCE.Exceptions;
 using net.r_eg.vsCE.MSBuild.Exceptions;
@@ -106,7 +109,7 @@ namespace net.r_eg.vsCE.MSBuild
                 }
             }
 
-            Project project         = getProject(projectName, true);
+            Project project         = getProject(projectName);
             ProjectProperty prop    = project.GetProperty(name);
 
             if(prop != null) {
@@ -114,7 +117,6 @@ namespace net.r_eg.vsCE.MSBuild
             }
             Log.Debug("getProperty: return default value");
             return PROP_VALUE_DEFAULT;
-            //throw new MSBPropertyNotFoundException("variable - '{0}' : project - '{1}'", name, (projectName == null)? "<default>" : projectName);
         }
 
         /// <summary>
@@ -126,7 +128,7 @@ namespace net.r_eg.vsCE.MSBuild
         {
             List<PropertyItem> properties = new List<PropertyItem>();
 
-            Project project = getProject(projectName, true);
+            Project project = getProject(projectName);
             foreach(ProjectProperty property in project.Properties)
             {
                 string eValue = property.EvaluatedValue;
@@ -153,12 +155,15 @@ namespace net.r_eg.vsCE.MSBuild
         /// <returns>Evaluated value</returns>
         public virtual string evaluate(string unevaluated, string projectName = null)
         {
-            const string container  = "vsCE_latestEvaluated";
-            Project project         = getProject(projectName, true);
+            const string container  = Settings.APP_NAME_SHORT + "_latestEvaluated";
+            Project project         = getProject(projectName);
 
             Log.Trace("evaluate: '{0}' -> [{1}]", unevaluated, projectName);
             lock(_lock)
             {
+                CultureInfo origincul               = Thread.CurrentThread.CurrentCulture;
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
                 try {
                     defProperties(project);
                     project.SetProperty(container, Tokens.characters(_wrapProperty(ref unevaluated)));
@@ -166,6 +171,13 @@ namespace net.r_eg.vsCE.MSBuild
                 }
                 finally {
                     project.RemoveProperty(project.GetProperty(container));
+                    Thread.CurrentThread.CurrentCulture = origincul;
+
+                    // To fix "Save changes to the following items?"
+                    // Do not use the `project.Save();` because will be "File Modification Detected ... has been modified outside the environment."
+                    foreach(var dteprj in Env.ProjectsDTE.Where(p => p.FullName == project.FullPath)) {
+                        dteprj.Save();
+                    }
                 }
             }
         }
@@ -210,6 +222,38 @@ namespace net.r_eg.vsCE.MSBuild
         public string evaluate(string data)
         {
             return parse(data);
+        }
+
+        /// <summary>
+        /// Getting project instance by name.
+        /// </summary>
+        /// <param name="name">Project name.</param>
+        /// <returns>Returns new instance if fail.</returns>
+        public Project getProject(string name)
+        {
+            try {
+                Log.Trace("MSBuild - getProject: Trying of getting project instance - '{0}'", name);
+                return env.getProject(name);
+            }
+            catch(NotFoundException) {
+                Log.Trace("MSBuild - getProject: use empty project by default.");
+                return new Project();
+            }
+        }
+
+        /// <summary>
+        /// To initialize properties by default for project.
+        /// </summary>
+        /// <param name="project">Uses GlobalProjectCollection if null.</param>
+        public virtual void initPropByDefault(Project project = null)
+        {
+            IAppSettings app    = Settings._;
+            const string _PFX   = Settings.APP_NAME_SHORT;
+
+            setGlobalProperty(project, Settings.APP_NAME, Version.numberWithRevString);
+            setGlobalProperty(project, $"{_PFX}_CommonPath", app.CommonPath);
+            setGlobalProperty(project, $"{_PFX}_LibPath", app.LibPath);
+            setGlobalProperty(project, $"{_PFX}_WorkPath", app.WorkPath);
         }
 
         /// <param name="env">Used environment</param>
@@ -287,6 +331,7 @@ namespace net.r_eg.vsCE.MSBuild
             }
 
             Group rTSign            = m.Groups["tsign"];
+            Group rVSign            = m.Groups["vsign"];
             Group rVariable         = m.Groups[1];
             Group rStringDataD      = m.Groups[2];
             Group rStringDataS      = m.Groups[3];
@@ -308,27 +353,50 @@ namespace net.r_eg.vsCE.MSBuild
             if(rVariable.Success)
             {
                 ret.variable.name = rVariable.Value;
+
                 switch(rTSign.Value) {
                     case "+": {
-                        ret.variable.operation = PreparedData.VariableType.DefProperty;
+                        ret.variable.tSign = PreparedData.TSignType.DefProperty;
                         break;
                     }
                     case "-": {
-                        ret.variable.operation = PreparedData.VariableType.UndefProperty;
+                        ret.variable.tSign = PreparedData.TSignType.UndefProperty;
                         break;
                     }
                     default: {
-                        ret.variable.operation = PreparedData.VariableType.Default;
+                        ret.variable.tSign = PreparedData.TSignType.Default;
                         break;
                     }
                 }
+
+                switch(rVSign.Value) {
+                    case "+": {
+                        ret.variable.vSign = PreparedData.VSignType.Increment;
+                        break;
+                    }
+                    case "-": {
+                        ret.variable.vSign = PreparedData.VSignType.Decrement;
+                        break;
+                    }
+                    default: {
+                        ret.variable.vSign = PreparedData.VSignType.Default;
+                        break;
+                    }
+                }
+
                 // all $() in right operand cannot be evaluated because it's escaped and already unwrapped property.
                 // i.e. this already should be evaluated with prev. steps - because we are moving upward from deepest container !
-                Log.Trace("prepare: variable name = '{0}'", ret.variable.name);
+                Log.Trace($"prepare: variable name = '{ret.variable.name}'; tSign({ret.variable.tSign}), vSign({ret.variable.vSign})");
             }
 
 
             /* Data */
+
+            if((rStringDataD.Success || rStringDataS.Success) 
+                && (rData.Success && !String.IsNullOrWhiteSpace(rData.Value)))
+            {
+                throw new IncorrectSyntaxException("Incorrect composition of data: string with raw data.");
+            }
 
             if(rStringDataD.Success) {
                 ret.property.unevaluated    = parse(Tokens.unescapeQuotes('"', rStringDataD.Value));
@@ -353,9 +421,7 @@ namespace net.r_eg.vsCE.MSBuild
 
             ret.property.complex = !isPropertySimple(ref ret.property.unevaluated);
 
-            Log.Trace("prepare: value = '{0}'({1})", ret.property.unevaluated, ret.variable.type);
-            Log.Trace("prepare: complex {0}", ret.property.complex);
-
+            Log.Trace($"prepare: value = '{ret.property.unevaluated}'({ret.variable.type}); complex: {ret.property.complex}");
 
             /* Project */
 
@@ -484,27 +550,78 @@ namespace net.r_eg.vsCE.MSBuild
             }
             Log.Debug("Evaluated: '{0}'", evaluated);
 
+            // updating of variables
 
-            // alternative to SBE-Scripts
-            if(!String.IsNullOrEmpty(prepared.variable.name))
-            {
-                Log.Debug("Evaluate: ready to define variable - '{0}':'{1}'", 
-                                                                        prepared.variable.name, 
-                                                                        prepared.variable.project);
-
-                uvariable.set(prepared.variable.name, prepared.variable.project, evaluated);
-                uvariable.evaluate(prepared.variable.name, prepared.variable.project, new EvaluatorBlank(), true);
-
-                if(prepared.variable.operation == PreparedData.VariableType.DefProperty) {
-                    defProperty(prepared.variable, evaluated);
-                }
-                else if(prepared.variable.operation == PreparedData.VariableType.UndefProperty) {
-                    undefProperty(prepared.variable);
-                }
-                evaluated = String.Empty;
+            if(!String.IsNullOrEmpty(prepared.variable.name)) {
+                evaluated = defineVariable(prepared, evaluated);
             }
 
             return evaluated;
+        }
+
+        protected string defineVariable(PreparedData prepared, string evaluated)
+        {
+            evaluated = vSignOperation(prepared, evaluated);
+
+            Log.Debug("Evaluate: ready to define variable - '{0}':'{1}'", 
+                                                                    prepared.variable.name, 
+                                                                    prepared.variable.project);
+
+            uvariable.set(prepared.variable.name, prepared.variable.project, evaluated);
+            uvariable.evaluate(prepared.variable.name, prepared.variable.project, new EvaluatorBlank(), true);
+
+            tSignOperation(prepared, ref evaluated);
+            return String.Empty;
+        }
+
+        protected string vSignOperation(PreparedData prepared, string val)
+        {
+            if(prepared.variable.vSign == PreparedData.VSignType.Default) {
+                return val;
+            }
+
+            var left        = uvariable.get(prepared.variable.name, prepared.variable.project)?? "0";
+            bool isNumber   = RPattern.IsNumber.IsMatch(left);
+
+            Log.Trace($"vSignOperation: '{prepared.variable.vSign}'; `{left}` (isNumber: {isNumber})");
+
+            if(prepared.variable.vSign == PreparedData.VSignType.Increment)
+            {
+                if(!isNumber) {
+                    // equiv.: $(var = $([System.String]::Concat($(var), "str")) )
+                    return left + val;
+                }
+
+                // $(var = $([MSBuild]::Add($(var), 1)) )
+                // TODO: additional check for errors from right string $(i += 'test') ... this correct: $(i += $(i))
+                return evaluate($"$([MSBuild]::Add('{left}', '{val}'))", prepared.variable.project);
+            }
+
+            if(prepared.variable.vSign == PreparedData.VSignType.Decrement)
+            {
+                if(!isNumber) {
+                    throw new InvalidArgumentException($"Argument `{val}` is not valid for operation '-=' or it is not supported yet.");
+                }
+
+                // $(var = $([MSBuild]::Subtract($(var), 1)) )
+                return evaluate($"$([MSBuild]::Subtract('{left}', '{val}'))", prepared.variable.project);
+            }
+
+            return val;
+        }
+
+        protected void tSignOperation(PreparedData prepared, ref string evaluated)
+        {
+#if DEBUG
+            Log.Trace($"tSignOperation: '{prepared.variable.tSign}'");
+#endif
+
+            if(prepared.variable.tSign == PreparedData.TSignType.DefProperty) {
+                defProperty(prepared.variable, evaluated);
+            }
+            else if(prepared.variable.tSign == PreparedData.TSignType.UndefProperty) {
+                undefProperty(prepared.variable);
+            }
         }
 
         /// <summary>
@@ -575,35 +692,32 @@ namespace net.r_eg.vsCE.MSBuild
             return removeGlobalProperty(project, variable.name);
         }
 
+        /// <param name="project">Uses GlobalProjectCollection if null.</param>
+        /// <param name="name"></param>
+        /// <param name="val"></param>
         /// <returns>Returns true if the value changes, otherwise returns false.</returns>
         protected virtual bool setGlobalProperty(Project project, string name, string val)
         {
             if(project == null) {
-                return false;
+                ProjectCollection.GlobalProjectCollection.SetGlobalProperty(name, val);
+                return true;
             }
+
             return project.SetGlobalProperty(name, val);
         }
 
+        /// <param name="project">Uses GlobalProjectCollection if null.</param>
+        /// <param name="name"></param>
         /// <returns>Returns true if the value of the global property was set.</returns>
         protected virtual bool removeGlobalProperty(Project project, string name)
         {
             if(project == null) {
-                return false;
+                return ProjectCollection.GlobalProjectCollection.RemoveGlobalProperty(name);
             }
+
             return project.RemoveGlobalProperty(name);
         }
 
-        protected void setPropertiesByDefault(Project project)
-        {
-            if(project == null) {
-                Log.Debug("The default global properties cannot be defined.");
-                return;
-            }
-
-            if(!project.GlobalProperties.ContainsKey(Settings.APP_NAME)) {
-                setGlobalProperty(project, Settings.APP_NAME, Version.numberWithRevString);
-            }
-        }
 
         /// <summary>
         /// Operations for recursive properties and to avoiding some looping.
@@ -675,32 +789,6 @@ namespace net.r_eg.vsCE.MSBuild
             });
 
             return data;
-        }
-
-        /// <summary>
-        /// Wrapper of getting project instance by name.
-        /// </summary>
-        /// <param name="name">Project name.</param>
-        /// <returns></returns>
-        protected Project getProject(string name)
-        {
-            try {
-                Log.Trace("MSBuild - getProject: Trying of getting project instance - '{0}'", name);
-                return env.getProject(name);
-            }
-            catch(MSBProjectNotFoundException) {
-                Log.Trace("MSBuild - getProject: use empty project by default.");
-                return new Project();
-            }
-        }
-
-        protected Project getProject(string name, bool defProperties)
-        {
-            Project p = getProject(name);
-            if(defProperties) {
-                setPropertiesByDefault(p);
-            }
-            return p;
         }
 
         protected virtual bool isPropertySimple(ref string data)

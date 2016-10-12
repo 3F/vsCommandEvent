@@ -59,11 +59,30 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
         /// </summary>
         public List<ILevel> Levels
         {
-            get {
-                return levels;
+            get;
+            protected set;
+        } = new List<ILevel>();
+
+        /// <summary>
+        /// Access to first level.
+        /// </summary>
+        public ILevel FirstLevel
+        {
+            get
+            {
+                if(Levels.Count < 1) {
+                    throw new InvalidArgumentException("PM: The first level is not initialized or not exists anymore.");
+                }
+                return Levels[0];
+            }
+            set
+            {
+                if(Levels.Count < 1) {
+                    throw new InvalidArgumentException("PM: Allowed only updating. Initialize first.");
+                }
+                Levels[0] = value;
             }
         }
-        protected List<ILevel> levels = new List<ILevel>();
 
         /// <summary>
         /// Compiled rules of nodes.
@@ -163,7 +182,7 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
         /// <returns>Self reference.</returns>
         public IPM pinTo(int level)
         {
-            levels = sliceLevels(level);
+            Levels = sliceLevels(level);
             return this;
         }
 
@@ -327,30 +346,45 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
             return false;
         }
 
-        ///// <param name="raw">Initial raw data.</param>
-        //public PM(string raw)
-        //{
-        //    detect(raw);
-        //}
+        /// <summary>
+        /// Extracts all arguments from raw data.
+        /// </summary>
+        /// <param name="raw">Raw data of arguments.</param>
+        /// <param name="splitter">A character that delimits arguments.</param>
+        /// <returns>List of parsed arguments or null value if data is empty or null.</returns>
+        /// <exception cref="SyntaxIncorrectException">If incorrect data.</exception>
+        public Argument[] arguments(string raw, char splitter = ',')
+        {
+            if(String.IsNullOrWhiteSpace(raw)) {
+                return null;
+            }
+            return extractArgs(raw, splitter);
+        }
 
         /// <param name="raw">Initial raw data.</param>
         /// <param name="msbuild">To evaluate data with MSBuild engine where it's allowed.</param>
         /// <param name="type">Allowed types of evaluation with MSBuild.</param>
         public PM(string raw, IMSBuild msbuild = null, EvalType type = EvalType.ArgStringD /*| EvalType.RightOperandStd*/)
+            : this(msbuild, type)
         {
-            //if(msbuild == null) {
-            //    throw new InvalidArgumentException("PM: The `msbuild` argument cannot be null");
-            //}
-            this.msbuild    = msbuild;
-            teval           = type;
-
             detect(raw);
         }
 
         /// <param name="levels">predefined levels.</param>
         public PM(List<ILevel> levels)
         {
-            this.levels = levels;
+            Levels = levels;
+        }
+
+        /// <param name="msbuild">To evaluate data with MSBuild engine where it's allowed.</param>
+        /// <param name="type">Allowed types of evaluation with MSBuild.</param>
+        public PM(IMSBuild msbuild = null, EvalType type = EvalType.ArgStringD)
+        {
+            //if(msbuild == null) {
+            //    throw new InvalidArgumentException("PM: The `msbuild` argument cannot be null");
+            //}
+            this.msbuild    = msbuild;
+            teval           = type;
         }
 
         /// <summary>
@@ -366,7 +400,7 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
 
             Match m = Rcon.Match(data);
             if(!m.Success) {
-                levels.Add(getRightOperand(data, h));
+                Levels.Add(getRightOperand(data, h));
                 return;
             }
 
@@ -378,14 +412,14 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
             
             if(property != null)
             {
-                levels.Add(new Level() {
+                Levels.Add(new Level() {
                     Type = LevelType.Property,
                     Data = property,
                 });
             }
             else
             {
-                levels.Add(new Level() {
+                Levels.Add(new Level() {
                     Type = LevelType.Method,
                     Data = method,
                     Args = extractArgs(h.recovery(arguments)),
@@ -415,7 +449,7 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
             for(int i = 0; i < raw.Length; ++i)
             {
                 string arg = h.recovery(raw[i]).Trim();
-                if(arg.Length < 1) {
+                if(arg.Length < 1 && splitter == ',') { // std: p1, p2, p3
                     throw new SyntaxIncorrectException("PM - extractArgs: incorrect arguments line '{0}'", data);
                 }
                 ret[i] = detectArgument(arg);
@@ -599,7 +633,7 @@ namespace net.r_eg.vsCE.SBEScripts.SNode
             if(level < 0 || level >= Levels.Count) {
                 throw new InvalidArgumentException("PM: The level '{0}' should be >= 0 && < Levels({1})", level, Levels.Count);
             }
-            return new List<ILevel>(levels.Skip(level));
+            return new List<ILevel>(Levels.Skip(level));
         }
     }
 }

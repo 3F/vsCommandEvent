@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2013-2015  Denis Kuzmin (reg) <entry.reg@gmail.com>
+ * Copyright (c) 2013-2016  Denis Kuzmin (reg) <entry.reg@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -35,7 +35,7 @@ using EOWP = net.r_eg.vsCE.Events.OWP;
 namespace net.r_eg.vsCE.UI.WForms
 {
     /// <summary>
-    /// TODO: !Most important! This from vsSBE 'as is', need refact.
+    /// TODO: !Most important! This from vsSBE 'as is', need to refactor.
     /// </summary>
     public partial class EventsFrm: Form, ITransfer
     {
@@ -1069,7 +1069,7 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void menuGetVSSBE_Click(object sender, EventArgs e)
         {
-            Util.openUrl("http://visualstudiogallery.msdn.microsoft.com/0d1dbfd7-ed8a-40af-ae39-281bfeca2334/");
+            Util.openUrl("https://visualstudiogallery.msdn.microsoft.com/0d1dbfd7-ed8a-40af-ae39-281bfeca2334/");
         }
 
         private void toolStripMenuAbout_Click(object sender, EventArgs e)
@@ -1079,7 +1079,7 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void toolStripMenuReport_Click(object sender, EventArgs e)
         {
-            DialogResult ret = MessageBox.Show("Seen error or have a suggestion - Click 'Yes'", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult ret = MessageBox.Show("Seen error or have a question - Click 'Yes'", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if(ret == DialogResult.Yes) {
                 Util.openUrl("https://github.com/3F/vsCommandEvent/issues/new");

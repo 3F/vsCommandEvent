@@ -112,12 +112,14 @@ namespace net.r_eg.vsCE.SBEScripts
         /// </summary>
         public virtual void register()
         {
+            register(new TryComponent(this));
             register(new CommentComponent());
+            register(new BoxComponent(this));
             register(new ConditionComponent(this));
             register(new UserVariableComponent(this));
             register(new OWPComponent(Env));
             register(new DTEComponent(Env));
-            register(new InternalComponent());
+            register(new InternalComponent(Env));
             register(new MSBuildComponent(this));
             register(new BuildComponent(Env));
             register(new FunctionComponent(this));
@@ -149,7 +151,7 @@ namespace net.r_eg.vsCE.SBEScripts
         /// <summary>
         /// Activation of components with ISolutionEvents.
         /// </summary>
-        /// <param name="ISolutionEvents"></param>
+        /// <param name="data"></param>
         public void updateActivation(ISolutionEvents data)
         {
             if(data == null) {

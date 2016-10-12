@@ -25,6 +25,16 @@ namespace net.r_eg.vsCE
     public interface IEnvironment
     {
         /// <summary>
+        /// List of EnvDTE projects.
+        /// </summary>
+        IEnumerable<EnvDTE.Project> ProjectsDTE { get; }
+
+        /// <summary>
+        /// List of Microsoft.Build.Evaluation projects.
+        /// </summary>
+        IEnumerable<Microsoft.Build.Evaluation.Project> ProjectsMBE { get; }
+
+        /// <summary>
         /// Simple list of names from EnvDTE projects
         /// </summary>
         List<string> ProjectsList { get; }
@@ -40,7 +50,7 @@ namespace net.r_eg.vsCE
         string SolutionActiveCfgString { get; }
 
         /// <summary>
-        /// Specified type of current build action
+        /// Current context for actions.
         /// </summary>
         BuildType BuildType { get; set; }
 
@@ -50,9 +60,14 @@ namespace net.r_eg.vsCE
         IEnumerable<EnvDTE80.SolutionConfiguration2> SolutionConfigurations { get; }
 
         /// <summary>
-        /// Name from "Set as StartUp Project"
+        /// Project by default or "StartUp Project".
         /// </summary>
         string StartupProjectString { get; }
+
+        /// <summary>
+        /// DTE2 context.
+        /// </summary>
+        EnvDTE80.DTE2 Dte2 { get; }
 
         /// <summary>
         /// Events in the extensibility model
@@ -121,5 +136,11 @@ namespace net.r_eg.vsCE
         /// <param name="customIn">Custom input parameters.</param>
         /// <param name="customOut">Custom output parameters.</param>
         void raise(string guid, int id, ref object customIn, ref object customOut);
+
+        /// <summary>
+        /// To update the project by default or "StartUp Project".
+        /// </summary>
+        /// <param name="name">Uses default behavior if empty or null.</param>
+        void updateStartupProject(string name);
     }
 }

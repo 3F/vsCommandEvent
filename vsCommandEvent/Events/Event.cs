@@ -75,7 +75,7 @@ namespace net.r_eg.vsCE.Events
         private bool supportSBEScripts = true;
 
         /// <summary>
-        /// The type of build action.
+        /// The context of action.
         /// </summary>
         public BuildType BuildType
         {

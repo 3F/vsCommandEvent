@@ -158,7 +158,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
             if(!pm.FinalEmptyIs(LevelType.Method, "get")) {
                 throw new IncorrectNodeException(pm);
             }
-            ILevel level = pm.Levels[0];
+            ILevel level = pm.FirstLevel;
 
             if(!level.Is(ArgumentType.StringDouble)) {
                 throw new ArgumentPMException(level, "get(string name)");
@@ -201,6 +201,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
             throw new IncorrectNodeException(pm);
         }
 
+        /// <param name="pm"></param>
         /// <param name="stdOut">Use StandardOutput or not</param>
         /// <param name="silent">Silent mode</param>
         /// <returns>Received data from StandardOutput</returns>
@@ -269,7 +270,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         )]
         protected string stCall(IPM pm, bool stdOut, bool silent)
         {
-            ILevel level = pm.Levels[0];
+            ILevel level = pm.FirstLevel;
 
             string file;
             string args = String.Empty;
@@ -318,11 +319,11 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         )]
         protected string stCmd(IPM pm)
         {
-            ILevel origin = pm.Levels[0];
+            ILevel origin = pm.FirstLevel;
 
             if(origin.Is(ArgumentType.StringDouble))
             {
-                pm.Levels[0] = new Level() {
+                pm.FirstLevel = new Level() {
                     Type        = LevelType.Method,
                     DataType    = origin.DataType,
                     Data        = "sout",
@@ -334,7 +335,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
             }
             else if(origin.Is(ArgumentType.StringDouble, ArgumentType.Integer))
             {
-                pm.Levels[0] = new Level() {
+                pm.FirstLevel = new Level() {
                     Type        = LevelType.Method,
                     DataType    = origin.DataType,
                     Data        = "sout",
@@ -373,8 +374,9 @@ namespace net.r_eg.vsCE.SBEScripts.Components
             throw new IncorrectNodeException(pm);
         }
 
+        /// <param name="pm"></param>
         /// <param name="append">Flag to append the content to the end of the file.</param>
-        /// <param name="writeLine">To write with newline.</param>
+        /// <param name="newline">To write with newline.</param>
         /// <param name="enc">Encoding.</param>
         [Method("write",
                 "To write data in a text file.\n * Creates if the file does not exist.\n * Overwrites content if it already exists.",
@@ -417,7 +419,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         )]
         protected string stWrite(IPM pm, bool append, bool newline, Encoding enc)
         {
-            ILevel level = pm.Levels[0];
+            ILevel level = pm.FirstLevel;
 
             string file = null;
             string std  = null;
@@ -553,7 +555,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
 
             // arguments
 
-            ILevel level = pm.Levels[0];
+            ILevel level = pm.FirstLevel;
             
             if(!level.Is(ArgumentType.StringDouble, ArgumentType.StringDouble, ArgumentType.StringDouble)) {
                 throw new ArgumentPMException(level, "(string file, string pattern, string replacement)");
@@ -576,6 +578,9 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         }
 
         /// <param name="type">search type</param>
+        /// <param name="content"></param>
+        /// <param name="pattern"></param>
+        /// <param name="replacement"></param>
         protected string stReplaceEngine(SearchType type, ref string content, string pattern, string replacement)
         {
             switch(type) {
@@ -630,7 +635,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
             if(!pm.It(LevelType.Property, "exists")) {
                 throw new IncorrectNodeException(pm);
             }
-            ILevel level = pm.Levels[0];
+            ILevel level = pm.FirstLevel;
 
             if(!pm.FinalEmptyIs(LevelType.Method, "directory")
                 && !pm.FinalEmptyIs(LevelType.Method, "file"))
@@ -687,7 +692,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
             if(!pm.It(LevelType.Property, "remote")) {
                 throw new IncorrectNodeException(pm);
             }
-            ILevel level = pm.Levels[0];
+            ILevel level = pm.FirstLevel;
 
             if(pm.FinalEmptyIs(LevelType.Method, "download"))
             {
@@ -721,7 +726,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
             if(!pm.It(LevelType.Property, "copy")) {
                 throw new IncorrectNodeException(pm);
             }
-            ILevel level = pm.Levels[0];
+            ILevel level = pm.FirstLevel;
 
             if(pm.FinalEmptyIs(LevelType.Method, "file")) {
                 return copyFile(level, pm);
@@ -734,7 +739,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         }
 
         /// <summary>
-        ///  `copy.file(string src, string dest, bool overwrite [, object except])`
+        ///  `copy.file((string src | object src), string dest, bool overwrite [, object except])`
         /// </summary>
         [Method("file",
                 "To copy selected file to the destination. Creates the destination path if not exists.",
@@ -757,6 +762,27 @@ namespace net.r_eg.vsCE.SBEScripts.Components
                 CValueType.Void,
                 CValueType.String, CValueType.String, CValueType.Boolean, CValueType.Object
         )]
+        [Method("file",
+                "To copy selected files to the destination. Creates the destination path if not exists.",
+                "copy", "stCopy",
+                new string[] { "srclist", "dest", "overwrite" },
+                new string[] { "List of source files as {\"f1\", \"path\\*.dll\", ..}",
+                                "The destination path. Should contain path to directory.",
+                                "Overwrite file/s if already exists." },
+                CValueType.Void,
+                CValueType.Object, CValueType.String, CValueType.Boolean
+        )]
+        [Method("file",
+                "To copy selected files to the destination. Creates the destination path if not exists.",
+                "copy", "stCopy",
+                new string[] { "srclist", "dest", "overwrite", "except" },
+                new string[] { "List of source files as {\"f1\", \"path\\*.dll\", ..}",
+                                "The destination path. Should contain path to directory.",
+                                "Overwrite file/s if already exists.",
+                                "List of files to exclude from input source as {\"f1\", \"path\\*.dll\", ...}" },
+                CValueType.Void,
+                CValueType.Object, CValueType.String, CValueType.Boolean, CValueType.Object
+        )]
         protected string copyFile(ILevel level, IPM pm)
         {
             if(level.Is(ArgumentType.StringDouble, ArgumentType.StringDouble, ArgumentType.Boolean)) {
@@ -765,8 +791,28 @@ namespace net.r_eg.vsCE.SBEScripts.Components
             if(level.Is(ArgumentType.StringDouble, ArgumentType.StringDouble, ArgumentType.Boolean, ArgumentType.Object)) {
                 return copyFile(pm.pinTo(1), (string)level.Args[0].data, (string)level.Args[1].data, (bool)level.Args[2].data, (Argument[])level.Args[3].data);
             }
+            if(level.Is(ArgumentType.Object, ArgumentType.StringDouble, ArgumentType.Boolean)) {
+                return copyFile(pm.pinTo(1), (Argument[])level.Args[0].data, (string)level.Args[1].data, (bool)level.Args[2].data);
+            }
+            if(level.Is(ArgumentType.Object, ArgumentType.StringDouble, ArgumentType.Boolean, ArgumentType.Object)) {
+                return copyFile(pm.pinTo(1), (Argument[])level.Args[0].data, (string)level.Args[1].data, (bool)level.Args[2].data, (Argument[])level.Args[3].data);
+            }
 
-            throw new ArgumentPMException(level, "copy.file(string src, string dest, bool overwrite [, object except])");
+            throw new ArgumentPMException(level, "copy.file((string src | object srclist), string dest, bool overwrite [, object except])");
+        }
+
+        protected string copyFile(IPM pm, Argument[] files, string dest, bool overwrite, Argument[] except = null)
+        {
+            dest = dest.PathFormat();
+
+            foreach(Argument src in files) {
+                if(src.type != ArgumentType.StringDouble) {
+                    throw new InvalidArgumentException("Incorrect data from input files. Define as {\"f1\", \"f2\", ...}");
+                }
+                copyFile(pm, src.data.ToString(), dest, overwrite, except);
+            }
+
+            return Value.Empty;
         }
 
         protected string copyFile(IPM pm, string src, string dest, bool overwrite, Argument[] except = null)
@@ -894,7 +940,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
                 Directory.CreateDirectory(dest);
             }
 
-            foreach(var file in files)
+            foreach(var file in files.ToArray())
             {
                 string from = file[0];
                 string to   = file[1];
@@ -915,7 +961,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
             if(!pm.It(LevelType.Property, "delete")) {
                 throw new IncorrectNodeException(pm);
             }
-            ILevel level = pm.Levels[0];
+            ILevel level = pm.FirstLevel;
 
             if(pm.FinalEmptyIs(LevelType.Method, "files")) {
                 return deleteFiles(level, pm);
@@ -1064,6 +1110,8 @@ namespace net.r_eg.vsCE.SBEScripts.Components
             return readToEnd(file, defaultEncoding, true);
         }
 
+        /// <param name="file"></param>
+        /// <param name="data"></param>
         /// <param name="append">Flag to append the content to the end of the file</param>
         /// <param name="newline">To write with newline if true</param>
         /// <param name="enc">The character encoding</param>
@@ -1095,6 +1143,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         /// <summary>
         /// Write into standard output stream.
         /// </summary>
+        /// <param name="data"></param>
         /// <param name="newline">To write with newline if true</param>
         protected void writeToStdOut(string data, bool newline)
         {
@@ -1109,6 +1158,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         /// <summary>
         /// Write into standard error stream.
         /// </summary>
+        /// <param name="data"></param>
         /// <param name="newline">To write with newline if true</param>
         protected void writeToStdErr(string data, bool newline)
         {
@@ -1154,6 +1204,8 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         /// <summary>
         /// Execute file with arguments
         /// </summary>
+        /// <param name="file"></param>
+        /// <param name="args"></param>
         /// <param name="silent">Hide process if true</param>
         /// <param name="stdOut">Reads from StandardOutput if true</param>
         /// <param name="timeout">How long to wait the execution, in seconds. 0 value - infinitely</param>

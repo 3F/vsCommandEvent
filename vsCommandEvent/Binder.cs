@@ -112,6 +112,7 @@ namespace net.r_eg.vsCE
 
             refreshComponents();
 
+            Action.Cmd.MSBuild.initPropByDefault(); //LC: #815, #814
             OpenedSolution(this, new EventArgs());
             return VSConstants.S_OK;
         }
@@ -216,6 +217,7 @@ namespace net.r_eg.vsCE
 #endif
 
             attachCommandEvents();
+
             this.Bootloader = new Bootloader(Environment, uvariable);
             this.Bootloader.register();
 

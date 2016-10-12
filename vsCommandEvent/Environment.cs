@@ -26,6 +26,8 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using net.r_eg.vsCE.Bridge;
 using net.r_eg.vsCE.MSBuild.Exceptions;
+using net.r_eg.vsCE.Exceptions;
+using net.r_eg.vsCE.UnifiedTypes;
 
 namespace net.r_eg.vsCE
 {
@@ -37,6 +39,31 @@ namespace net.r_eg.vsCE
         public const string PROP_UNAV_STRING = "*Undefined*";
 
         /// <summary>
+        /// List of EnvDTE projects.
+        /// </summary>
+        public IEnumerable<EnvDTE.Project> ProjectsDTE
+        {
+            get {
+                return _DTEProjects;
+            }
+        }
+
+        /// <summary>
+        /// List of Microsoft.Build.Evaluation projects.
+        /// </summary>
+        public IEnumerable<Project> ProjectsMBE
+        {
+            get
+            {
+                foreach(var pname in ProjectsDTE.Select(p => getProjectNameFrom(p))) {
+                    if(String.IsNullOrEmpty(pname)) {
+                        yield return getProject(pname);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Simple list of names from EnvDTE projects
         /// </summary>
         public List<string> ProjectsList
@@ -44,13 +71,22 @@ namespace net.r_eg.vsCE
             get
             {
                 try {
-                    return DTEProjects.Select(p => getProjectNameFrom(p)).ToList<string>();
+                    return _DTEProjects.Select(p => getProjectNameFrom(p)).ToList<string>();
                 }
                 catch(Exception ex) {
                     Log.Error("Failed getting project from EnvDTE: {0}", ex.Message);
                 }
                 return new List<string>();
             }
+        }
+
+        /// <summary>
+        /// DTE2 context.
+        /// </summary>
+        public DTE2 Dte2
+        {
+            get;
+            protected set;
         }
 
         /// <summary>
@@ -94,14 +130,13 @@ namespace net.r_eg.vsCE
         }
 
         /// <summary>
-        /// Specified type of current build action
+        /// Current context for actions.
         /// </summary>
         public BuildType BuildType
         {
-            get { return buildType; }
-            set { buildType = value; }
-        }
-        protected BuildType buildType = BuildType.Common;
+            get;
+            set;
+        } = BuildType.Common;
 
         /// <summary>
         /// All configurations for current solution
@@ -121,14 +156,18 @@ namespace net.r_eg.vsCE
         }
 
         /// <summary>
-        /// Getting name from "Set as StartUp Project"
+        /// Project by default or "StartUp Project".
         /// </summary>
         public virtual string StartupProjectString
         {
             get
             {
-                if(!IsOpenedSolution || Dte2.Solution.SolutionBuild.StartupProjects == null) {
+                if(!IsOpenedSolution || Dte2?.Solution?.SolutionBuild?.StartupProjects == null) {
                     return null;
+                }
+
+                if(_startupProject != null) {
+                    return _startupProject;
                 }
 
                 foreach(string project in (Array)Dte2.Solution.SolutionBuild.StartupProjects)
@@ -140,6 +179,7 @@ namespace net.r_eg.vsCE
                 return null;
             }
         }
+        private string _startupProject;
 
         /// <summary>
         /// Get status of opened solution.
@@ -202,14 +242,9 @@ namespace net.r_eg.vsCE
         protected IOW outputWindowPane;
 
         /// <summary>
-        /// DTE2 context
-        /// </summary>
-        protected DTE2 Dte2 { get; set; }
-
-        /// <summary>
         /// Getting projects from DTE
         /// </summary>
-        protected virtual IEnumerable<EnvDTE.Project> DTEProjects
+        protected virtual IEnumerable<EnvDTE.Project> _DTEProjects
         {
             get
             {
@@ -247,6 +282,20 @@ namespace net.r_eg.vsCE
         }
 
         /// <summary>
+        /// To update the project by default or "StartUp Project".
+        /// </summary>
+        /// <param name="name">Uses default behavior if empty or null.</param>
+        public void updateStartupProject(string name)
+        {
+            if(name == String.Empty) {
+                name = null;
+            }
+
+            _startupProject = name;
+            Log.Debug($"'StartUp Project' has been updated = '{name}'");
+        }
+
+        /// <summary>
         /// Gets instance of the Build.Evaluation.Project for accessing to properties etc.
         /// 
         /// Uses the 'StartUp Project' from list or first with the same Configuration|Platform if the name contains the null value.
@@ -264,7 +313,7 @@ namespace net.r_eg.vsCE
                 Log.Debug("default project is a '{0}'", startup);
             }
 
-            foreach(EnvDTE.Project dteProject in DTEProjects)
+            foreach(EnvDTE.Project dteProject in _DTEProjects)
             {
                 if(name == null && !String.IsNullOrEmpty(startup) && !dteProject.UniqueName.Equals(startup)) {
                     continue;
@@ -288,7 +337,7 @@ namespace net.r_eg.vsCE
                 Log.Debug("getProject->selected '{0}'", selected.FullName);
                 return tryLoadPCollection(selected);
             }
-            throw new MSBProjectNotFoundException("not found project: '{0}' [sturtup: '{1}']", name, startup);
+            throw new NotFoundException("The project '{0}' was not found. [startup: '{1}']", name, startup);
         }
 
         /// <summary>

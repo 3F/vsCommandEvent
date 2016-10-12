@@ -8,31 +8,9 @@ using net.r_eg.vsCE.Scripts;
 
 namespace net.r_eg.vsCE.Test.SBEScripts
 {
-    /// <summary>
-    ///This is a test class for ScriptTest and is intended
-    ///to contain all ScriptTest Unit Tests
-    ///</summary>
-    [TestClass()]
+    [TestClass]
     public class ScriptTest
     {
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
         private static IEnvironment env         = new net.r_eg.vsCE.Environment((EnvDTE80.DTE2)null);
         private static IUserVariable uvariable  = new UserVariable();
 

@@ -7,7 +7,7 @@ namespace net.r_eg.vsCE.Test
     {
         public override Project getProject(string name = null)
         {
-            return new Project(properties, null, ProjectCollection.GlobalProjectCollection);
+            return new Project(slnProperties, null, ProjectCollection.GlobalProjectCollection);
         }
 
         /// <param name="properties">Solution properties.</param>

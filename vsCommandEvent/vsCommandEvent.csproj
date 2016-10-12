@@ -250,12 +250,15 @@
     <Compile Include="Receiver\Output\IItemEW.cs" />
     <Compile Include="Receiver\Output\Ident.cs" />
     <Compile Include="Receiver\Output\PaneArgs.cs" />
+    <Compile Include="SBEScripts\Components\BoxComponent.cs" />
     <Compile Include="SBEScripts\Components\Build\ProjectsMap.cs" />
+    <Compile Include="SBEScripts\Components\Condition\Expression.cs" />
     <Compile Include="SBEScripts\Components\MSBuildComponent.cs" />
     <Compile Include="SBEScripts\Components\NuGetComponent.cs" />
     <Compile Include="SBEScripts\Components\NuGet\GetNuTool\Core.cs" />
     <Compile Include="SBEScripts\Components\NuGet\GetNuTool\GNT.cs" />
     <Compile Include="SBEScripts\Components\SevenZipComponent.cs" />
+    <Compile Include="SBEScripts\Components\TryComponent.cs" />
     <Compile Include="SBEScripts\Exceptions\ArgumentPMException.cs" />
     <Compile Include="SBEScripts\Exceptions\IncorrectNodeException.cs" />
     <Compile Include="SBEScripts\SNode\Argument.cs" />
@@ -266,7 +269,10 @@
     <Compile Include="SBEScripts\SNode\Level.cs" />
     <Compile Include="SBEScripts\SNode\LevelType.cs" />
     <Compile Include="SBEScripts\SNode\PM.cs" />
-    <Compile Include="SolutionParser.cs" />
+    <Compile Include="Sln\ConfigPrj.cs" />
+    <Compile Include="Sln\ConfigSln.cs" />
+    <Compile Include="Sln\Parser.cs" />
+    <Compile Include="Sln\Project.cs" />
     <Compile Include="UI\ITransfer.cs" />
     <Compile Include="UI\Resource.Designer.cs">
       <DependentUpon>Resource.resx</DependentUpon>
@@ -507,7 +513,6 @@
     <Compile Include="Actions\Command.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="GuidList.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Events\ISolutionEvent.cs" />
     <Compile Include="Events\Event.cs" />
     <Compile Include="Configuration\Header.cs" />
@@ -528,6 +533,8 @@
     </Compile>
     <Compile Include="vsCommandEventPackage.cs" />
     <Compile Include="PkgCmdID.cs" />
+    <Compile Include="VSTools\ErrorList\IPane.cs" />
+    <Compile Include="VSTools\ErrorList\Pane.cs" />
     <Compile Include="VSTools\OW\IPane.cs" />
     <Compile Include="VSTools\OW\PaneCOM.cs" />
     <Compile Include="VSTools\OW\PaneDTE.cs" />
@@ -628,7 +635,6 @@
     <Content Include="Resources\License.md">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <None Include="key.pfx" />
     <None Include="key.snk" />
     <None Include="packages.config" />
     <None Include="Properties\vsix-compress.props" />

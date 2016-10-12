@@ -45,7 +45,7 @@ namespace net.r_eg.vsCE.SBEScripts.Dom
         /// <summary>
         /// List of constructed data by IComponent
         /// </summary>
-        /// <param name="c"></param>
+        /// <param name="component"></param>
         /// <returns></returns>
         IEnumerable<INodeInfo> getBy(IComponent component);
     }

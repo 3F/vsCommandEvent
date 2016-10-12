@@ -161,11 +161,11 @@ namespace net.r_eg.vsCE.SBEScripts
         }
 
         /// <summary>
-        /// Parse data for concrete component
+        /// Parse data for specific component
         /// </summary>
         /// <param name="data">Mixed data</param>
         /// <param name="c">Component</param>
-        /// <returns>Prepared & evaluated data by component</returns>
+        /// <returns>Prepared + evaluated data by component</returns>
         protected string parse(string data, IComponent c)
         {
             string ret = c.parse(data);

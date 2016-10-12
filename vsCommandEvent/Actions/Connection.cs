@@ -32,14 +32,18 @@ namespace net.r_eg.vsCE.Actions
     public class Connection
     {
         /// <summary>
-        /// The main handler of commands.
-        /// </summary>
-        protected ICommand cmd;
-
-        /// <summary>
         /// object synch.
         /// </summary>
         private Object _lock = new Object();
+
+        /// <summary>
+        /// The main handler of commands.
+        /// </summary>
+        public ICommand Cmd
+        {
+            get;
+            protected set;
+        }
 
         /// <summary>
         /// Flag of permission for any actions.
@@ -124,7 +128,7 @@ namespace net.r_eg.vsCE.Actions
 
         public Connection(ICommand cmd)
         {
-            this.cmd = cmd;
+            this.Cmd = cmd;
         }
 
 
@@ -142,7 +146,7 @@ namespace net.r_eg.vsCE.Actions
             }
 
             try {
-                if(cmd.exec(evt, SolutionEventType.OWP)) {
+                if(Cmd.exec(evt, SolutionEventType.OWP)) {
                     Log.Info("[Output] finished SBE: {0}", evt.Caption);
                 }
                 return VSConstants.S_OK;
@@ -224,7 +228,7 @@ namespace net.r_eg.vsCE.Actions
         {
             try
             {
-                if(cmd.exec(item, SolutionEventType.CommandEvent)) {
+                if(Cmd.exec(item, SolutionEventType.CommandEvent)) {
                     Log.Info("[CommandEvent] finished: '{0}'", item.Caption);
                 }
                 Status._.add(SolutionEventType.CommandEvent, StatusType.Success);
@@ -237,7 +241,7 @@ namespace net.r_eg.vsCE.Actions
 
         protected string getProjectName(IVsHierarchy pHierProj)
         {
-            string projectName = ((IEnvironmentExt)cmd.Env).getProjectNameFrom(pHierProj, true);
+            string projectName = ((IEnvironmentExt)Cmd.Env).getProjectNameFrom(pHierProj, true);
             if(!String.IsNullOrEmpty(projectName)) {
                 return projectName;
             }

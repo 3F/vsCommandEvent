@@ -29,6 +29,7 @@ namespace net.r_eg.vsCE.Receiver.Output
     /// </summary>
     public class OWP
     {
+        /// <summary>
         /// Max length of envelope.
         /// </summary>
         public const int ENVELOPE_LIMIT = 32768;
