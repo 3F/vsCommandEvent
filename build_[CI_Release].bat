@@ -1,1 +1,1 @@
-build\[CI_Release]_v14
+build\[CI_Release][net40]

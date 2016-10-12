@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>
-    </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectName>vsCommandEventTest</ProjectName>
     <ProjectGuid>{C00D04E8-8101-42F5-89DA-CBAD205CC1D3}</ProjectGuid>
@@ -12,26 +10,21 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>net.r_eg.vsCE.Test</RootNamespace>
     <AssemblyName>vsCommandEventTest</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <csprojPostfix>
-    </csprojPostfix>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <NetTargetVName>net40</NetTargetVName>
+    <DefineConstants>NET_40</DefineConstants>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">0</VisualStudioVersion>
-    <VsSDKVersion Condition="'$(VsSDKVersion)' == ''">0</VsSDKVersion>
-    <csprojPostfix Condition="'$(VisualStudioVersion)' == '14.0' or '$(VsSDKVersion)' == '14.0'">_2015</csprojPostfix>
-    <!-- <csprojPostfix Condition="'$(VisualStudioVersion)' == '12.0' or '$(VsSDKVersion)' == '12.0'">_2013</csprojPostfix> -->
+    <vsSBE_SDK>1.1.0</vsSBE_SDK>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <NoWarn>618</NoWarn>
@@ -40,16 +33,47 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>$(DefineConstants)</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <NoWarn>618</NoWarn>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_net45|AnyCPU'">
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NetTargetVName>net45</NetTargetVName>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>$(DefineConstants)</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>618</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug_net45|AnyCPU'">
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NetTargetVName>net45</NetTargetVName>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
+    <NoWarn>618</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\$(NetTargetVName)\EnvDTE.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\$(NetTargetVName)\EnvDTE80.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -62,10 +86,18 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bridge\Bridge.csproj">
+      <Project>{73919171-44b6-4536-b892-f1fca653887c}</Project>
+      <Name>Bridge</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vsCommandEvent\vsCommandEvent.csproj">
+      <Project>{32E44995-F621-4E77-B46A-8F65D64E7FEA}</Project>
+      <Name>vsCommandEvent</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -101,20 +133,10 @@
     <Compile Include="TempFile.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Bridge\Bridge.csproj">
-      <Project>{73919171-44b6-4536-b892-f1fca653887c}</Project>
-      <Name>Bridge</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\vsCommandEvent\vsCommandEvent$(csprojPostfix).csproj">
-      <Project>{32E44995-F621-4E77-B46A-8F65D64E7FEA}</Project>
-      <Name>vsCommandEvent</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\VsixLib\List.targets" />
+  <Import Project="$(SolutionDir)\VsixLib.targets" />
   <Target Name="BeforeBuild">
     <Copy SourceFiles="@(VsixLib)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" UseHardlinksIfPossible="true" />
   </Target>

@@ -27,7 +27,7 @@ namespace net.r_eg.vsCE.Bridge
     /// <summary>
     /// Represents a different codes for our library
     /// </summary>
-    public sealed class Codes
+    internal sealed class Codes
     {
         /// <summary>
         /// Unspecified Success operation

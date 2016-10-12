@@ -1,16 +1,22 @@
 @echo off
 
+REM # Version of used CI.MSBuild
+REM # set CIM=1.6.1207
+
 REM # Version of MSBuild tool by default
-set _msbuild=14.0
+REM # set _msbuild=14.0
+
+REM # MSBuild tools
+set _msbuild_exe=%~dp0..\\tools\\msbuild.bat
 
 REM # Solution file by defualt
-set sln=vsCommandEvent_2015.sln
+set sln=vsCommandEvent.sln
 
 REM # Target by default
 set target=Rebuild
 
 REM # Maximum number of concurrent processes to use when building
-set /a maxcpu=12
+set /a maxcpu=8
 
 REM # Configuration by default
 set cfgname=CI_Debug

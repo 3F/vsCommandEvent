@@ -1,11 +1,11 @@
 All final binaries will be here...
 
-Use 'build_x.bat' files-helpers to start build without Visual Studio like:
+Use ['build_x.bat'](../build) file-helpers for start build without Visual Studio like:
 
 ```
-"C:\Program Files (x86)\MSBuild\14.0\bin\msbuild.exe" "vsCommandEvent_2015.sln" /verbosity:normal /l:"packages\vsSBE.CI.MSBuild\bin\CI.MSBuild.dll" /m:12 /p:Configuration=Debug /p:Platform="Any CPU"
+msbuild "vsCommandEvent.sln" /verbosity:normal /l:"packages\vsSBE.CI.MSBuild\bin\CI.MSBuild.dll" /m:4 /p:Configuration=Debug /p:Platform="Any CPU"
 ```
 
-*Or just click on `Build` - `Build Solution`*
+*Or click on `Build` - `Build Solution` if you have [installed plugin](https://visualstudiogallery.msdn.microsoft.com/0d1dbfd7-ed8a-40af-ae39-281bfeca2334/)*
 
 /**[How to build](http://vsce.r-eg.net/doc/Dev/How%20to%20build/)** (the list of requirements etc.)

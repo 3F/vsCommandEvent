@@ -1,1 +1,1 @@
-build\[CI_Debug]_v14
+build\[CI_Debug][net40]
