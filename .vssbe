@@ -125,13 +125,13 @@
       "Mode": {
         "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
         "Type": "Script",
-        "Command": "#[\"\n    Prepares data - versions, revBuild & information from git\n\"]\n\n#[var tStart    = $([System.DateTime]::Parse(\"2016/02/24\").ToBinary())]\n#[var tNow      = $([System.DateTime]::UtcNow.Ticks)]\n#[var revBuild  = $([System.TimeSpan]::FromTicks($([MSBuild]::Subtract($(tNow), $(tStart)))).TotalMinutes.ToString(\"0\"))]\n\n#[var tplVersion = #[File get(\"Version.tpl\")]]\n\n#[var pDir  = vsCommandEvent/]\n#[var numCE = #[File get(\".version\")]]",
+        "Command": "#[\"\n    Prepares data - versions, revBuild & information from git\n\"]\n\n#[var tStart    = $([System.DateTime]::Parse(\"2016/10/12\").ToBinary())]\n#[var tNow      = $([System.DateTime]::UtcNow.Ticks)]\n#[var revBuild  = $([System.TimeSpan]::FromTicks($([MSBuild]::Subtract($(tNow), $(tStart)))).TotalMinutes.ToString(\"0\"))]\n\n#[var tplVersion = #[File get(\"Version.tpl\")]]\n\n#[var pDir  = vsCommandEvent/]\n#[var numCE = #[File get(\".version\")]]",
         "Command__": [
           "#[\"",
           "    Prepares data - versions, revBuild & information from git",
           "\"]",
           "",
-          "#[var tStart    = $([System.DateTime]::Parse(\"2016/02/24\").ToBinary())]",
+          "#[var tStart    = $([System.DateTime]::Parse(\"2016/10/12\").ToBinary())]",
           "#[var tNow      = $([System.DateTime]::UtcNow.Ticks)]",
           "#[var revBuild  = $([System.TimeSpan]::FromTicks($([MSBuild]::Subtract($(tNow), $(tStart)))).TotalMinutes.ToString(\"0\"))]",
           "",
@@ -353,11 +353,11 @@
       "Mode": {
         "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
         "Type": "Script",
-        "Command": "#[IO copy.file(\r\n            \"$(pDir)bin\\$(cfg)\\vsCommandEvent.vsix\", \r\n            \"$(odir)vsCommandEvent_v$(numCE)_[$(branchSha1)][$(netStamp)].vsix\", \r\n            true)]",
+        "Command": "#[IO copy.file(\n            \"$(pDir)bin\\$(cfg)\\vsCommandEvent.vsix\", \n            \"$(odir)vsCommandEvent_v$(numCE)_$(branchSha1)_$(netStamp).vsix\", \n            true)]",
         "Command__": [
           "#[IO copy.file(",
           "            \"$(pDir)bin\\$(cfg)\\vsCommandEvent.vsix\", ",
-          "            \"$(odir)vsCommandEvent_v$(numCE)_[$(branchSha1)][$(netStamp)].vsix\", ",
+          "            \"$(odir)vsCommandEvent_v$(numCE)_$(branchSha1)_$(netStamp).vsix\", ",
           "            true)]"
         ]
       }

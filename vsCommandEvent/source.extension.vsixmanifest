@@ -3,7 +3,7 @@
     <Identifier Id="DA5CEB32-1E09-44A5-A6AA-71D3149A53B7">
         <Name>vsCommandEvent</Name>
         <Author>github.com/3F</Author>
-        <Version>1.1.0</Version>
+        <Version>1.2.0</Version>
         <Description xml:space="preserve">Advanced handler of all commands from Visual Studio and output data as manager of this. It based on vsSolutionBuildEvent engine and continues mission to provide flexible actions for your environment.</Description>
         <Locale>1033</Locale>
         <MoreInfoUrl>https://visualstudiogallery.msdn.microsoft.com/ad9f19b2-04c0-46fe-9637-9a52ce4ca661/</MoreInfoUrl>
