@@ -111,8 +111,8 @@ namespace net.r_eg.vsCE
             ConfigManager.switchOn((isNew || userConfig.Data.Global.IgnoreConfiguration)? ContextType.Common : ContextType.Solution);
 
             refreshComponents();
+            Action.Cmd.MSBuild.initPropByDefault();
 
-            Action.Cmd.MSBuild.initPropByDefault(); //LC: #815, #814
             OpenedSolution(this, new EventArgs());
             return VSConstants.S_OK;
         }
@@ -226,6 +226,8 @@ namespace net.r_eg.vsCE
                                          new Script(Bootloader),
                                          new MSBuild.Parser(Environment, uvariable))
             );
+
+            Action.Cmd.MSBuild.initPropByDefault();
         }
 
         protected void refreshComponents()
