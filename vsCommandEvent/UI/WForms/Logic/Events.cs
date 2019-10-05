@@ -519,6 +519,7 @@ namespace net.r_eg.vsCE.UI.WForms.Logic
             SolutionEventType type  = SBE.type;
             Log.Info("Action: execute action '{0}':'{1}' manually :: emulate '{2}' event", evt.Name, evt.Caption, type);
 
+            cmd.Env.BuildType = BuildType.Common; //TODO: IBuild.updateBuildType
             try {
                 bool res = cmd.exec(evt, type);
                 Log.Info("Action: '{0}':'{1}' completed as - '{2}'", evt.Name, evt.Caption, res.ToString());

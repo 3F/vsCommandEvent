@@ -229,6 +229,10 @@ namespace net.r_eg.vsCE.UI.WForms.Wizards
                 cbRevTimeType.SelectedIndex = rev.IntervalTypeList.FindIndex(i => i.Key == rev.interval);
 
                 dtRevTimeBase.Value = rev.timeBase;
+
+                chkRevTimeMod.Checked   = rev.revMod.enabled;
+                numRevTimeMin.Value     = rev.revMod.min;
+                numRevTimeMax.Value     = rev.revMod.max;
             }
         }
 
@@ -355,6 +359,10 @@ namespace net.r_eg.vsCE.UI.WForms.Wizards
 
                 rev.interval = rev.IntervalTypeList[cbRevTimeType.SelectedIndex].Key;
                 rev.timeBase = dtRevTimeBase.Value;
+
+                rev.revMod.enabled  = chkRevTimeMod.Checked;
+                rev.revMod.min      = (int)numRevTimeMin.Value;
+                rev.revMod.max      = (int)numRevTimeMax.Value;
             }
         }
 
@@ -634,7 +642,7 @@ namespace net.r_eg.vsCE.UI.WForms.Wizards
 
         private void btnManually_Click(object sender, EventArgs e)
         {
-            Util.openUrl("http://vsCE.r-eg.net/doc/Examples/Version/Manually/");
+            Util.openUrl("https://vssbe.r-eg.net/doc/Examples/Version/Manually/");
         }
 
         private void btnFinalCopy_Click(object sender, EventArgs e)

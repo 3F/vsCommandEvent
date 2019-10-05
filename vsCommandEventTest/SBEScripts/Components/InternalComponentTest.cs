@@ -11,6 +11,48 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
     [TestClass]
     public class InternalComponentTest
     {
+        [TestMethod]
+        public void eventsItemRunTest1()
+        {
+            var target = new InternalComponentAccessor();
+
+            try {
+                target.parse("[Core events.Pre.item(1).run]");
+                Assert.Fail("1");
+            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(IncorrectNodeException), ex.GetType().ToString()); }
+
+            try {
+                target.parse("[Core events.Pre.item(1).run() = true]");
+                Assert.Fail("2");
+            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
+
+            try {
+                target.parse("[Core events.Pre.item(1).run(): true]");
+                Assert.Fail("3");
+            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
+
+            try {
+                target.parse("[Core events.Pre.item(1).run().m]");
+                Assert.Fail("4");
+            }
+            catch(Exception ex) { Assert.IsTrue(ex.GetType() == typeof(NotSupportedOperationException), ex.GetType().ToString()); }
+        }
+
+        [TestMethod]
+        public void eventsItemRunTest2()
+        {
+            var target = new InternalComponentAccessor();
+            Assert.AreEqual(Value.from(true), target.parse("[Core events.Pre.item(1).run()]"));
+            Assert.AreEqual(Value.from(true), target.parse("[Core events.Pre.item(1).run(Common)]"));
+            Assert.AreEqual(Value.from(false), target.parse("[Core events.Pre.item(2).run()]"));
+            Assert.AreEqual(Value.from(false), target.parse("[Core events.Pre.item(3).run()]"));
+            Assert.AreEqual(Value.from(false), target.parse("[Core events.Pre.item(3).run(Common)]"));
+            Assert.AreEqual(Value.from(true), target.parse("[Core events.Pre.item(3).run(Rebuild)]"));
+        }
+
         /// <summary>
         ///A test for parse
         ///</summary>
@@ -242,13 +284,27 @@ namespace net.r_eg.vsCE.Test.SBEScripts.Components
                     return evt;
                 }
 
-                evt = new Event[2]
+                evt = new Event[3]
                 { 
                     new Event() {
-                        Name = "Name1", Enabled = true
+                        Name = "Name1",
+                        SupportMSBuild = false,
+                        SupportSBEScripts = false,
+                        Mode = new ModeFile() { Command = "" },
+                        Enabled = true
                     },
                     new Event() {
-                        Name = "Name2", Enabled = false
+                        Name = "Name2",
+                        Mode = new ModeFile() { Command = "" },
+                        Enabled = false
+                    },
+                    new Event(){
+                        Name = "Name3",
+                        SupportMSBuild = false,
+                        SupportSBEScripts = false,
+                        BuildType = Bridge.BuildType.Rebuild,
+                        Mode = new ModeFile() { Command = "" },
+                        Enabled = true
                     }
                 };
                 return evt;

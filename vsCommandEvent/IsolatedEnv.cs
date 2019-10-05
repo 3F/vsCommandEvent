@@ -63,7 +63,7 @@ namespace net.r_eg.vsCE
             {
                 foreach(var pname in ProjectsList)
                 {
-                    if(String.IsNullOrEmpty(pname)) {
+                    if(!String.IsNullOrWhiteSpace(pname)) {
                         yield return getProject(pname);
                     }
                 }
@@ -375,7 +375,7 @@ namespace net.r_eg.vsCE
         /// <param name="properties">Solution properties.</param>
         public IsolatedEnv(TProp properties)
         {
-
+            slnProperties = properties;
         }
 
         /// <summary>

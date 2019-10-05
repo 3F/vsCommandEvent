@@ -185,8 +185,14 @@ namespace net.r_eg.vsCE.Actions
                 if(Thread.CurrentThread.Name == null && marker != null) {
                     Thread.CurrentThread.Name = marker;
                 }
-                Log.Trace("Task for another thread is started for '{0}' /{1}", evt.Name, type);
-                actions[type].process(evt);
+
+                Log.Trace($"Task ({type}) for another thread is started for '{evt.Name}'");
+                try {
+                    actions[type].process(evt);
+                }
+                catch(Exception ex) {
+                    Log.Error($"Task ({type}) for another thread is failed. '{evt.Name}' Error: `{ex.Message}`");
+                }
 
             })).Start();
 

@@ -337,7 +337,7 @@
             this.menuActionExec.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
             this.menuActionExec.Size = new System.Drawing.Size(185, 22);
             this.menuActionExec.Text = "Execute";
-            this.menuActionExec.ToolTipText = "Try current action";
+            this.menuActionExec.ToolTipText = "Try current action (Common Context)";
             this.menuActionExec.Click += new System.EventHandler(this.menuActionExec_Click);
             // 
             // toolStripMenuReset
@@ -418,7 +418,7 @@
             // 
             this.toolStripMenuEvaluatingProperty.Name = "toolStripMenuEvaluatingProperty";
             this.toolStripMenuEvaluatingProperty.Size = new System.Drawing.Size(216, 22);
-            this.toolStripMenuEvaluatingProperty.Text = "Evaluating Property";
+            this.toolStripMenuEvaluatingProperty.Text = "Evaluate Property";
             this.toolStripMenuEvaluatingProperty.Click += new System.EventHandler(this.toolStripMenuEvaluatingProperty_Click);
             // 
             // toolStripMenuDTECmd
@@ -432,7 +432,7 @@
             // 
             this.toolStripMenuDTECmdExec.Name = "toolStripMenuDTECmdExec";
             this.toolStripMenuDTECmdExec.Size = new System.Drawing.Size(216, 22);
-            this.toolStripMenuDTECmdExec.Text = "Executing DTE-Commands";
+            this.toolStripMenuDTECmdExec.Text = "Execute commands";
             this.toolStripMenuDTECmdExec.Click += new System.EventHandler(this.toolStripMenuDTECmdExec_Click);
             // 
             // menuItemSniffer

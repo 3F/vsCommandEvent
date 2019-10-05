@@ -17,6 +17,7 @@
 
 using System;
 using net.r_eg.vsCE.Actions;
+using net.r_eg.vsCE.Bridge;
 using net.r_eg.vsCE.Events;
 using net.r_eg.vsCE.Exceptions;
 using net.r_eg.vsCE.SBEScripts.Dom;
@@ -156,28 +157,27 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         }
 
         /// <summary>
-        /// Work with event-item node.
-        ///     `events.Type.item(string name | integer index)`
+        /// `events.Type.item(string name | integer index)`
         /// </summary>
         /// <param name="type">Type of available events</param>
         /// <param name="pm"></param>
-        /// <returns>evaluated data</returns>
+        /// <returns></returns>
         [Method(
-                "item", 
-                "Event item by name", 
+                "item",
+                "Access to action by name", 
                 "", "stEvents", 
                 new string[] { "name" }, 
-                new string[] { "Name of the event" }, 
+                new string[] { "Name of the action" }, 
                 CValueType.Void, 
                 CValueType.String
         )]
         [Method(
-                "item", 
-                "Event item by index", 
+                "item",
+                "Access to action by index", 
                 "", 
                 "stEvents", 
                 new string[] { "index" }, 
-                new string[] { "Index of the event >= 1" },
+                new string[] { "Index of the action >= 1" },
                 CValueType.Void, 
                 CValueType.Integer
         )]
@@ -205,6 +205,9 @@ namespace net.r_eg.vsCE.SBEScripts.Components
             if(pm.Is(1, LevelType.Property, "Enabled")) {
                 return pEnabled(evt, pm.pinTo(2));
             }
+            if(pm.Is(1, LevelType.Method, "run")) {
+                return mActionRun(type, evt, pm.pinTo(1));
+            }
             if(pm.Is(1, LevelType.Property, "Status")) {
                 return itemStatus(type, index, pm.pinTo(1));
             }
@@ -223,10 +226,10 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         /// `item(...).Status.HasErrors`
         /// </summary>
         /// <param name="type">Selected event type.</param>
-        /// <param name="index">Access by index.</param>
+        /// <param name="index">Access to action by index.</param>
         /// <param name="pm"></param>
         /// <returns></returns>
-        [Property("Status", "Available statuses for selected event-item.", "item", "stEventItem")]
+        [Property("Status", "Available states for selected event-action.", "item", "stEventItem")]
         [Property("HasErrors", "Checking existence of errors after executed action for selected event-item.", "Status", "itemStatus", CValueType.Boolean)]
         protected string itemStatus(SolutionEventType type, int index, IPM pm)
         {
@@ -273,7 +276,7 @@ namespace net.r_eg.vsCE.SBEScripts.Components
         /// <param name="evt">Selected event</param>
         /// <param name="pm"></param>
         /// <returns></returns>
-        [Property("Enabled", "Gets or Sets Enabled status for selected event-item", "item", "stEventItem", CValueType.Boolean, CValueType.Boolean)]
+        [Property("Enabled", "Gets or Sets Enabled status for selected event-action", "item", "stEventItem", CValueType.Boolean, CValueType.Boolean)]
         protected string pEnabled(ISolutionEvent evt, IPM pm)
         {
             if(pm.FinalEmptyIs(LevelType.RightOperandEmpty)) {
@@ -284,6 +287,51 @@ namespace net.r_eg.vsCE.SBEScripts.Components
 
             Log.Trace("pEnabled: updated status '{0}' for '{1}'", evt.Enabled, evt.Name);
             return Value.Empty;
+        }
+
+        [Method(
+                "run",
+                "Execute Action with specific context. Returns true value if it was handled.",
+                "item",
+                "stEventItem", 
+                new string[] { "context" }, 
+                new string[] { "Specific context." },
+                CValueType.Boolean, 
+                CValueType.Enum
+        )]
+        [Method(
+                "run",
+                "Execute Action. Returns true value if it was handled.",
+                "item",
+                "stEventItem", 
+                new string[] { "" }, 
+                new string[] { "" },
+                CValueType.Boolean, 
+                CValueType.Void
+        )]
+        protected string mActionRun(SolutionEventType type, ISolutionEvent evt, IPM pm)
+        {
+            if(!pm.FinalEmptyIs(LevelType.Method, "run")) {
+                throw new IncorrectNodeException(pm);
+            }
+            ILevel level = pm.FirstLevel;
+
+            BuildType buildType;
+            if(level.Args == null || level.Args.Length < 1) {
+                buildType = BuildType.Common;
+            }
+            else if(level.Is(ArgumentType.EnumOrConst)) {
+                buildType = (BuildType)Enum.Parse(typeof(BuildType), (string)level.Args[0].data);
+            }
+            else {
+                throw new ArgumentPMException(level, "run([enum context])");
+            }
+
+            ICommand cmd = new Actions.Command(env, script, msbuild);
+            Log.Info($"Execute action by user-script: '{evt.Name}'(context: {buildType}) /as '{type}' event");
+
+            cmd.Env.BuildType = buildType;
+            return Value.from(cmd.exec(evt, type));
         }
 
         protected virtual ISolutionEvent[] getEvent(SolutionEventType type)
