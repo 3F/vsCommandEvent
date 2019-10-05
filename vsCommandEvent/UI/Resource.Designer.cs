@@ -142,9 +142,9 @@ namespace net.r_eg.vsCE.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This option is means a wait for completion action with main thread! therefore:
-        ///* [Performance] - For repeated events probably need a more time for services of your all defined actions. Remember this!
-        ///* [Compatibility] - However, some your actions can require a lock of the main thread for waiting to the next steps, otherwise some actions can lose a some technical data for processes of your script on next step..
+        ///   Looks up a localized string similar to Waiting for an complete action in main thread means the following:
+        ///* [Performance] - For events such as EW, OWP, Logging, etc: it may take longer to service all activated actions.
+        ///* [Compatibility] - Some actions may require locking the main thread to wait for the next step..
         /// </summary>
         internal static string StringWarnForWaiting {
             get {

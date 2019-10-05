@@ -67,7 +67,7 @@ namespace net.r_eg.vsCE.VSTools.OW
         public PaneDTE(EnvDTE80.DTE2 dte2, string name)
         {
             if(dte2 == null) {
-                throw new ArgumentNullException("dte2", "cannot be null");
+                throw new ArgumentNullException(nameof(dte2));
             }
 
             try {
@@ -77,7 +77,7 @@ namespace net.r_eg.vsCE.VSTools.OW
                 pane = dte2.ToolWindows.OutputWindow.OutputWindowPanes.Add(name);
             }
             catch(Exception ex) {
-                Log.Error("Log :: inner exception: '{0}'", ex.ToString());
+                Log.Error($"PaneDTE init: '{ex.Message}'");
             }
         }
     }

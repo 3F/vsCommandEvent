@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+using System;
 using net.r_eg.vsCE.Exceptions;
 
 namespace net.r_eg.vsCE.Configuration.User
@@ -22,7 +23,7 @@ namespace net.r_eg.vsCE.Configuration.User
     /// <summary>
     /// Manager of accessing to remote value.
     /// </summary>
-    public class Manager: IManager
+    internal class Manager: IManager
     {
         /// <summary>
         /// Unspecified raw value.
@@ -33,14 +34,13 @@ namespace net.r_eg.vsCE.Configuration.User
             {
                 checkOnNull();
 
-                if(value.Type == LinkType.CacheHeader)
-                {
+                //if(value.Type == LinkType.CacheHeader)
+                //{
                     if(!data.Cache.ContainsKey(value.Guid)) {
                         data.Cache[value.Guid] = new Cache();
                     }
                     return data.Cache[value.Guid];
-                }
-                throw new InvalidArgumentException("Configuration Manager: not supported type '{0}'", value.Type);
+                //}
             }
         }
 
@@ -112,11 +112,11 @@ namespace net.r_eg.vsCE.Configuration.User
         protected void checkOnNull()
         {
             if(data == null) {
-                throw new InvalidArgumentException("Configuration Manager: container is not initialized.");
+                throw new ArgumentException("Configuration Manager: container is not initialized.");
             }
 
             if(value == null) {
-                throw new InvalidArgumentException("Configuration Manager: IUserValue value is not initialized.");
+                throw new ArgumentException("Configuration Manager: IUserValue value is not initialized.");
             }
         }
     }

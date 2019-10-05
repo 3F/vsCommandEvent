@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-using System.Linq;
 using net.r_eg.vsCE.Events;
 using net.r_eg.vsCE.Exceptions;
 
@@ -24,7 +23,7 @@ namespace net.r_eg.vsCE.Actions
     /// <summary>
     /// Action for Interpreter Mode
     /// </summary>
-    public class ActionInterpreter: Action, IAction
+    public class ActionInterpreter: ActionAbstract, IAction
     {
         /// <summary>
         /// Process for specified event.
@@ -34,7 +33,7 @@ namespace net.r_eg.vsCE.Actions
         public override bool process(ISolutionEvent evt)
         {
             if(((IModeInterpreter)evt.Mode).Handler.Trim().Length < 1) {
-                throw new NotFoundException("Interpreter: Handler is empty or not selected.");
+                throw new CompilerException("Interpreter: Handler is empty or not selected.");
             }
 
             string script   = ((IModeInterpreter)evt.Mode).Command;
@@ -60,7 +59,7 @@ namespace net.r_eg.vsCE.Actions
 
             string handler = ((IModeInterpreter)evt.Mode).Handler;
             if(evt.SupportMSBuild) {
-                handler = cmd.MSBuild.parse(handler);
+                handler = cmd.MSBuild.Eval(handler);
             }
 
             shell(evt, string.Format("{0} {1}", handler, script));

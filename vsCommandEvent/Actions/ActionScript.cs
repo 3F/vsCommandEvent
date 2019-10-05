@@ -22,7 +22,7 @@ namespace net.r_eg.vsCE.Actions
     /// <summary>
     /// Action for Script Mode
     /// </summary>
-    public class ActionScript: Action, IAction
+    public class ActionScript: ActionAbstract, IAction
     {
         /// <summary>
         /// Process for specified event.

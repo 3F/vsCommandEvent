@@ -20,20 +20,18 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using net.r_eg.vsCE.SBEScripts;
-using net.r_eg.vsCE.SBEScripts.Components;
-using net.r_eg.vsCE.SBEScripts.Dom;
+using net.r_eg.SobaScript.Components;
+using net.r_eg.SobaScript.Mapper;
+using net.r_eg.vsCE.UI.WForms.Controls;
 
 namespace net.r_eg.vsCE.UI.WForms
 {
-    using DomIcon = net.r_eg.vsCE.SBEScripts.Dom.Icon;
-
-    public partial class ComponentsFrm: Form
+    internal partial class ComponentsFrm: Form
     {
         /// <summary>
         /// Used loader
         /// </summary>
-        protected IBootloader bootloader;
+        protected Bootloader bootloader;
 
         /// <summary>
         /// Mapper of the available components.
@@ -52,7 +50,7 @@ namespace net.r_eg.vsCE.UI.WForms
         public void updateComponents(Configuration.Component[] components)
         {
             Settings.Cfg.Components = components;
-            foreach(IComponent c in bootloader.Registered) {
+            foreach(IComponent c in bootloader.Soba.Registered) {
                 Configuration.Component found = components.Where(p => p.ClassName == c.GetType().Name).FirstOrDefault();
                 if(found != null) {
                     c.Enabled = found.Enabled;
@@ -79,10 +77,10 @@ namespace net.r_eg.vsCE.UI.WForms
         public void fillComponents(DataGridView grid)
         {
             grid.Rows.Clear();
-            foreach(IComponent c in bootloader.Registered)
+            foreach(IComponent c in bootloader.Soba.Registered)
             {
                 Type type = c.GetType();
-                if(!Inspector.isComponent(type)) {
+                if(!Inspector.IsComponent(type)) {
                     continue;
                 }
 
@@ -133,7 +131,7 @@ namespace net.r_eg.vsCE.UI.WForms
             grid.Sort(grid.Columns[2], System.ComponentModel.ListSortDirection.Descending);
         }
 
-        public ComponentsFrm(IBootloader bootloader, IInspector inspector)
+        public ComponentsFrm(Bootloader bootloader, IInspector inspector)
         {
             this.bootloader = bootloader;
             this.inspector  = inspector;
@@ -175,13 +173,13 @@ namespace net.r_eg.vsCE.UI.WForms
             }
 
             List<INodeInfo> ret = new List<INodeInfo>();
-            foreach(IComponent c in bootloader.Registered)
+            foreach(IComponent c in bootloader.Soba.Registered)
             {
                 if(c.GetType().Name != className) {
                     continue;
                 }
 
-                foreach(INodeInfo info in inspector.getBy(c.GetType())) {
+                foreach(INodeInfo info in inspector.GetBy(c.GetType())) {
                     ret.Add(info);
                     ret.AddRange(domElemsBy(info.Link));
                 }
@@ -195,7 +193,7 @@ namespace net.r_eg.vsCE.UI.WForms
 
         protected IEnumerable<INodeInfo> domElemsBy(NodeIdent ident)
         {
-            foreach(INodeInfo info in inspector.getBy(ident))
+            foreach(INodeInfo info in inspector.GetBy(ident))
             {
                 if(!String.IsNullOrEmpty(info.Name)) {
                     yield return info;
@@ -284,20 +282,20 @@ namespace net.r_eg.vsCE.UI.WForms
             {
                 Bitmap bmap = DomIcon.definition;
                 switch(info.Type) {
-                    case InfoType.Property: {
+                    case NodeType.Property: {
                         bmap = DomIcon.property;
                         break;
                     }
-                    case InfoType.Method: {
+                    case NodeType.Method: {
                         bmap = DomIcon.function;
                         break;
                     }
-                    case InfoType.Definition: {
+                    case NodeType.Definition: {
                         bmap = DomIcon.definition;
                         break;
                     }
                 }
-                dgvComponentInfo.Rows.Add(bmap, info.Displaying, (info.Signature == null)? "" : info.Signature.Replace("\n", "  \n"), info.Description);
+                dgvComponentInfo.Rows.Add(bmap, info.Overname, (info.Signature == null)? "" : info.Signature.Replace("\n", "  \n"), info.Description);
             }
         }
 

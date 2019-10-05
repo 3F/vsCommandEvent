@@ -18,9 +18,9 @@
 using System;
 using System.IO;
 using System.Text;
+using net.r_eg.MvsSln.Extensions;
 using net.r_eg.vsCE.Configuration;
 using net.r_eg.vsCE.Exceptions;
-using net.r_eg.vsCE.Extensions;
 
 namespace net.r_eg.vsCE
 {
@@ -87,7 +87,7 @@ namespace net.r_eg.vsCE
         /// <returns>true value if loaded from existing file, otherwise loaded as new.</returns>
         public bool load(string link)
         {
-            Link = link.PathFormat();
+            Link = link.DirectoryPathFormat();
             return load(Link, null);
         }
 
@@ -150,7 +150,7 @@ namespace net.r_eg.vsCE
                 {
                     Data = deserialize(stream);
                     if(Data == null) {
-                        throw new SBEException("file is empty");
+                        throw new UnspecSBEException("file is empty");
                     }
                     compatibility(stream);
                 }

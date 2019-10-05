@@ -18,7 +18,7 @@
 using System;
 using System.Windows.Forms;
 using net.r_eg.vsCE.Extensions;
-using net.r_eg.vsCE.SBEScripts;
+using net.r_eg.SobaScript;
 using net.r_eg.vsCE.UI.WForms.Controls;
 using CEAfterEventHandler = EnvDTE._dispCommandEvents_AfterExecuteEventHandler;
 using CEBeforeEventHandler = EnvDTE._dispCommandEvents_BeforeExecuteEventHandler;
@@ -107,7 +107,7 @@ namespace net.r_eg.vsCE.UI.WForms
             }
 
             string tFormat = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern + " .fff";
-            dgvCESniffer.Rows.Add(DateTime.Now.ToString(tFormat), pre, guid, id, Value.pack(customIn), Value.pack(customOut), Util.enumViewBy(guid, id));
+            dgvCESniffer.Rows.Add(DateTime.Now.ToString(tFormat), pre, guid, id, Value.Pack(customIn), Value.Pack(customOut), Util.enumViewBy(guid, id));
         }
 
         protected void flash(Lights.FlashType type, int delay = 250)
@@ -165,8 +165,8 @@ namespace net.r_eg.vsCE.UI.WForms
                 {
                     object cId      = rc.Cells[dgvCESnifferColumnId.Name].Value;
                     object cGuid    = rc.Cells[dgvCESnifferColumnGuid.Name].Value;
-                    object cIn      = Value.packArgument(rc.Cells[dgvCESnifferColumnCustomIn.Name].Value);
-                    object cOut     = Value.packArgument(rc.Cells[dgvCESnifferColumnCustomOut.Name].Value);
+                    object cIn      = Value.PackArgument(rc.Cells[dgvCESnifferColumnCustomIn.Name].Value);
+                    object cOut     = Value.PackArgument(rc.Cells[dgvCESnifferColumnCustomOut.Name].Value);
 
                     object customIn     = cIn.IsNullOrEmptyString()? String.Empty : cIn;
                     object customOut    = cOut.IsNullOrEmptyString()? String.Empty : cOut;

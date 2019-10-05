@@ -23,7 +23,7 @@ namespace net.r_eg.vsCE.Actions
     /// <summary>
     /// Action for Operation Mode
     /// </summary>
-    public class ActionOperation: Action, IAction
+    public class ActionOperation: ActionAbstract, IAction
     {
         /// <summary>
         /// Process for specified event.

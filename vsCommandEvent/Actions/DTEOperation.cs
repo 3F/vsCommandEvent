@@ -19,15 +19,13 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using net.r_eg.EvMSBuild.Exceptions;
 using net.r_eg.vsCE.Events;
-using net.r_eg.vsCE.Exceptions;
 
 namespace net.r_eg.vsCE.Actions
 {
-    /// <summary>
-    /// TODO: string format is deprecated... need to restructure
-    /// </summary>
     public class DTEOperation
     {
         /// <summary>
@@ -94,21 +92,28 @@ namespace net.r_eg.vsCE.Actions
 
         public virtual DTEPrepared parse(string line)
         {
-            Match m = Regex.Match(line.Trim(), @"^
-                                                   ([A-Za-z_0-9.]+) #1 - Command
-                                                   (?:
-                                                       \s*
-                                                       \(
-                                                          ([^)]+)   #2 - Arguments (optional)
-                                                       \)           ## http://msdn.microsoft.com/en-us/library/envdte._dte.executecommand.aspx
-                                                       \s*
-                                                   )?
-                                                 $", RegexOptions.IgnorePatternWhitespace);
+            Match m = Regex.Match
+            (
+                line.Trim(), 
+                @"^
+                ([A-Za-z_0-9.]+) #1 - Command
+                (?:
+                    \s*
+                    \(
+                        ([^)]+)   #2 - Arguments (optional)
+                    \)           ## http://msdn.microsoft.com/en-us/library/envdte._dte.executecommand.aspx
+                    \s*
+                )?
+                $", 
+                RegexOptions.IgnorePatternWhitespace
+            );
 
-            if(!m.Success) {
+            if(!m.Success)
+            {
                 Log.Debug("Operation '{0}' is not correct", line);
-                throw new IncorrectSyntaxException("prepare failed - '{0}'", line);
+                throw new IncorrectSyntaxException($"prepare failed - '{line}'");
             }
+
             return new DTEPrepared(m.Groups[1].Value, m.Groups[2].Success ? m.Groups[2].Value.Trim() : String.Empty);
         }
 
@@ -191,7 +196,7 @@ namespace net.r_eg.vsCE.Actions
                     Log.Debug("DTE: all completed");
                     Settings._.IgnoreActions = false;
                     if(terminated != null) {
-                        throw new ComponentException(terminated.Message, terminated);
+                        throw new ExternalException(terminated.Message, terminated);
                     }
                 }
             }
@@ -199,7 +204,7 @@ namespace net.r_eg.vsCE.Actions
 
         public virtual void exec(string name, string args = "")
         {
-            env.exec(name, args);
+            env?.exec(name, args);
         }
 
         public void flushQueue()

@@ -24,7 +24,7 @@ namespace net.r_eg.vsCE.Actions
     /// <summary>
     /// Action for EnvCommand Mode
     /// </summary>
-    public class ActionEnvCommand: Action, IAction
+    public class ActionEnvCommand: ActionAbstract, IAction
     {
         /// <summary>
         /// Process for specified event.

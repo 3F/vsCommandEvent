@@ -193,19 +193,19 @@ namespace net.r_eg.vsCE.UI.WForms
 
             space = new DeepSpace(pictureBoxSpace.CreateGraphics(), pictureBoxSpace.Width, pictureBoxSpace.Height);
 
-            labelCopyright.Text = String.Format("Copyright (c) 2015-{0}  Denis Kuzmin < entry.reg@gmail.com >", Math.Max(2016, DateTime.Now.Year));
+            labelCopyright.Text = String.Format("Copyright (c) 2015-{0}  Denis Kuzmin <entry.reg@gmail.com> GitHub/3F", Math.Max(2019, DateTime.Now.Year));
 
 #if !DEBUG
-            labelVersionVal.Text = String.Format("v{0} [ {1} ]", Version.numberWithRevString, Version.branchSha1);
-            if(Version.branchName.ToLower() != "releases") {
-                labelVersionVal.Text += String.Format(" /\"{0}\":{1}", Version.branchName, Version.branchRevCount);
+            labelVersionVal.Text = $"v{Version.S_NUM_REV}+{Version.B_SHA1}";
+            if(Version.B_NAME.ToLower() != "releases") {
+                labelVersionVal.Text += String.Format(" /\"{0}\":{1}", Version.B_NAME, Version.B_REVC);
             }
 #else
             labelVersionVal.Text = String.Format("v{0} Debug [ {1} ] /\"{2}\":{3}",
-                                                    Version.numberWithRevString,
-                                                    Version.branchSha1,
-                                                    Version.branchName,
-                                                    Version.branchRevCount);
+                                                    Version.S_NUM_REV,
+                                                    Version.B_SHA1,
+                                                    Version.B_NAME,
+                                                    Version.B_REVC);
 #endif
         }
 
@@ -241,22 +241,22 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void linkLicense_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Util.openUrl("http://vsce.r-eg.net/License/");
+            Util.openUrl("https://github.com/3F/vsCommandEvent/blob/master/LICENSE");
         }
 
         private void linkPage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Util.openUrl("http://r-eg.net");
+            Util.openUrl("https://github.com/3F");
         }
 
         private void linkLabelDonationHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Util.openUrl("http://vsce.r-eg.net/Donation/");
+            Util.openUrl("https://3F.github.com/Donation/");
         }
 
         private void pictureBoxDonation_Click(object sender, EventArgs e)
         {
-            Util.openUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=entry%2ereg%40gmail%2ecom&lc=US&item_name=3F%2dOpenSource%20%5b%20github%2ecom%2f3F&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted");
+            Util.openUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=entry%2ereg%40gmail%2ecom&lc=US&item_name=Open%20Source%20%5b%20GitHub%2F3F&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted");
         }
 
         private void pictureBoxDonation_MouseHover(object sender, EventArgs e)
@@ -273,7 +273,7 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void linkVSSBE_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Util.openUrl("http://visualstudiogallery.msdn.microsoft.com/0d1dbfd7-ed8a-40af-ae39-281bfeca2334/");
+            Util.openUrl("https://github.com/3F/vsSolutionBuildEvent");
         }
     }
 }

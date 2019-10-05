@@ -17,14 +17,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using net.r_eg.EvMSBuild;
+using net.r_eg.SobaScript;
 using net.r_eg.vsCE.Bridge;
 using net.r_eg.vsCE.Events;
 using net.r_eg.vsCE.Exceptions;
-using net.r_eg.vsCE.MSBuild;
-using net.r_eg.vsCE.SBEScripts;
 
 namespace net.r_eg.vsCE.Actions
 {
@@ -38,7 +37,7 @@ namespace net.r_eg.vsCE.Actions
         /// <summary>
         /// Work with SBE-Scripts
         /// </summary>
-        public ISBEScript SBEScript
+        public ISobaScript SBEScript
         {
             get;
             protected set;
@@ -47,7 +46,7 @@ namespace net.r_eg.vsCE.Actions
         /// <summary>
         /// Work with MSBuild
         /// </summary>
-        public IMSBuild MSBuild
+        public IEvMSBuild MSBuild
         {
             get;
             protected set;
@@ -104,7 +103,7 @@ namespace net.r_eg.vsCE.Actions
                 return false;
             }
 
-            Log.Info("Launching action '{0}' :: Configuration - '{1}'", evt.Caption, (Env != null)? Env.SolutionActiveCfgString : "");
+            Log.Info($"Launching action '{evt.Name}': {evt.Caption}");
             return actionBy(evt);
         }
 
@@ -121,7 +120,7 @@ namespace net.r_eg.vsCE.Actions
         /// <param name="env">Used environment</param>
         /// <param name="script">Used SBE-Scripts</param>
         /// <param name="msbuild">Used MSBuild</param>
-        public Command(IEnvironment env, ISBEScript script, IMSBuild msbuild)
+        public Command(IEnvironment env, ISobaScript script, IEvMSBuild msbuild)
         {
             Env         = env;
             SBEScript   = script;
@@ -227,7 +226,7 @@ namespace net.r_eg.vsCE.Actions
                 case System.Windows.Forms.DialogResult.Cancel: {
                     evt.Enabled = false;
                     Settings.CfgManager.Config.save();
-                    throw new SBEException("Aborted by user");
+                    throw new UnspecSBEException("Aborted by user");
                 }
             }
             return false;

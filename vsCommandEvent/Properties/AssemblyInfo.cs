@@ -5,12 +5,12 @@ using net.r_eg.vsCE;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("vsCommandEvent [ github.com/3F/vsCommandEvent ]")]
+[assembly: AssemblyTitle("github.com/3F/vsCommandEvent")]
 [assembly: AssemblyDescription("Based on vsSolutionBuildEvent")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("vsCommandEvent")]
-[assembly: AssemblyCopyright("Denis Kuzmin - entry.reg@gmail.com")]
+[assembly: AssemblyCopyright("Denis Kuzmin - GitHub/3F")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using net.r_eg.vsCE;
 
 // Current format: {Major}.{Minor}.{Patch}.{Build} ->
 //     For changes use the .version file only as {Major}.{Minor}.{Patch}
-[assembly: AssemblyVersion(Version.numberString)]
-[assembly: AssemblyFileVersion(Version.numberString)]
+[assembly: AssemblyVersion(Version.S_NUM)]
+[assembly: AssemblyFileVersion(Version.S_NUM)]

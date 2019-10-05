@@ -234,7 +234,7 @@
             this.checkBoxMSBuildSupport.Name = "checkBoxMSBuildSupport";
             this.checkBoxMSBuildSupport.Size = new System.Drawing.Size(89, 17);
             this.checkBoxMSBuildSupport.TabIndex = 9;
-            this.checkBoxMSBuildSupport.Text = "MSBuild core";
+            this.checkBoxMSBuildSupport.Text = "E-MSBuild engine";
             this.checkBoxMSBuildSupport.UseVisualStyleBackColor = true;
             // 
             // btnExecute
@@ -253,7 +253,7 @@
             this.richTextBoxExecuted.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.richTextBoxExecuted.ContextMenuStrip = this.menuResult;
             this.richTextBoxExecuted.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBoxExecuted.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.richTextBoxExecuted.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBoxExecuted.Location = new System.Drawing.Point(0, 0);
             this.richTextBoxExecuted.Name = "richTextBoxExecuted";
             this.richTextBoxExecuted.ReadOnly = true;
@@ -411,7 +411,7 @@
             this.MinimumSize = new System.Drawing.Size(400, 210);
             this.Name = "ScriptCheckFrm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Testing Tool:  SBE-Scripts";
+            this.Text = "Testing Tool: SobaScript, E-MSBuild, Varhead, ...";
             this.contextMenuUVariables.ResumeLayout(false);
             this.splitContainerMVertical.Panel1.ResumeLayout(false);
             this.splitContainerMVertical.Panel2.ResumeLayout(false);
