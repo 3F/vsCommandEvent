@@ -27,7 +27,7 @@ call %_gnt% /p:ngpath="%cd%/packages" /p:ngconfig="%cd%/.gnt/packages.config" ||
 
 :: Build
 
-set bnode=%cim% %hMSBuild% vsSolutionBuildEvent.sln /m:6 /p:Platform="Any CPU" /v:%level%
+set bnode=%cim% %hMSBuild% vsCommandEvent.sln /m:6 /p:Platform="Any CPU" /v:%level%
 
 rem call git clean -x -e \.vs -e \.user -d
 call %bnode% /p:Configuration=%reltype%_SDK10 || goto err

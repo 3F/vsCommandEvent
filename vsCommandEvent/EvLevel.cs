@@ -251,7 +251,7 @@ namespace net.r_eg.vsCE
         /// <summary>
         /// To initialize properties by default for project.
         /// </summary>
-        protected virtual void initPropByDefault(IEvMSBuild msbuild)
+        protected void initPropByDefault(IEvMSBuild msbuild)
         {
             IAppSettings app = AppSettings._;
             const string _PFX = AppSettings.APP_NAME_SHORT;

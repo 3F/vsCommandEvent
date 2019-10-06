@@ -4,12 +4,14 @@ Extending Visual Studio **on the fly** via Advanced MSBuild, SBE-Scripts, C#, ..
 
 *Feel like a master.*
 
-[![Build status - master](https://ci.appveyor.com/api/projects/status/yy8yu9wr4nuhaf7p/branch/master?svg=true)](https://ci.appveyor.com/project/3Fs/vscommandevent/branch/master) [![VSIX](https://vsce.r-eg.net/etc/badges/VSPackage.svg)](https://vsce.r-eg.net/Changelist/#vsix) [![LGPLv3](https://vsce.r-eg.net/etc/badges/License.svg)](https://vsce.r-eg.net/License/) 
+[![Build status](https://ci.appveyor.com/api/projects/status/gwmda50hdcu9esws/branch/master?svg=true)](https://ci.appveyor.com/project/3Fs/vscommandevent-2jxea/branch/master)
+[![VSIX](https://vsce.r-eg.net/etc/badges/VSPackage.svg)](https://visualstudiogallery.msdn.microsoft.com/ad9f19b2-04c0-46fe-9637-9a52ce4ca661/)
+[![LGPLv3](https://vsce.r-eg.net/etc/badges/License.svg)](https://github.com/3F/vsCommandEvent/blob/master/LICENSE) 
 [![GetNuTool](https://img.shields.io/badge/🧩-GetNuTool-93C10B.svg)](https://github.com/3F/GetNuTool)
 [![SobaScript](https://img.shields.io/badge/🧩-SobaScript-8E5733.svg)](https://github.com/3F/SobaScript)
 [![E-MSBuild](https://img.shields.io/badge/🧩-E--MSBuild-C8597A.svg)](https://github.com/3F/E-MSBuild)
 
-[![Build history](https://buildstats.info/appveyor/chart/3Fs/vscommandevent?buildCount=20&showStats=true)](https://ci.appveyor.com/project/3Fs/vscommandevent/history)
+[![Build history](https://buildstats.info/appveyor/chart/3Fs/vscommandevent-2jxea?buildCount=20&showStats=true)](https://ci.appveyor.com/project/3Fs/vscommandevent-2jxea/history)
 
 **[Download](https://vsce.r-eg.net/Downloads/)**  (Binaries, Snapshots, Nightly builds, Libraries, ...)
 
@@ -52,9 +54,9 @@ This is possible because the vsCommandEvent may override a lot of commands from 
 
 ![](https://3F.github.io/web.vsCE/doc/Resources/examples/EnvCommand.png)
 
-So, [How about to override](https://vsce.r-eg.net/doc/Examples/Overriding/) the 'Exit' (including Alt + F4 hotkey) form Visual Studio IDE on the fly ? 
+![](media/gif/AboutVS.gif)
 
-![](https://3F.github.io/web.vsCE/doc/Resources/examples/cmds/live.gif)
+You can even [override the 'Exit'](https://vsce.r-eg.net/doc/Examples/Overriding/) (including [X] and Alt + F4 hotkey) for Visual Studio IDE on the fly 🔧. 
 
 ### A new look at old things
 
@@ -206,6 +208,8 @@ Welcome:
 ![](https://3F.github.io/web.vsCE/doc/Resources/Screenshots/main_v1.0.png)
 
 ![](https://3F.github.io/web.vsCE/doc/Resources/examples/CommandEvent.gif)
+
+![](https://3F.github.io/web.vsCE/doc/Resources/examples/cmds/live.gif)
 
 **[ [ . . .](https://vsce.r-eg.net/Screenshots/) ]**
 

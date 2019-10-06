@@ -820,6 +820,7 @@
             this.dgvActions.AlwaysSelected = true;
             this.dgvActions.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dgvActions.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvActions.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -956,6 +957,7 @@
             this.dgvCEFilters.AlwaysSelected = false;
             this.dgvCEFilters.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dgvCEFilters.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvCEFilters.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.dgvCEFilters.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCEFilters.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dgvCEFiltersColumnGuid,

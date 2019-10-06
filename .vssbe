@@ -70,8 +70,8 @@
   "PreBuild": [
     {
       "Enabled": true,
-      "Name": "RestorePkg",
-      "Caption": "To restore packages - nuget etc.",
+      "Name": "Init",
+      "Caption": "",
       "SupportMSBuild": true,
       "SupportSBEScripts": true,
       "IgnoreIfBuildFailed": false,
@@ -91,17 +91,44 @@
       "Mode": {
         "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
         "Type": "Script",
-        "Command": "$(revDeltaBase = \"2016/10/12\")\n$(revDeltaMin = $([System.Math]::Pow(10, 3)))\n$(revDeltaMax = $([System.Math]::Pow(10, 5)))\n\n#[\" \n    To restore packages via GetNuTool\n    https://github.com/NuGet/Home/issues/1521\n\"]\n#[NuGet gnt.raw(\"/p:ngconfig=\\\".gnt/packages.config\\\"\")]",
+        "Command": "$(revDeltaBase  = \"2016/11/05\")\r\n$(revDeltaMin   = $([System.Math]::Pow(10, 3)))\r\n$(revDeltaMax   = 65534) #[\" limit of AssemblyVersion (2^16 - 2) - i.e. 65534 max allowed \"]\r\n\r\n#[var pDir      = vsCommandEvent/]\r\n#[var odir      = $(SolutionDir)bin/Releases/$(Configuration)/]\r\n#[var cfgSDK    = #[( $(Configuration) =^ \"_SDK15\" ) {15} else {10} ]]",
         "Command__": [
-          "$(revDeltaBase = \"2016/10/12\")",
-          "$(revDeltaMin = $([System.Math]::Pow(10, 3)))",
-          "$(revDeltaMax = $([System.Math]::Pow(10, 5)))",
+          "$(revDeltaBase  = \"2016/11/05\")",
+          "$(revDeltaMin   = $([System.Math]::Pow(10, 3)))",
+          "$(revDeltaMax   = 65534) #[\" limit of AssemblyVersion (2^16 - 2) - i.e. 65534 max allowed \"]",
           "",
-          "#[\" ",
-          "    To restore packages via GetNuTool",
-          "    https://github.com/NuGet/Home/issues/1521",
-          "\"]",
-          "#[NuGet gnt.raw(\"/p:ngconfig=\\\".gnt/packages.config\\\"\")]"
+          "#[var pDir      = vsCommandEvent/]",
+          "#[var odir      = $(SolutionDir)bin/Releases/$(Configuration)/]",
+          "#[var cfgSDK    = #[( $(Configuration) =^ \"_SDK15\" ) {15} else {10} ]]"
+        ]
+      }
+    },
+    {
+      "Enabled": true,
+      "Name": "ActClean",
+      "Caption": "",
+      "SupportMSBuild": true,
+      "SupportSBEScripts": true,
+      "IgnoreIfBuildFailed": false,
+      "BuildType": "Rebuild",
+      "Confirmation": false,
+      "ToConfiguration": [],
+      "ExecutionOrder": {
+        "$type": "net.r_eg.vsSBE.Events.ExecutionOrder[], vsSolutionBuildEvent",
+        "$values": []
+      },
+      "Process": {
+        "$type": "net.r_eg.vsSBE.Events.EventProcess, vsSolutionBuildEvent",
+        "Waiting": true,
+        "Hidden": true,
+        "TimeLimit": 30
+      },
+      "Mode": {
+        "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
+        "Type": "Script",
+        "Command": "#[IO delete.directory(\"$(odir)\", true)]",
+        "Command__": [
+          "#[IO delete.directory(\"$(odir)\", true)]"
         ]
       }
     },
@@ -128,8 +155,10 @@
       "Mode": {
         "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
         "Type": "Script",
-        "Command": "#[\"\n    Prepares data - version, revBuild & information from git\n\"]\n\n#[var tBase     = $([System.DateTime]::Parse('$(revDeltaBase)').ToBinary())]\n#[var tNow      = $([System.DateTime]::UtcNow.Ticks)]\n#[var revBuild  = $([System.TimeSpan]::FromTicks('$([MSBuild]::Subtract($(tNow), $(tBase)))').TotalMinutes.ToString('0'))]\n#[var revBuild  = $([MSBuild]::Add($(revDeltaMin), $([MSBuild]::Modulo($(revBuild), $([MSBuild]::Subtract($(revDeltaMax), $(revDeltaMin)))))))]\n\n#[var tplVersion = #[File get(\"Version.tpl\")]]\n\n#[var pDir  = vsCommandEvent/]\n#[var numCE = #[File get(\".version\")]]",
+        "Command": "\n\n#[\"\n    Prepares data - version, revBuild & information from git\n\"]\n\n#[var tBase     = $([System.DateTime]::Parse('$(revDeltaBase)').ToBinary())]\n#[var tNow      = $([System.DateTime]::UtcNow.Ticks)]\n#[var revBuild  = $([System.TimeSpan]::FromTicks('$([MSBuild]::Subtract($(tNow), $(tBase)))').TotalMinutes.ToString('0'))]\n#[var revBuild  = $([MSBuild]::Add($(revDeltaMin), $([MSBuild]::Modulo($(revBuild), $([MSBuild]::Subtract($(revDeltaMax), $(revDeltaMin)))))))]\n\n#[var tplVersion = #[File get(\"Version.tpl\")]]\n\n#[var numCE = #[File get(\".version\")]]\n\n",
         "Command__": [
+          "",
+          "",
           "#[\"",
           "    Prepares data - version, revBuild & information from git",
           "\"]",
@@ -141,8 +170,51 @@
           "",
           "#[var tplVersion = #[File get(\"Version.tpl\")]]",
           "",
-          "#[var pDir  = vsCommandEvent/]",
-          "#[var numCE = #[File get(\".version\")]]"
+          "#[var numCE = #[File get(\".version\")]]",
+          "",
+          ""
+        ]
+      }
+    },
+    {
+      "Enabled": true,
+      "Name": "ModulesAndPackages",
+      "Caption": "Submodules and dep packages",
+      "SupportMSBuild": true,
+      "SupportSBEScripts": true,
+      "IgnoreIfBuildFailed": false,
+      "BuildType": "Common",
+      "Confirmation": false,
+      "ToConfiguration": [],
+      "ExecutionOrder": {
+        "$type": "net.r_eg.vsSBE.Events.ExecutionOrder[], vsSolutionBuildEvent",
+        "$values": []
+      },
+      "Process": {
+        "$type": "net.r_eg.vsSBE.Events.EventProcess, vsSolutionBuildEvent",
+        "Waiting": true,
+        "Hidden": true,
+        "TimeLimit": 30
+      },
+      "Mode": {
+        "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
+        "Type": "Script",
+        "Command": "\n\n#[\" Packages \"]\n\n#[( !(#[IO exists.file(\"packages/__checked\")]) )\n{\n    ##[File call(\"tools\\hmsbuild.bat\", \"-t:restore /v:q /nologo /p:Configuration=$(Configuration) /p:Platform=\\\"Any CPU\\\"\", 1000)]    \n    ##[File call(\"packages.cmd\", \"\", 1000)]\n    \n    #[NuGet gnt.raw(\"/p:wpath=\\\"$(SolutionDir)\\\" /p:ngconfig=\\\".gnt/packages.config;vsCommandEvent/packages.config;vsCommandEventTest/packages.config\\\" \")]\n    \n    #[IO copy.directory(\"\", \"packages/\", true)]\n    #[File write(\"packages/__checked\"): ]\n}]",
+        "Command__": [
+          "",
+          "",
+          "#[\" Packages \"]",
+          "",
+          "#[( !(#[IO exists.file(\"packages/__checked\")]) )",
+          "{",
+          "    ##[File call(\"tools\\hmsbuild.bat\", \"-t:restore /v:q /nologo /p:Configuration=$(Configuration) /p:Platform=\\\"Any CPU\\\"\", 1000)]    ",
+          "    ##[File call(\"packages.cmd\", \"\", 1000)]",
+          "    ",
+          "    #[NuGet gnt.raw(\"/p:wpath=\\\"$(SolutionDir)\\\" /p:ngconfig=\\\".gnt/packages.config;vsCommandEvent/packages.config;vsCommandEventTest/packages.config\\\" \")]",
+          "    ",
+          "    #[IO copy.directory(\"\", \"packages/\", true)]",
+          "    #[File write(\"packages/__checked\"): ]",
+          "}]"
         ]
       }
     },
@@ -169,27 +241,36 @@
       "Mode": {
         "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
         "Type": "Script",
-        "Command": "#[( #[File exists.directory(\".git\")] && #[File exists.file(\"git.exe\", true)] )\n{\n    #[var branchSha1        = #[File sout(\"git\", \"rev-parse --short HEAD\")]]\n    #[var branchName        = #[File sout(\"git\", \"rev-parse --abbrev-ref HEAD\")]]\n    #[var branchRevCount    = #[File sout(\"git\", \"rev-list HEAD --count\")]]\n    \n    #[var csVersion = $(tplVersion.Replace(\"%branchName%\", \"$(branchName)\").Replace(\"%branchSha1%\", \"$(branchSha1)\").Replace(\"%branchRevCount%\", \"$(branchRevCount)\"))]\n    \n    #[($(branchName) == \"HEAD\") {\n        #[var branchName = $(APPVEYOR_REPO_BRANCH)]\n    }]\n}\nelse {\n    #[var branchSha1 =-] #[var branchName =-] #[var branchRevCount =-]\n    #[var csVersion = $(tplVersion.Replace(\"%branchName%\", \"-\").Replace(\"%branchSha1%\", \"-\").Replace(\"%branchRevCount%\", \"-\"))]\n}]\n\n#[var cs = $(csVersion.Replace(\"%Version%\", \"$(numCE.Replace('.', ', ')), $(revBuild)\").Replace(\"%namespace%\", \"\"))]\n#[var cs = $(cs.Replace(\"%VersionRevString%\", \"$(numCE).$(revBuild)\").Replace(\"%VersionString%\", \"$(numCE)\"))]\n#[File write(\"#[var pDir]Version.cs\"):#[var cs]]\n\n\n#[\"\n    .vsixmanifest\n\"]\n\n#[( $(Configuration) ^= \"CI_\" ) {\n    #[var numCE = #[var numCE].#[var revBuild]]\n}]\n#[File replace.Regexp(\"$(pDir)/source.extension.vsixmanifest\", \"<Version>[0-9.]+</Version>\", \"<Version>$(numCE)</Version>\")]",
+        "Command": "#[\" \n    Checking of the git to define sha1, branch name, etc.\n\"]\n#[var isGit = #[IO cmd(\"git rev-parse 2>&1\")]]\n#[( $(isGit) == \"\" )\n{\n    #[var bSha1        = #[File sout(\"git\", \"rev-parse --short HEAD\")]]\n    #[var bName        = #[File sout(\"git\", \"rev-parse --abbrev-ref HEAD\")]]\n    #[var bRevCount    = #[File sout(\"git\", \"rev-list HEAD --count\")]]\n    \n    #[var csVersion = $(tplVersion.Replace(%bName%, \"$(bName)\").Replace(%bSha1%, \"$(bSha1)\").Replace(%bRevCount%, \"$(bRevCount)\"))]\n    \n    #[($(bName) == \"HEAD\") {\n        #[var bName = $(APPVEYOR_REPO_BRANCH)]\n    }]\n}\nelse {\n    #[var bSha1 =-] #[var bName =-] #[var bRevCount =-]\n    #[var csVersion = $(tplVersion.Replace(%bName%, \"-\").Replace(%bSha1%, \"-\").Replace(%bRevCount%, \"-\"))]\n}]\n\n\n#[\"\n    'vsSolutionBuildEvent' project\n\"]\n\n#[var cs = $(csVersion.Replace(\"%Version%\", \"$(numCE.Replace('.', ', ')), $(revBuild)\").Replace(\"%namespace%\", \"\"))]\n#[var cs = $(cs.Replace(\"%VersionRev%\", \"$(revBuild)\").Replace(\"%VersionString%\", \"$(numCE)\"))]\n#[File write(\"#[var pDir]Version.cs\"):#[var cs]]\n\n\n#[\"\n    .vsixmanifest\n\"]\n\n#[var vsixvnum = #[var numCE]]\n\n#[( $(Configuration) ^= \"RCI_\" ) {\n    #[var numCE = #[var numCE].#[var revBuild]]\n}]\n\n#[File replace.Regexp(\"#[var pDir]/sdk10.vsixmanifest\", \"<Version>[0-9.]+</Version>\", \"<Version>#[var vsixvnum]</Version>\")]\n\n#[File replace.Regexp(\"#[var pDir]/sdk15.vsixmanifest\", \"(<Identity.*?) Version=\\\"[0-9.]+\\\"\", \"$1 Version=\\\"#[var vsixvnum]\\\"\")]\n",
         "Command__": [
-          "#[( #[File exists.directory(\".git\")] && #[File exists.file(\"git.exe\", true)] )",
+          "#[\" ",
+          "    Checking of the git to define sha1, branch name, etc.",
+          "\"]",
+          "#[var isGit = #[IO cmd(\"git rev-parse 2>&1\")]]",
+          "#[( $(isGit) == \"\" )",
           "{",
-          "    #[var branchSha1        = #[File sout(\"git\", \"rev-parse --short HEAD\")]]",
-          "    #[var branchName        = #[File sout(\"git\", \"rev-parse --abbrev-ref HEAD\")]]",
-          "    #[var branchRevCount    = #[File sout(\"git\", \"rev-list HEAD --count\")]]",
+          "    #[var bSha1        = #[File sout(\"git\", \"rev-parse --short HEAD\")]]",
+          "    #[var bName        = #[File sout(\"git\", \"rev-parse --abbrev-ref HEAD\")]]",
+          "    #[var bRevCount    = #[File sout(\"git\", \"rev-list HEAD --count\")]]",
           "    ",
-          "    #[var csVersion = $(tplVersion.Replace(\"%branchName%\", \"$(branchName)\").Replace(\"%branchSha1%\", \"$(branchSha1)\").Replace(\"%branchRevCount%\", \"$(branchRevCount)\"))]",
+          "    #[var csVersion = $(tplVersion.Replace(%bName%, \"$(bName)\").Replace(%bSha1%, \"$(bSha1)\").Replace(%bRevCount%, \"$(bRevCount)\"))]",
           "    ",
-          "    #[($(branchName) == \"HEAD\") {",
-          "        #[var branchName = $(APPVEYOR_REPO_BRANCH)]",
+          "    #[($(bName) == \"HEAD\") {",
+          "        #[var bName = $(APPVEYOR_REPO_BRANCH)]",
           "    }]",
           "}",
           "else {",
-          "    #[var branchSha1 =-] #[var branchName =-] #[var branchRevCount =-]",
-          "    #[var csVersion = $(tplVersion.Replace(\"%branchName%\", \"-\").Replace(\"%branchSha1%\", \"-\").Replace(\"%branchRevCount%\", \"-\"))]",
+          "    #[var bSha1 =-] #[var bName =-] #[var bRevCount =-]",
+          "    #[var csVersion = $(tplVersion.Replace(%bName%, \"-\").Replace(%bSha1%, \"-\").Replace(%bRevCount%, \"-\"))]",
           "}]",
           "",
+          "",
+          "#[\"",
+          "    'vsSolutionBuildEvent' project",
+          "\"]",
+          "",
           "#[var cs = $(csVersion.Replace(\"%Version%\", \"$(numCE.Replace('.', ', ')), $(revBuild)\").Replace(\"%namespace%\", \"\"))]",
-          "#[var cs = $(cs.Replace(\"%VersionRevString%\", \"$(numCE).$(revBuild)\").Replace(\"%VersionString%\", \"$(numCE)\"))]",
+          "#[var cs = $(cs.Replace(\"%VersionRev%\", \"$(revBuild)\").Replace(\"%VersionString%\", \"$(numCE)\"))]",
           "#[File write(\"#[var pDir]Version.cs\"):#[var cs]]",
           "",
           "",
@@ -197,10 +278,46 @@
           "    .vsixmanifest",
           "\"]",
           "",
-          "#[( $(Configuration) ^= \"CI_\" ) {",
+          "#[var vsixvnum = #[var numCE]]",
+          "",
+          "#[( $(Configuration) ^= \"RCI_\" ) {",
           "    #[var numCE = #[var numCE].#[var revBuild]]",
           "}]",
-          "#[File replace.Regexp(\"$(pDir)/source.extension.vsixmanifest\", \"<Version>[0-9.]+</Version>\", \"<Version>$(numCE)</Version>\")]"
+          "",
+          "#[File replace.Regexp(\"#[var pDir]/sdk10.vsixmanifest\", \"<Version>[0-9.]+</Version>\", \"<Version>#[var vsixvnum]</Version>\")]",
+          "",
+          "#[File replace.Regexp(\"#[var pDir]/sdk15.vsixmanifest\", \"(<Identity.*?) Version=\\\"[0-9.]+\\\"\", \"$1 Version=\\\"#[var vsixvnum]\\\"\")]",
+          ""
+        ]
+      }
+    },
+    {
+      "Enabled": true,
+      "Name": "Fvsixmanifest",
+      "Caption": "source.extension.vsixmanifest",
+      "SupportMSBuild": true,
+      "SupportSBEScripts": true,
+      "IgnoreIfBuildFailed": true,
+      "BuildType": "Common",
+      "Confirmation": false,
+      "ToConfiguration": [],
+      "ExecutionOrder": {
+        "$type": "net.r_eg.vsSBE.Events.ExecutionOrder[], vsSolutionBuildEvent",
+        "$values": []
+      },
+      "Process": {
+        "$type": "net.r_eg.vsSBE.Events.EventProcess, vsSolutionBuildEvent",
+        "Waiting": true,
+        "Hidden": true,
+        "TimeLimit": 30
+      },
+      "Mode": {
+        "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
+        "Type": "Script",
+        "Command": "#[IO copy.file(\"$(pDir)/sdk$(cfgSDK).vsixmanifest\", \"$(pDir)/source.extension.vsixmanifest\", true)]\r\n",
+        "Command__": [
+          "#[IO copy.file(\"$(pDir)/sdk$(cfgSDK).vsixmanifest\", \"$(pDir)/source.extension.vsixmanifest\", true)]",
+          ""
         ]
       }
     }
@@ -267,11 +384,9 @@
       "Mode": {
         "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
         "Type": "Script",
-        "Command": "#[var appzip    = $(SolutionDir)bin/7z/7za.exe]\n#[var odir      = $(SolutionDir)bin/Releases/]\n#[var cfg       = #[($(Configuration) ~= \"Release\"){Release}else{Debug}]]\n#[var cfgFull   = $(Configuration)]\n#[var vsixLib   = $(SolutionDir)VsixLib\\bin\\]\n\n#[var netStamp      = $(NetTargetVName:vsCommandEvent)]\n#[var netVerString  = $(TargetFrameworkVersion:vsCommandEvent)]\n#[var msbuildver    = v$(MSBuildToolsVersion)]\n\n\n#[IO delete.directory(\"$(odir)\", true)]\n#[IO copy.directory(\"\", \"$(odir)\", true)]",
+        "Command": "#[var cfg       = #[( $(Configuration) ^= \"REL_\" || $(Configuration) ^= \"RCI_\" ){Release}else{Debug}]]\n#[var cfgFull   = $(Configuration)]\n#[var vsixLib   = $(SolutionDir)VsixLib\\bin\\]\n\n#[var netStamp      = $(NetTargetVName:vsCommandEvent)]\n#[var netVerString  = $(TargetFrameworkVersion:vsCommandEvent)]\n#[var msbuildver    = v$(MSBuildToolsVersion)]\n\n\n##[IO delete.directory(\"$(odir)\", true)]\n#[IO copy.directory(\"\", \"$(odir)\", true)]",
         "Command__": [
-          "#[var appzip    = $(SolutionDir)bin/7z/7za.exe]",
-          "#[var odir      = $(SolutionDir)bin/Releases/]",
-          "#[var cfg       = #[($(Configuration) ~= \"Release\"){Release}else{Debug}]]",
+          "#[var cfg       = #[( $(Configuration) ^= \"REL_\" || $(Configuration) ^= \"RCI_\" ){Release}else{Debug}]]",
           "#[var cfgFull   = $(Configuration)]",
           "#[var vsixLib   = $(SolutionDir)VsixLib\\bin\\]",
           "",
@@ -280,7 +395,7 @@
           "#[var msbuildver    = v$(MSBuildToolsVersion)]",
           "",
           "",
-          "#[IO delete.directory(\"$(odir)\", true)]",
+          "##[IO delete.directory(\"$(odir)\", true)]",
           "#[IO copy.directory(\"\", \"$(odir)\", true)]"
         ]
       }
@@ -308,17 +423,22 @@
       "Mode": {
         "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
         "Type": "Script",
-        "Command": "#[File write(\"$(odir)/Release_notes.txt\"):This assembled from:\n\n* Configuration:   '#[var cfgFull]' (Folders: #[var cfg])\n* .NET version:     #[var netVerString];\n* MSBuild Tools:    #[var msbuildver];\n* Build number:     #[var revBuild];\n* Branch Sha1:      #[var branchSha1];\n* Branch Name:      #[var branchName];\n* Branch revCount:  #[var branchRevCount];\n------------------------------------------\n\nVersions:\n\n* 'vsCommandEvent': v#[var numCE];\n\n--------------------------------------------\n      :: Generated by a vsSolutionBuildEvent #[$(vsSolutionBuildEvent)]  \n--------------------------------------------\nhttps://github.com/3F/vsSolutionBuildEvent\n]",
+        "Command": "#[File write(\"$(odir)\\Release-notes.$(bSha1).SDK$(cfgSDK).txt\"):\n\n* Configuration:   '#[var cfgFull]' ( #[var cfg] );\n* SDK base:         #[var cfgSDK];\n* .NET version:     #[var netVerString];\n* Platform:         #[$(Platform)];\n* MSBuild Tools:    #[var msbuildver];\n* Build number:     #[var revBuild];\n* Branch Sha1:      #[var bSha1];\n* Branch Name:      #[var bName];\n* Branch revCount:  #[var bRevCount];\n* revDeltaBase:     #[$(revDeltaBase)];    \n* revDeltaMin:      #[$(revDeltaMin)];    \n* revDeltaMax:      #[$(revDeltaMax)];\n------------------------------------------\n\nVersions:\n\n* 'vsCommandEvent': v#[var numCE];\n\n--------------------------------------------\n      :: Generated by a vsSolutionBuildEvent #[$(vsSolutionBuildEvent)]  \n--------------------------------------------\nhttps://github.com/3F/vsSolutionBuildEvent\n]\n",
         "Command__": [
-          "#[File write(\"$(odir)/Release_notes.txt\"):This assembled from:",
+          "#[File write(\"$(odir)\\Release-notes.$(bSha1).SDK$(cfgSDK).txt\"):",
           "",
-          "* Configuration:   '#[var cfgFull]' (Folders: #[var cfg])",
+          "* Configuration:   '#[var cfgFull]' ( #[var cfg] );",
+          "* SDK base:         #[var cfgSDK];",
           "* .NET version:     #[var netVerString];",
+          "* Platform:         #[$(Platform)];",
           "* MSBuild Tools:    #[var msbuildver];",
           "* Build number:     #[var revBuild];",
-          "* Branch Sha1:      #[var branchSha1];",
-          "* Branch Name:      #[var branchName];",
-          "* Branch revCount:  #[var branchRevCount];",
+          "* Branch Sha1:      #[var bSha1];",
+          "* Branch Name:      #[var bName];",
+          "* Branch revCount:  #[var bRevCount];",
+          "* revDeltaBase:     #[$(revDeltaBase)];    ",
+          "* revDeltaMin:      #[$(revDeltaMin)];    ",
+          "* revDeltaMax:      #[$(revDeltaMax)];",
           "------------------------------------------",
           "",
           "Versions:",
@@ -329,7 +449,8 @@
           "      :: Generated by a vsSolutionBuildEvent #[$(vsSolutionBuildEvent)]  ",
           "--------------------------------------------",
           "https://github.com/3F/vsSolutionBuildEvent",
-          "]"
+          "]",
+          ""
         ]
       }
     },
@@ -356,11 +477,11 @@
       "Mode": {
         "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
         "Type": "Script",
-        "Command": "#[IO copy.file(\n            \"$(pDir)bin\\$(cfg)\\vsCommandEvent.vsix\", \n            \"$(odir)vsCommandEvent_v$(numCE)_$(branchSha1)_$(netStamp).vsix\", \n            true)]",
+        "Command": "#[IO copy.file(\n            \"$(pDir)bin\\$(cfg)\\vsCommandEvent.vsix\", \n            \"$(odir)vsCommandEvent.$(vsixvnum)+$(bSha1).SDK$(cfgSDK).vsix\", \n            true)]",
         "Command__": [
           "#[IO copy.file(",
           "            \"$(pDir)bin\\$(cfg)\\vsCommandEvent.vsix\", ",
-          "            \"$(odir)vsCommandEvent_v$(numCE)_$(branchSha1)_$(netStamp).vsix\", ",
+          "            \"$(odir)vsCommandEvent.$(vsixvnum)+$(bSha1).SDK$(cfgSDK).vsix\", ",
           "            true)]"
         ]
       }

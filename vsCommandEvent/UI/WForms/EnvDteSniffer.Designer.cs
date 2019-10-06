@@ -165,6 +165,7 @@
             this.dgvCESniffer.AlwaysSelected = false;
             this.dgvCESniffer.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dgvCESniffer.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvCESniffer.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.dgvCESniffer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCESniffer.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dgvCESnifferColumnStamp,
