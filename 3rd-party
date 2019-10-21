@@ -21,12 +21,12 @@ vsCommandEvent  [ github.com/3F/vsCommandEvent ]
     * 7-Zip (www.7-zip.org)
     * GetNuTool (github.com/3F/GetNuTool)
     
-## Maintaining of this project also includes the following tools:
+## Dev Dependencies includes the following tools for src:
 
     * Moq (www.moqthis.com)
     * VsixCompress (nuget.org/packages/VsixCompress)
     * GetNuTool (github.com/3F/GetNuTool)
-    * vsSolutionBuildEvent CI.MSBuild (vssbe.r-eg.net)
+    * vsSolutionBuildEvent (github.com/3F/vsSolutionBuildEvent)
     * hMSBuild (github.com/3F/hMSBuild)
 
 

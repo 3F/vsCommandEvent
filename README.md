@@ -1,6 +1,6 @@
 # [vsCommandEvent](https://github.com/3F/vsCommandEvent)
 
-Extending Visual Studio **on the fly** via Advanced MSBuild, SBE-Scripts, C#, ... An powerful manager of the commands and data.
+Extending Visual Studio **on the fly** via [E-MSBuild]((https://github.com/3F/E-MSBuild)), [SobaScript]((https://github.com/3F/SobaScript)), C#, ... An powerful manager of the commands and data.
 
 *Feel like a master.*
 
@@ -211,5 +211,5 @@ Welcome:
 
 ![](https://3F.github.io/web.vsCE/doc/Resources/examples/cmds/live.gif)
 
-**[ [ . . .](https://vsce.r-eg.net/Screenshots/) ]**
+👉 **[ [ . . .](https://vsce.r-eg.net/Screenshots/) ]**
 

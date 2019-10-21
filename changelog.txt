@@ -1,7 +1,104 @@
-- - - - - - - -
-vsCommandEvent
-- - - - - - - -
+vsCommandEvent - https://github.com/3F/vsCommandEvent
+- - - - - - - 
 
+[v1.3] 2019.10.21
+
+    * NEW: Visual Studio 2019 full support. SDK15.
+    
+    * NEW: Complete integration with VS2017. SDK15.
+    
+           For VS2017 will be also available old SDK10 package implementation.
+           But SDK15 is recommended.
+
+    * NEW: Integration with MvsSln project. v2.5.
+           Replaces processing for Advanced MSBuild.
+           https://github.com/3F/MvsSln
+           
+    * NEW: Integration with E-MSBuild project. v1.14.
+           Advanced Evaluator of MSBuild scripts with user-variables support through Varhead and more.
+           https://github.com/3F/E-MSBuild
+           
+    * NEW: Integration with SobaScript -- an Extensible Modular Scripting Programming Language.
+           https://github.com/3F/SobaScript
+           
+    * NEW: Included SobaScript Components:
+           Z.Core: https://github.com/3F/SobaScript.Z.Core
+            * ConditionComponent
+            * EvMSBuildComponent
+            * UserVariableComponent
+            * TryComponent
+            * CommentComponent
+            * BoxComponent
+            
+           Z.Ext: https://github.com/3F/SobaScript.Z.Ext
+            * SevenZipComponent
+            * NuGetComponent
+            * FileComponent
+            * FunctionComponent
+            
+           Z.VS: https://github.com/3F/SobaScript.Z.VS
+            * DTEComponent
+            * OwpComponent
+            * BuildComponent
+            
+    * FIXED: Fixed IEnvironment.ProjectsMBE implementations.
+           
+    * FIXED: Possible "Can not load 7-zip library or internal COM error" 
+             When using x64 instance. 
+             Related Issue https://github.com/3F/vsSolutionBuildEvent/issues/38
+             
+    * FIXED: Possible "An equivalent project is already present in the project collection."
+             Related Issue https://github.com/3F/vsSolutionBuildEvent/issues/42.
+             
+    * FIXED: Possible incorrect projects for MSBuild Properties 
+                ~ $(TargetFrameworkVersion:Metadata) Issue #41.
+                
+    * FIXED: Failed getting project from EnvDTE. 
+             Related Issue https://github.com/3F/vsSolutionBuildEvent/issues/40.
+    
+    * CHANGED: Increased performance when evaluating data and scripts due to new SobaScript and E-MSBuild.
+    
+    * CHANGED: netfx target platform changes:
+               
+               * 4.0 only: VS2010, VS2012, VS2013, VS2015, VS2017
+               * 4.6 only: VS2017, VS2019
+
+    * CHANGED: Replaced old msbuild helper on hMSBuild 2.2
+               https://github.com/3F/hMSBuild
+             
+    * CHANGED: Updated 7z.Libs 19.0.1.
+    
+    * CHANGED: Updated AvalonEdit 5.0.4
+    
+    * CHANGED: Updated Microsoft.VisualStudio.Shell.15.0 15.9.28307
+    
+    * CHANGED: SDK15 packages only: 
+               Updated Microsoft.Build & Microsoft.Build.Framework 16.0.461
+    
+    * CHANGED: Updated EnvDTE 8.0.2
+    
+    * CHANGED: Updated EnvDTE80 8.0.3
+    
+    * CHANGED: Updated Newtonsoft.Json 12.0.2
+    
+    * CHANGED: Updated Microsoft.VisualStudio.SDK.EmbedInteropTypes 15.0.27
+    
+    * CHANGED: StreamJsonRpc 2.0.208
+    
+    * CHANGED: System.ValueTuple 4.5.0
+    
+    * NOTE: Our new releases migrated from SourceForge to GitHub Release Page: 
+            https://github.com/3F/vsCommandEvent/releases
+            
+            Most actual information is still here: https://vsce.r-eg.net/Downloads/
+            
+    * NOTE: Mirror src on bitbucket is obsolete now. 
+            Please use only GitHub: https://github.com/3F/vsCommandEvent
+            
+    * NOTE: Here is about SDK10 / SDK15 packages:
+            https://vssbe.r-eg.net/doc/Usage/#sdk10--sdk15-versions
+            
+            
 [v1.2] 2016.10.19
 
     * FIXED: Fixed bug "Save changes to the following items?" VS IDE
