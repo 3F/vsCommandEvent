@@ -123,11 +123,11 @@
       <HintPath>..\packages\AvalonEdit.5.0.4\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="LSender, Version=1.14.0.0, Culture=neutral, PublicKeyToken=37b816508826ec5b, processorArchitecture=MSIL">
-      <HintPath>..\packages\LSender.1.14.0\lib\net40\LSender.dll</HintPath>
+    <Reference Include="LSender, Version=1.15.0.0, Culture=neutral, PublicKeyToken=37b816508826ec5b, processorArchitecture=MSIL">
+      <HintPath>..\packages\LSender.1.15.0\lib\net40\LSender.dll</HintPath>
     </Reference>
-    <Reference Include="MvsSln, Version=2.4.0.26437, Culture=neutral, PublicKeyToken=87f0bd8fb7f0a2c4, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvsSln.2.4.0\lib\net40\MvsSln.dll</HintPath>
+    <Reference Include="MvsSln, Version=2.5.0.0, Culture=neutral, PublicKeyToken=87f0bd8fb7f0a2c4, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvsSln.2.5.0\lib\net40\MvsSln.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

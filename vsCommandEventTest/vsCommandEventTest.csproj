@@ -81,15 +81,15 @@
       <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\net45\EnvDTE80.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="LSender, Version=1.14.0.0, Culture=neutral, PublicKeyToken=37b816508826ec5b, processorArchitecture=MSIL">
-      <HintPath>..\packages\LSender.1.14.0\lib\net40\LSender.dll</HintPath>
+    <Reference Include="LSender, Version=1.15.0.0, Culture=neutral, PublicKeyToken=37b816508826ec5b, processorArchitecture=MSIL">
+      <HintPath>..\packages\LSender.1.15.0\lib\net40\LSender.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Moq, Version=4.13.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.13.0\lib\net45\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="MvsSln, Version=2.4.0.26437, Culture=neutral, PublicKeyToken=87f0bd8fb7f0a2c4, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvsSln.2.4.0\lib\net40\MvsSln.dll</HintPath>
+    <Reference Include="MvsSln, Version=2.5.0.0, Culture=neutral, PublicKeyToken=87f0bd8fb7f0a2c4, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvsSln.2.5.0\lib\net40\MvsSln.dll</HintPath>
     </Reference>
     <Reference Include="SevenZipSharp, Version=0.64.3890.29348, Culture=neutral, PublicKeyToken=20de82c62b055c88, processorArchitecture=MSIL">
       <HintPath>..\packages\SevenZipSharp.0.64\lib\SevenZipSharp.dll</HintPath>

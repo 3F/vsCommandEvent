@@ -234,7 +234,7 @@
             this.checkBoxMSBuildSupport.Name = "checkBoxMSBuildSupport";
             this.checkBoxMSBuildSupport.Size = new System.Drawing.Size(89, 17);
             this.checkBoxMSBuildSupport.TabIndex = 9;
-            this.checkBoxMSBuildSupport.Text = "E-MSBuild engine";
+            this.checkBoxMSBuildSupport.Text = "E-MSBuild";
             this.checkBoxMSBuildSupport.UseVisualStyleBackColor = true;
             // 
             // btnExecute
