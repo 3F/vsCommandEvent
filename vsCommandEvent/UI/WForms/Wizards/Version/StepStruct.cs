@@ -17,6 +17,8 @@
 
 using System;
 using System.Collections.Generic;
+using net.r_eg.EvMSBuild;
+using net.r_eg.MvsSln;
 
 namespace net.r_eg.vsCE.UI.WForms.Wizards.Version
 {
@@ -89,17 +91,17 @@ namespace net.r_eg.vsCE.UI.WForms.Wizards.Version
         }
 
         /// <param name="parser"></param>
-        public StepStruct(MSBuild.Parser parser)
+        public StepStruct(IEvMSBuild parser)
             : this()
         {
             try {
-                namspace = parser.getProperty("RootNamespace");
+                namspace = parser.GetPropValue(PropertyNames.PRJ_NAMESPACE);
             }
             catch(Exception ex) {
                 Log.Debug("Wizard-Version: RootNamespace failed - `{0}`", ex.Message);
             }
 
-            if(namspace == MSBuild.Parser.PROP_VALUE_DEFAULT) {
+            if(namspace == PropertyNames.UNDEFINED) {
                 namspace = "MyNamespace";
             }
         }

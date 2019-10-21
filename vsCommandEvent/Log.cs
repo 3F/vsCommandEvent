@@ -19,9 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.InteropServices;
-using System.Threading;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using net.r_eg.vsCE.Events;
 using net.r_eg.vsCE.Logger;
 using net.r_eg.vsCE.VSTools.OW;
 using NLog;
@@ -136,6 +135,10 @@ namespace net.r_eg.vsCE
             Guid id = (upane != null)? upane.Guid : GuidList.OWP_SBE;
             paneDetach();
 
+#if VSSDK_15_AND_NEW
+            ThreadHelper.ThrowIfNotOnUIThread(); //TODO: upgrade to 15
+#endif
+
             if(ow != null) {
                 ow.DeletePane(ref id);
             }
@@ -246,11 +249,11 @@ namespace net.r_eg.vsCE
         {
             LogLevel oLevel = LogLevel.FromString(level);
 
-#if !DEBUG
+//#if !DEBUG
             if(oLevel < LogLevel.Info && !Settings._.DebugMode) {
                 return;
             }
-#endif
+//#endif
 
             var log = _lazy.Value;
             log.write(log.format(level, message, stamp), level);
@@ -325,8 +328,9 @@ namespace net.r_eg.vsCE
         /// <returns>formatted</returns>
         protected virtual string format(string level, string message, string stamp)
         {
+            DateTime dt = new DateTime(long.Parse(stamp));
             return String.Format("{0} [{1}]: {2}{3}",
-                                (new DateTime(long.Parse(stamp))).ToString(CultureInfo.CurrentCulture.DateTimeFormat),
+                                dt.ToString(CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern + ".ffff"),
                                 level,
                                 message,
                                 System.Environment.NewLine);

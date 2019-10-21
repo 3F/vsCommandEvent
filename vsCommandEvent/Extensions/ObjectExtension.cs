@@ -100,20 +100,25 @@ namespace net.r_eg.vsCE.Extensions
             if(obj == null) {
                 return default(T2);
             }
-            return JsonConvert.DeserializeObject<T2>(
-                                JsonConvert.SerializeObject(
-                                        obj, 
-                                        Formatting.None, 
-                                        new JsonSerializerSettings()
-                                        {
-                                            NullValueHandling   = NullValueHandling.Include,
-                                            Formatting          = Formatting.None,
-                                            TypeNameHandling    = TypeNameHandling.All,
-                                        }
-                                ),
-                                new JsonSerializerSettings() {
-                                    Binder = new JsonSerializationBinder(),
-                                });
+
+            return JsonConvert.DeserializeObject<T2>
+            (
+                JsonConvert.SerializeObject
+                (
+                    obj, 
+                    Formatting.None, 
+                    new JsonSerializerSettings()
+                    {
+                        NullValueHandling   = NullValueHandling.Include,
+                        Formatting          = Formatting.None,
+                        TypeNameHandling    = TypeNameHandling.All,
+                    }
+                ),
+
+                new JsonSerializerSettings() {
+                    SerializationBinder = new JsonSerializationBinder(),
+                }
+            );
         }
 
         /// <summary>
@@ -155,19 +160,6 @@ namespace net.r_eg.vsCE.Extensions
         public static bool IsNullOrEmptyString(this object obj)
         {
             return (obj == null || obj is string && (string)obj == String.Empty);
-        }
-
-        /// <summary>
-        /// Convert complex object to system.
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public static object ToSystemObject(this object data)
-        {
-            if(data is Newtonsoft.Json.Linq.JArray) {
-                return (object)((Newtonsoft.Json.Linq.JArray)data).ToObject(typeof(object[]));
-            }
-            return data;
         }
 
         /// <summary>

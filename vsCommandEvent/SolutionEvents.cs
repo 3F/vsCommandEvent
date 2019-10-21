@@ -16,9 +16,9 @@
 */
 
 using System;
+using net.r_eg.SobaScript.Exceptions;
 using net.r_eg.vsCE.Configuration;
 using net.r_eg.vsCE.Events;
-using net.r_eg.vsCE.Exceptions;
 
 namespace net.r_eg.vsCE
 {
@@ -72,7 +72,7 @@ namespace net.r_eg.vsCE
                 }
             }
 
-            throw new NotFoundException("getEvent: the event type '{0}' is not found.", type);
+            throw new NotFoundException(type);
         }
     }
 }

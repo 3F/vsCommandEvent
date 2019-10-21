@@ -114,7 +114,7 @@
             this.groupBoxCopyright.Controls.Add(this.labelCopyright);
             this.groupBoxCopyright.Location = new System.Drawing.Point(193, -4);
             this.groupBoxCopyright.Name = "groupBoxCopyright";
-            this.groupBoxCopyright.Size = new System.Drawing.Size(349, 52);
+            this.groupBoxCopyright.Size = new System.Drawing.Size(405, 52);
             this.groupBoxCopyright.TabIndex = 4;
             this.groupBoxCopyright.TabStop = false;
             // 
@@ -132,10 +132,10 @@
             this.linkPage.AutoSize = true;
             this.linkPage.Location = new System.Drawing.Point(167, 31);
             this.linkPage.Name = "linkPage";
-            this.linkPage.Size = new System.Drawing.Size(43, 13);
+            this.linkPage.Size = new System.Drawing.Size(76, 13);
             this.linkPage.TabIndex = 4;
             this.linkPage.TabStop = true;
-            this.linkPage.Text = "r-eg.net";
+            this.linkPage.Text = "github.com/3F";
             this.linkPage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkPage_LinkClicked);
             // 
             // groupBoxIncludes
@@ -146,10 +146,10 @@
             this.groupBoxIncludes.Location = new System.Drawing.Point(193, 213);
             this.groupBoxIncludes.Name = "groupBoxIncludes";
             this.groupBoxIncludes.Padding = new System.Windows.Forms.Padding(10, 5, 5, 5);
-            this.groupBoxIncludes.Size = new System.Drawing.Size(349, 75);
+            this.groupBoxIncludes.Size = new System.Drawing.Size(405, 75);
             this.groupBoxIncludes.TabIndex = 5;
             this.groupBoxIncludes.TabStop = false;
-            this.groupBoxIncludes.Text = "And also includes:";
+            this.groupBoxIncludes.Text = "This product includes:";
             // 
             // textBoxIncludes
             // 
@@ -160,7 +160,7 @@
             this.textBoxIncludes.Name = "textBoxIncludes";
             this.textBoxIncludes.ReadOnly = true;
             this.textBoxIncludes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxIncludes.Size = new System.Drawing.Size(334, 52);
+            this.textBoxIncludes.Size = new System.Drawing.Size(390, 52);
             this.textBoxIncludes.TabIndex = 0;
             this.textBoxIncludes.Text = resources.GetString("textBoxIncludes.Text");
             this.textBoxIncludes.WordWrap = false;
@@ -176,7 +176,7 @@
             this.groupBoxMixed.Controls.Add(this.richTextBox1);
             this.groupBoxMixed.Location = new System.Drawing.Point(193, 46);
             this.groupBoxMixed.Name = "groupBoxMixed";
-            this.groupBoxMixed.Size = new System.Drawing.Size(349, 114);
+            this.groupBoxMixed.Size = new System.Drawing.Size(405, 114);
             this.groupBoxMixed.TabIndex = 6;
             this.groupBoxMixed.TabStop = false;
             // 
@@ -187,7 +187,7 @@
             this.labelVersionVal.Location = new System.Drawing.Point(54, 12);
             this.labelVersionVal.Name = "labelVersionVal";
             this.labelVersionVal.ReadOnly = true;
-            this.labelVersionVal.Size = new System.Drawing.Size(295, 13);
+            this.labelVersionVal.Size = new System.Drawing.Size(346, 13);
             this.labelVersionVal.TabIndex = 9;
             // 
             // linkLicense
@@ -223,10 +223,12 @@
             // 
             // richTextBox1
             // 
+            this.richTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBox1.Location = new System.Drawing.Point(6, 49);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(343, 65);
+            this.richTextBox1.Size = new System.Drawing.Size(399, 65);
             this.richTextBox1.TabIndex = 7;
             this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
             // 
@@ -234,7 +236,7 @@
             // 
             this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOk.Location = new System.Drawing.Point(467, 293);
+            this.buttonOk.Location = new System.Drawing.Point(523, 293);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 29);
             this.buttonOk.TabIndex = 7;
@@ -246,7 +248,7 @@
             // 
             this.pictureBoxDonation.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBoxDonation.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxDonation.Image")));
-            this.pictureBoxDonation.Location = new System.Drawing.Point(280, 298);
+            this.pictureBoxDonation.Location = new System.Drawing.Point(372, 298);
             this.pictureBoxDonation.Name = "pictureBoxDonation";
             this.pictureBoxDonation.Size = new System.Drawing.Size(74, 21);
             this.pictureBoxDonation.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -261,26 +263,26 @@
             this.labelDonation.AutoSize = true;
             this.labelDonation.Location = new System.Drawing.Point(202, 301);
             this.labelDonation.Name = "labelDonation";
-            this.labelDonation.Size = new System.Drawing.Size(61, 13);
+            this.labelDonation.Size = new System.Drawing.Size(53, 13);
             this.labelDonation.TabIndex = 10;
-            this.labelDonation.Text = "Support us:";
+            this.labelDonation.Text = "Donation:";
             // 
             // linkLabelDonationHelp
             // 
             this.linkLabelDonationHelp.AutoSize = true;
-            this.linkLabelDonationHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.linkLabelDonationHelp.Location = new System.Drawing.Point(260, 295);
+            this.linkLabelDonationHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabelDonationHelp.Location = new System.Drawing.Point(252, 301);
             this.linkLabelDonationHelp.Name = "linkLabelDonationHelp";
-            this.linkLabelDonationHelp.Size = new System.Drawing.Size(10, 12);
+            this.linkLabelDonationHelp.Size = new System.Drawing.Size(114, 13);
             this.linkLabelDonationHelp.TabIndex = 11;
             this.linkLabelDonationHelp.TabStop = true;
-            this.linkLabelDonationHelp.Text = "?";
+            this.linkLabelDonationHelp.Text = "[ Ko-fi / Patreaon / ... ]";
             this.linkLabelDonationHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelDonationHelp_LinkClicked);
             // 
             // linkVSSBE
             // 
             this.linkVSSBE.AutoSize = true;
-            this.linkVSSBE.Location = new System.Drawing.Point(116, 18);
+            this.linkVSSBE.Location = new System.Drawing.Point(147, 18);
             this.linkVSSBE.Name = "linkVSSBE";
             this.linkVSSBE.Size = new System.Drawing.Size(107, 13);
             this.linkVSSBE.TabIndex = 13;
@@ -296,16 +298,16 @@
             this.groupBoxBasedOn.Location = new System.Drawing.Point(193, 166);
             this.groupBoxBasedOn.Name = "groupBoxBasedOn";
             this.groupBoxBasedOn.Padding = new System.Windows.Forms.Padding(10, 5, 5, 5);
-            this.groupBoxBasedOn.Size = new System.Drawing.Size(349, 41);
+            this.groupBoxBasedOn.Size = new System.Drawing.Size(405, 41);
             this.groupBoxBasedOn.TabIndex = 6;
             this.groupBoxBasedOn.TabStop = false;
-            this.groupBoxBasedOn.Text = "This product based on:";
+            this.groupBoxBasedOn.Text = "It was based on other project:";
             // 
             // AboutFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(544, 324);
+            this.ClientSize = new System.Drawing.Size(600, 324);
             this.Controls.Add(this.groupBoxBasedOn);
             this.Controls.Add(this.linkLabelDonationHelp);
             this.Controls.Add(this.labelDonation);

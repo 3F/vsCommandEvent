@@ -22,7 +22,7 @@ namespace net.r_eg.vsCE.Actions
     /// <summary>
     /// Action for Files Mode
     /// </summary>
-    public class ActionFile: Action, IAction
+    public class ActionFile: ActionAbstract, IAction
     {
         /// <summary>
         /// Process for specified event.

@@ -24,16 +24,14 @@ using net.r_eg.vsCE.Bridge;
 using net.r_eg.vsCE.Configuration;
 using net.r_eg.vsCE.Configuration.User;
 using net.r_eg.vsCE.Events;
-using net.r_eg.vsCE.Exceptions;
 using net.r_eg.vsCE.Extensions;
-using net.r_eg.vsCE.SBEScripts;
 
 namespace net.r_eg.vsCE.UI.WForms.Logic
 {
     /// <summary>
     /// TODO: !Most important! This from vsSBE 'as is', need to refactor.
     /// </summary>
-    public class Events
+    internal class Events
     {
         /// <summary>
         /// Prefix for new action by default.
@@ -82,7 +80,7 @@ namespace net.r_eg.vsCE.UI.WForms.Logic
         /// <summary>
         /// Used loader
         /// </summary>
-        public IBootloader Bootloader
+        public Bootloader Loader
         {
             get;
             protected set;
@@ -389,7 +387,7 @@ namespace net.r_eg.vsCE.UI.WForms.Logic
                     break;
                 }
                 default: {
-                    throw new InvalidArgumentException("Unsupported SolutionEventType: '{0}'", SBE.type);
+                    throw new ArgumentException($"Unsupported SolutionEventType: '{SBE.type}'");
                 }
             }
             SBE.update();
@@ -511,14 +509,18 @@ namespace net.r_eg.vsCE.UI.WForms.Logic
                 Log.Info("No actions to execution. Add new, then try again.");
                 return;
             }
-            Actions.ICommand cmd = new Actions.Command(Bootloader.Env,
-                                                        new Script(Bootloader),
-                                                        new MSBuild.Parser(Bootloader.Env, Bootloader.UVariable));
+            Actions.ICommand cmd = new Actions.Command
+            (
+                Loader.Env,
+                Loader.Soba,
+                Loader.Soba.EvMSBuild
+            );
 
             ISolutionEvent evt      = SBEItem;
             SolutionEventType type  = SBE.type;
             Log.Info("Action: execute action '{0}':'{1}' manually :: emulate '{2}' event", evt.Name, evt.Caption, type);
 
+            cmd.Env.BuildType = BuildType.Common; //TODO: IBuild.updateBuildType
             try {
                 bool res = cmd.exec(evt, type);
                 Log.Info("Action: '{0}':'{1}' completed as - '{2}'", evt.Name, evt.Caption, res.ToString());
@@ -528,10 +530,10 @@ namespace net.r_eg.vsCE.UI.WForms.Logic
             }
         }
 
-        public Events(IBootloader bootloader)
+        public Events(Bootloader loader)
         {
-            this.Bootloader = bootloader;
-            Env             = bootloader.Env;
+            Loader          = loader;
+            Env             = loader.Env;
             backupUpdate();
         }
 

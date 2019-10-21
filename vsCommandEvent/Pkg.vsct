@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!--  This is the file that defines the actual layout and type of the commands.
+        It is divided in different sections (e.g. command definition, command
+        placement, ...), with each defining a specific set of properties.
+        See the comment before each section for more details about how to
+        use it. -->
+
+  <!--  The VSCT compiler (the tool that translates this file into the binary 
+        format that VisualStudio will consume) has the ability to run a preprocessor 
+        on the vsct file; this preprocessor is (usually) the C++ preprocessor, so 
+        it is possible to define includes and macros with the same syntax used 
+        in C++ files. Using this ability of the compiler here, we include some files 
+        defining some of the constants that we will use inside the file. -->
+
+  <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
+  <Extern href="stdidcmd.h" />
+
+  <!--This header contains the command ids for the menus provided by the shell. -->
+  <Extern href="vsshlids.h" />
+
+  <!--Definition of some VSCT specific constants. In this sample we use it for the IDs inside the guidOfficeIcon group. -->
+  <!--<Extern href="msobtnid.h" xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" />-->
+
+
+
+
+  <!--The Commands section is where we the commands, menus and menu groups are defined.
+      This section uses a Guid to identify the package that provides the command defined inside it. -->
+  <Commands package="GUID_PACKAGE">
+    <!-- Inside this section we have different sub-sections: one for the menus, another  
+    for the menu groups, one for the buttons (the actual commands), one for the combos 
+    and the last one for the bitmaps used. Each element is identified by a command id that  
+    is a unique pair of guid and numeric identifier; the guid part of the identifier is usually  
+    called "command set" and is used to group different command inside a logically related  
+    group; your package should define its own command set in order to avoid collisions  
+    with command ids defined by other packages. -->
+
+    <!-- 
+         https://msdn.microsoft.com/en-us/library/bb165748.aspx
+         https://msdn.microsoft.com/en-us/library/bb165739.aspx
+         https://msdn.microsoft.com/en-us/library/cc826118.aspx
+      -->
+
+    <Menus>
+      <Menu guid="GUID_MAIN_CMD" id="CMD_MENU" priority="0x0100" type="MenuController">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_MM_WINDOWHELP" />
+        <!--<Parent guid="guidSHLMainMenu" id="IDG_VS_TOOLS_OPTIONS" />-->
+        <CommandFlag>IconAndText</CommandFlag>
+        <CommandFlag>DontCache</CommandFlag>
+        <Strings>
+          <ButtonText> </ButtonText>
+          <MenuText> </MenuText>
+        </Strings>
+      </Menu>
+    </Menus>
+
+    <Groups>
+      <Group guid="GUID_MAIN_CMD" id="CMD_GROUP" priority="0x000">
+        <Parent guid="GUID_MAIN_CMD" id="CMD_MENU" />
+      </Group>
+    </Groups>
+    
+    <Buttons>
+      
+      <Button guid="GUID_MAIN_CMD" id="CMD_MAIN" priority="0x0000" type="Button">
+        <Parent guid="GUID_MAIN_CMD" id="CMD_GROUP" />
+        <Icon guid="guidImages" id="package16" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <CommandName>vsCommandEvent</CommandName>
+          <ButtonText>vsCommandEvent</ButtonText>
+          <MenuText>vsCommandEvent</MenuText>
+          <CanonicalName>vsCE.Settings</CanonicalName>
+          <ToolTipText>vsCommandEvent - Settings</ToolTipText>
+        </Strings>
+      </Button>
+      
+      <Button guid="GUID_MAIN_CMD" id="CMD_UNWARN" priority="0x0002" type="Button">
+        <Parent guid="GUID_MAIN_CMD" id="CMD_GROUP" />
+        <Icon guid="ImgCfgUnwarn" id="unwarn16" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>Pict</CommandFlag>
+        <Strings>
+          <CommandName>vsCE.Cfg.RemoveWarnings</CommandName>
+          <ButtonText>Remove Warnings from ErrorList</ButtonText>
+          <MenuText>Remove Warnings from ErrorList</MenuText>
+          <CanonicalName>vsCE.Cfg.RemoveWarnings</CanonicalName>
+          <ToolTipText>vsCommandEvent - Remove Warnings from ErrorList</ToolTipText>
+        </Strings>
+      </Button>
+      
+    </Buttons>
+
+    <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
+    <Bitmaps>
+        <!-- usedList="pic1 pic2" -->
+        <Bitmap guid="guidImages" href="Resources\Package_16.png" usedList="package16" />
+        <Bitmap guid="ImgCfgUnwarn" href="Resources\vsmenu_unwarn.png" usedList="unwarn16" />
+    </Bitmaps>
+ 
+  </Commands>
+
+
+
+
+
+  <Symbols>
+    <!-- This is the package guid. -->
+    <GuidSymbol name="GUID_PACKAGE" value="{DA5CEB32-1E09-44A5-A6AA-71D3149A53B7}" />
+
+    <GuidSymbol name="GUID_MAIN_CMD" value="{C587CC93-95F6-4E7D-B6D2-A5B5A854A9FC}">
+      <IDSymbol name="CMD_MAIN" value="0x0100" />
+      <IDSymbol name="CMD_MENU" value="0x0101" />
+      <IDSymbol name="CMD_GROUP" value="0x0102" />
+      <IDSymbol name="CMD_UNWARN" value="0x0110" />
+    </GuidSymbol>
+
+    <GuidSymbol name="guidImages" value="{107B52CD-0C46-4A0F-A0BE-9B3A205466CF}">
+        <IDSymbol name="package16" value="1" />
+    </GuidSymbol>
+
+    <GuidSymbol name="ImgCfgUnwarn" value="{0B60E867-6BBD-4C7A-86BC-2F920323F2EF}" >
+      <IDSymbol name="unwarn16" value="1" />
+    </GuidSymbol>
+        
+  </Symbols>
+
+</CommandTable>

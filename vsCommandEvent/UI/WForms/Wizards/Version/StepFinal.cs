@@ -19,14 +19,14 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using net.r_eg.vsCE.Exceptions;
+using net.r_eg.SobaScript.Exceptions;
 
 namespace net.r_eg.vsCE.UI.WForms.Wizards.Version
 {
-    using TFieldLeft    = Func<string, string, bool, string>;
-    using TFieldRight   = Func<string, bool, string>;
-    using TFields       = Dictionary<Fields.Type, string>;
-    using TFieldsMap    = KeyValuePair<Dictionary<Fields.Type, string>, string>;
+    using TFieldLeft = Func<string, string, bool, string>;
+    using TFieldRight = Func<string, bool, string>;
+    using TFields = Dictionary<Fields.Type, string>;
+    using TFieldsMap = KeyValuePair<Dictionary<Fields.Type, string>, string>;
 
     internal class StepFinal: IStep
     {
@@ -100,7 +100,7 @@ namespace net.r_eg.vsCE.UI.WForms.Wizards.Version
                     return genDirect();
                 }
             }
-            throw new NotFoundException("The '{0}' is not found to construct the final step.", req.StepGen.gtype);
+            throw new NotFoundException(req.StepGen.gtype, $"The '{req.StepGen.gtype}' is not found to construct the final step.");
         }
 
         /// <param name="req">Manager of used steps for generation.</param>
@@ -193,13 +193,24 @@ namespace net.r_eg.vsCE.UI.WForms.Wizards.Version
                     // sortable format for InvariantCulture
                     rev = rev.Replace("!RevTime!", delta.timeBase.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture));
                     rev = rev.Replace("!RevType!", delta.interval.ToString());
+
+                    string revMod = String.Empty;
+                    if(delta.revMod.enabled) {
+                        revMod = Resource.ScriptRevTimeModulo
+                                            .Replace("!revMin!", delta.revMod.min.ToString())
+                                            .Replace("!revMax!", delta.revMod.max.ToString());
+
+                        revMod = String.Format("{0}{0}{1}", System.Environment.NewLine, revMod);
+                    }
+                    rev = rev.Replace("!RevModulo!", revMod);
+
                     return rev + LINE_BREAK;
                 }
                 case RevNumber.Type.Raw: {
                     return Resource.ScriptRevisionRaw + LINE_BREAK;
                 }
             }
-            throw new NotFoundException("scRevision: the `{0}` is not supported.", req.StepCfgData.revType);
+            throw new NotFoundException(req.StepCfgData.revType, $"scRevision: the `{req.StepCfgData.revType}` is not supported.");
         }
 
         /// <summary>
@@ -379,9 +390,9 @@ namespace net.r_eg.vsCE.UI.WForms.Wizards.Version
                         return String.Format("{0}{1}{2}", scm, LINE_BREAK, val);
                     }
                 }
-                throw new NotFoundException("The `{0}` is not found for used scm `git`.", type);
+                throw new NotFoundException(type, $"The `{type}` is not found for used scm `git`.");
             }
-            throw new NotFoundException("The `{0}` is not found for handling scm data.", req.StepCfgData.scm);
+            throw new NotFoundException(req.StepCfgData.scm, $"The `{req.StepCfgData.scm}` is not found for handling scm data.");
         }
 
         /// <summary>
@@ -407,7 +418,7 @@ namespace net.r_eg.vsCE.UI.WForms.Wizards.Version
                     return String.Format(tpl, fieldName, "$(ver).$(Revision)");
                 }
             }
-            throw new NotFoundException("The `{0}` is not found for single variable from version-fields.", type);
+            throw new NotFoundException(type, $"The `{type}` is not found for single variable from version-fields.");
         }
 
         /// <summary>

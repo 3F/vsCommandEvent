@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">DBG_SDK10</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectName>vsCommandEventTest</ProjectName>
@@ -10,85 +10,127 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>net.r_eg.vsCE.Test</RootNamespace>
     <AssemblyName>vsCommandEventTest</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <NetTargetVName>net40</NetTargetVName>
-    <DefineConstants>NET_40</DefineConstants>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <vsSBE_SDK>1.1.0</vsSBE_SDK>
+    <NoWarn>618;CS1591;IDE1006</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DBG_SDK10|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <NoWarn>618</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'REL_SDK10|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>$(DefineConstants)</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <NoWarn>618</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_net45|AnyCPU'">
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <NetTargetVName>net45</NetTargetVName>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'REL_SDK15|AnyCPU' ">
+    <IsVSSDK15>true</IsVSSDK15>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>$(DefineConstants)</DefineConstants>
     <Optimize>true</Optimize>
-    <NoWarn>618</NoWarn>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug_net45|AnyCPU'">
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <NetTargetVName>net45</NetTargetVName>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DBG_SDK15|AnyCPU' ">
+    <IsVSSDK15>true</IsVSSDK15>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
-    <NoWarn>618</NoWarn>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.4.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="E-MSBuild, Version=1.14.0.0, Culture=neutral, PublicKeyToken=b2280775cb30d646, processorArchitecture=MSIL">
+      <HintPath>..\packages\E-MSBuild.1.14.0\lib\net40\E-MSBuild.dll</HintPath>
+    </Reference>
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\$(NetTargetVName)\EnvDTE.dll</HintPath>
+      <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\net45\EnvDTE.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\$(NetTargetVName)\EnvDTE80.dll</HintPath>
+      <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\net45\EnvDTE80.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Build" />
+    <Reference Include="LSender, Version=1.14.0.0, Culture=neutral, PublicKeyToken=37b816508826ec5b, processorArchitecture=MSIL">
+      <HintPath>..\packages\LSender.1.14.0\lib\net40\LSender.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Moq, Version=4.13.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.13.0\lib\net45\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="MvsSln, Version=2.4.0.26437, Culture=neutral, PublicKeyToken=87f0bd8fb7f0a2c4, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvsSln.2.4.0\lib\net40\MvsSln.dll</HintPath>
     </Reference>
     <Reference Include="SevenZipSharp, Version=0.64.3890.29348, Culture=neutral, PublicKeyToken=20de82c62b055c88, processorArchitecture=MSIL">
       <HintPath>..\packages\SevenZipSharp.0.64\lib\SevenZipSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SobaScript, Version=1.14.0.0, Culture=neutral, PublicKeyToken=5ecc76fe0b5c94cb, processorArchitecture=MSIL">
+      <HintPath>..\packages\SobaScript.1.14.0\lib\net40\SobaScript.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.3\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.XML" />
+    <Reference Include="Varhead, Version=1.14.0.0, Culture=neutral, PublicKeyToken=5d8b5f1db430cece, processorArchitecture=MSIL">
+      <HintPath>..\packages\Varhead.1.14.0\lib\net40\Varhead.dll</HintPath>
+    </Reference>
   </ItemGroup>
+  <Choose>
+    <!-- SDK15+ -->
+    <When Condition=" '$(IsVSSDK15)' == 'true' ">
+      <ItemGroup>
+        <Reference Include="Microsoft.Build, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Build.16.0.461\lib\net472\Microsoft.Build.Framework.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <!-- /SDK15+ -->
+    <!-- SDK10 -->
+    <When Condition=" '$(IsVSSDK15)' != 'true' ">
+      <ItemGroup>
+        <Reference Include="Microsoft.Build" />
+      </ItemGroup>
+    </When>
+    <!-- /SDK10 -->
+  </Choose>
   <ItemGroup>
     <ProjectReference Include="..\Bridge\Bridge.csproj">
       <Project>{73919171-44b6-4536-b892-f1fca653887c}</Project>
@@ -106,35 +148,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\DTEOperationTest.cs" />
-    <Compile Include="SBEScripts\Components\BoxComponentTest.cs" />
-    <Compile Include="SBEScripts\Components\BuildComponentTest.cs" />
-    <Compile Include="SBEScripts\Components\CommentComponentTest.cs" />
-    <Compile Include="SBEScripts\Components\ConditionComponentTest.cs" />
-    <Compile Include="SBEScripts\Components\DTEComponentTest.cs" />
-    <Compile Include="SBEScripts\Components\FileComponentTest.cs" />
-    <Compile Include="SBEScripts\Components\FunctionComponentTest.cs" />
-    <Compile Include="SBEScripts\Components\InternalComponentTest.cs" />
-    <Compile Include="MSBuild\ParserTest.cs" />
-    <Compile Include="SBEScripts\Components\MSBuildComponentTest.cs" />
-    <Compile Include="SBEScripts\Components\NuGetComponentTest.cs" />
-    <Compile Include="SBEScripts\Components\OWPComponentTest.cs" />
+    <Compile Include="SobaAcs.cs" />
+    <Compile Include="TempFile.cs" />
+    <Compile Include="StubEnv.cs" />
+    <Compile Include="SobaScript\Components\InternalComponentTest.cs" />
     <Compile Include="Receiver\Output\BuildItemTest.cs" />
     <Compile Include="Receiver\Output\MatcherTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SBEScripts\Components\SevenZipComponentTest.cs" />
-    <Compile Include="SBEScripts\Components\TryComponentTest.cs" />
-    <Compile Include="SBEScripts\RPatternTest.cs" />
-    <Compile Include="SBEScripts\ScriptTest.cs" />
-    <Compile Include="SBEScripts\SNode\LevelTest.cs" />
-    <Compile Include="SBEScripts\SNode\PMTest.cs" />
-    <Compile Include="SBEScripts\StringHandlerTest.cs" />
-    <Compile Include="SBEScripts\Components\UserVariableComponentTest.cs" />
-    <Compile Include="Scripts\UserVariableTest.cs" />
-    <Compile Include="SBEScripts\ValueTest.cs" />
-    <Compile Include="StubEnv.cs" />
-    <Compile Include="TempFile.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="key.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -142,8 +166,4 @@
   <Target Name="BeforeBuild">
     <Copy SourceFiles="@(VsixLib)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" UseHardlinksIfPossible="true" />
   </Target>
-  <!--
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

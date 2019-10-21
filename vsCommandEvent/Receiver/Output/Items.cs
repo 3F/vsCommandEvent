@@ -18,7 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using net.r_eg.vsCE.Exceptions;
+using net.r_eg.SobaScript.Exceptions;
 using net.r_eg.vsCE.Extensions;
 
 namespace net.r_eg.vsCE.Receiver.Output
@@ -83,12 +83,12 @@ namespace net.r_eg.vsCE.Receiver.Output
                         return new ItemEW();
                     }
                     else if(item == null) {
-                        throw new NotFoundException("OWP Items-EW: The '{0}:{1}' is not found.", ident.guid, ident.item);
+                        throw new NotFoundException(ident.item, $"OWP Items-EW: The '{ident.guid}:{ident.item}' is not found.", ident.guid);
                     }
                     return item;
                 }
             }
-            throw new NotFoundException("OWP Items: Type '{0}' is not supported.", type);
+            throw new NotFoundException(type, $"OWP Items: Type '{type}' is not supported.");
         }
 
         private Items() { }

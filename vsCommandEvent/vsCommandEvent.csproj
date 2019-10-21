@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">DBG_SDK10</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectName>vsCommandEvent</ProjectName>
@@ -14,64 +14,61 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <NetTargetVName>net40</NetTargetVName>
-    <DefineConstants>NET_40</DefineConstants>
     <MinimumVisualStudioVersion>$(VisualStudioVersion)</MinimumVisualStudioVersion>
     <OldToolsVersion>4.0</OldToolsVersion>
     <vsSBE_SDK>1.1.0</vsSBE_SDK>
+    <NoWarn>CS1591;IDE1006</NoWarn>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <IncludeDebugSymbolsInVSIXContainer>true</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeCopyLocalReferencesInVSIXContainer>true</IncludeCopyLocalReferencesInVSIXContainer>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DBG_SDK10|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
+    <DefineConstants>NET_40;DEBUG;TRACE</DefineConstants>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'REL_SDK10|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>$(DefineConstants);CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>NET_40;CODE_ANALYSIS</DefineConstants>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Release\vsCommandEvent.XML</DocumentationFile>
-    <NoWarn>CS1591</NoWarn>
+    <DocumentationFile>bin\Release\vsCommandEvent.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI_Debug|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DCI_SDK10|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
+    <DefineConstants>NET_40;DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <DeployExtension>False</DeployExtension>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI_Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>$(DefineConstants);CODE_ANALYSIS</DefineConstants>
-    <Optimize>true</Optimize>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'RCI_SDK10|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <DeployExtension>False</DeployExtension>
-    <DocumentationFile>bin\Release\vsCommandEvent.XML</DocumentationFile>
-    <NoWarn>CS1591</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_net45|AnyCPU'">
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <NetTargetVName>net45</NetTargetVName>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>NET_45;CODE_ANALYSIS;CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>NET_40;CODE_ANALYSIS</DefineConstants>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Release\vsCommandEvent.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'REL_SDK15|AnyCPU' ">
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>VSSDK_15_AND_NEW;CODE_ANALYSIS;CODE_ANALYSIS</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -79,112 +76,79 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>CS1591</NoWarn>
-    <DocumentationFile>bin\Release\vsCommandEvent.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\vsCommandEvent.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug_net45|AnyCPU'">
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <NetTargetVName>net45</NetTargetVName>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DBG_SDK15|AnyCPU' ">
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>NET_45;DEBUG;TRACE</DefineConstants>
+    <DefineConstants>VSSDK_15_AND_NEW;DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <WarningLevel>4</WarningLevel>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI_Release_net45|AnyCPU'">
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <NetTargetVName>net45</NetTargetVName>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'RCI_SDK15|AnyCPU' ">
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>NET_45;CODE_ANALYSIS;CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>VSSDK_15_AND_NEW;CODE_ANALYSIS;CODE_ANALYSIS</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <DeployExtension>False</DeployExtension>
-    <NoWarn>CS1591</NoWarn>
-    <DocumentationFile>bin\Release\vsCommandEvent.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\vsCommandEvent.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI_Debug_net45|AnyCPU'">
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <NetTargetVName>net45</NetTargetVName>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DCI_SDK15|AnyCPU' ">
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>NET_45;DEBUG;TRACE</DefineConstants>
+    <DefineConstants>VSSDK_15_AND_NEW;DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <DeployExtension>False</DeployExtension>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IsVSSDK15 Condition="$(DefineConstants.Contains('VSSDK_15_AND_NEW'))">true</IsVSSDK15>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\$(NetTargetVName)\EnvDTE.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\$(NetTargetVName)\EnvDTE80.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="E-MSBuild, Version=1.14.0.0, Culture=neutral, PublicKeyToken=b2280775cb30d646, processorArchitecture=MSIL">
+      <HintPath>..\packages\E-MSBuild.1.14.0\lib\net40\E-MSBuild.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.AvalonEdit, Version=5.0.3.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
-      <HintPath>..\packages\AvalonEdit.5.0.3\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
+      <HintPath>..\packages\AvalonEdit.5.0.4\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Build" />
-    <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\$(NetTargetVName)\Microsoft.VisualStudio.OLE.Interop.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="LSender, Version=1.14.0.0, Culture=neutral, PublicKeyToken=37b816508826ec5b, processorArchitecture=MSIL">
+      <HintPath>..\packages\LSender.1.14.0\lib\net40\LSender.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.10.0">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\$(NetTargetVName)\Microsoft.VisualStudio.Shell.10.0.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\$(NetTargetVName)\Microsoft.VisualStudio.Shell.Immutable.10.0.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\$(NetTargetVName)\Microsoft.VisualStudio.Shell.Interop.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\$(NetTargetVName)\Microsoft.VisualStudio.Shell.Interop.10.0.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\$(NetTargetVName)\Microsoft.VisualStudio.Shell.Interop.8.0.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.9.0, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\$(NetTargetVName)\Microsoft.VisualStudio.Shell.Interop.9.0.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\$(NetTargetVName)\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.3.10\lib\$(NetTargetVName)\NLog.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MvsSln, Version=2.4.0.26437, Culture=neutral, PublicKeyToken=87f0bd8fb7f0a2c4, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvsSln.2.4.0\lib\net40\MvsSln.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="SevenZipSharp, Version=0.64.3890.29348, Culture=neutral, PublicKeyToken=20de82c62b055c88, processorArchitecture=MSIL">
       <HintPath>..\packages\SevenZipSharp.0.64\lib\SevenZipSharp.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="SobaScript, Version=1.14.0.0, Culture=neutral, PublicKeyToken=5ecc76fe0b5c94cb, processorArchitecture=MSIL">
+      <HintPath>..\packages\SobaScript.1.14.0\lib\net40\SobaScript.dll</HintPath>
+    </Reference>
+    <Reference Include="SobaScript.Mapper, Version=1.14.0.0, Culture=neutral, PublicKeyToken=6246810f77bc04e4, processorArchitecture=MSIL">
+      <HintPath>..\packages\SobaScript.Mapper.1.14.0\lib\net40\SobaScript.Mapper.dll</HintPath>
+    </Reference>
+    <Reference Include="SobaScript.Z.Core, Version=1.14.0.0, Culture=neutral, PublicKeyToken=e3be5b6c5408eb46, processorArchitecture=MSIL">
+      <HintPath>..\packages\SobaScript.Z.Core.1.14.0\lib\net40\SobaScript.Z.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SobaScript.Z.Ext, Version=1.14.0.0, Culture=neutral, PublicKeyToken=bd7e6de2108e80d0, processorArchitecture=MSIL">
+      <HintPath>..\packages\SobaScript.Z.Ext.1.14.0\lib\net40\SobaScript.Z.Ext.dll</HintPath>
+    </Reference>
+    <Reference Include="SobaScript.Z.VS, Version=1.14.0.0, Culture=neutral, PublicKeyToken=36cd756142745516, processorArchitecture=MSIL">
+      <HintPath>..\packages\SobaScript.Z.VS.1.14.0\lib\net40\SobaScript.Z.VS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -200,11 +164,167 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Ude.Signed.0.1.1\lib\net40\Ude.dll</HintPath>
     </Reference>
+    <Reference Include="Varhead, Version=1.14.0.0, Culture=neutral, PublicKeyToken=5d8b5f1db430cece, processorArchitecture=MSIL">
+      <HintPath>..\packages\Varhead.1.14.0\lib\net40\Varhead.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
+  <Choose>
+    <!-- SDK15+ -->
+    <When Condition=" '$(IsVSSDK15)' == 'true' ">
+      <ItemGroup>
+        <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\EnvDTE.8.0.2\lib\net10\EnvDTE.dll</HintPath>
+          <EmbedInteropTypes>False</EmbedInteropTypes>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\EnvDTE80.8.0.3\lib\net10\EnvDTE80.dll</HintPath>
+          <EmbedInteropTypes>False</EmbedInteropTypes>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\stdole.7.0.3303\lib\net10\stdole.dll</HintPath>
+          <EmbedInteropTypes>True</EmbedInteropTypes>
+        </Reference>
+        <Reference Include="Microsoft.Build, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Build.16.0.461\lib\net472\Microsoft.Build.Framework.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.Build.Framework, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Build.Framework.16.0.461\lib\netstandard2.0\Microsoft.Build.Framework.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\Microsoft.VisualStudio.OLE.Interop.7.10.6071\lib\Microsoft.VisualStudio.OLE.Interop.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Shell.15.0, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.VisualStudio.Shell.15.0.15.9.28307\lib\net45\Microsoft.VisualStudio.Shell.15.0.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Shell.Framework, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.VisualStudio.Shell.Framework.15.9.28307\lib\net45\Microsoft.VisualStudio.Shell.Framework.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.7.10.6072\lib\net11\Microsoft.VisualStudio.Shell.Interop.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.10.0.10.0.30320\lib\net20\Microsoft.VisualStudio.Shell.Interop.10.0.dll</HintPath>
+          <EmbedInteropTypes>True</EmbedInteropTypes>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.11.0.11.0.61031\lib\net20\Microsoft.VisualStudio.Shell.Interop.11.0.dll</HintPath>
+          <EmbedInteropTypes>True</EmbedInteropTypes>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime.14.3.26929\lib\net20\Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime.dll</HintPath>
+          <EmbedInteropTypes>True</EmbedInteropTypes>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime, Version=15.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime.15.0.26929\lib\net20\Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime.dll</HintPath>
+          <EmbedInteropTypes>True</EmbedInteropTypes>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.15.6.DesignTime, Version=15.6.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.15.6.DesignTime.15.6.27413\lib\net20\Microsoft.VisualStudio.Shell.Interop.15.6.DesignTime.dll</HintPath>
+          <EmbedInteropTypes>True</EmbedInteropTypes>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.8.0.8.0.50728\lib\net11\Microsoft.VisualStudio.Shell.Interop.8.0.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.9.0, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.9.0.9.0.30730\lib\net11\Microsoft.VisualStudio.Shell.Interop.9.0.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Threading, Version=15.8.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.VisualStudio.Threading.15.8.209\lib\netstandard2.0\Microsoft.VisualStudio.Threading.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Utilities, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.VisualStudio.Utilities.15.9.28307\lib\net46\Microsoft.VisualStudio.Utilities.dll</HintPath>
+        </Reference>
+        <Reference Include="StreamJsonRpc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\StreamJsonRpc.2.0.208\lib\netstandard2.0\StreamJsonRpc.dll</HintPath>
+        </Reference>
+        <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+          <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+          <HintPath>..\packages\NLog.4.6.7\lib\netstandard2.0\NLog.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <!-- /SDK15+ -->
+    <!-- SDK10 -->
+    <When Condition=" '$(IsVSSDK15)' != 'true' ">
+      <ItemGroup>
+        <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <EmbedInteropTypes>False</EmbedInteropTypes>
+          <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\net40\EnvDTE.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <EmbedInteropTypes>False</EmbedInteropTypes>
+          <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\net40\EnvDTE80.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\net40\stdole.dll</HintPath>
+          <EmbedInteropTypes>True</EmbedInteropTypes>
+        </Reference>
+        <Reference Include="Microsoft.Build" />
+        <Reference Include="Microsoft.Build.Framework" />
+        <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\net40\Microsoft.VisualStudio.OLE.Interop.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Shell.10.0">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\net40\Microsoft.VisualStudio.Shell.10.0.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\net40\Microsoft.VisualStudio.Shell.Immutable.10.0.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\net40\Microsoft.VisualStudio.Shell.Interop.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <EmbedInteropTypes>False</EmbedInteropTypes>
+          <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\net40\Microsoft.VisualStudio.Shell.Interop.10.0.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\net40\Microsoft.VisualStudio.Shell.Interop.8.0.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.9.0, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\vsSBE.SDK.$(vsSBE_SDK)\lib\net40\Microsoft.VisualStudio.Shell.Interop.9.0.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+          <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+          <HintPath>..\packages\NLog.4.6.7\lib\net40-client\NLog.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <!-- /SDK10 -->
+  </Choose>
   <ItemGroup>
     <Compile Include="Actions\ActionEnvCommand.cs" />
+    <Compile Include="Bootloader.cs" />
+    <Compile Include="BuildEnv.cs" />
     <Compile Include="Configuration\ContextType.cs" />
     <Compile Include="Configuration\Manager.cs" />
     <Compile Include="Configuration\IManager.cs" />
@@ -228,6 +348,9 @@
     <Compile Include="Configuration\User\Route.cs" />
     <Compile Include="Configuration\User\UserValue.cs" />
     <Compile Include="DataArgs.cs" />
+    <Compile Include="DteEnv.cs" />
+    <Compile Include="EncDetector.cs" />
+    <Compile Include="EnvAbstract.cs" />
     <Compile Include="Events\Types\CommandDte.cs" />
     <Compile Include="Events\IModeEnvCommand.cs" />
     <Compile Include="Events\Mapping\Json\ModeCommand.cs" />
@@ -236,43 +359,27 @@
     <Compile Include="Events\OWP\Condition.cs" />
     <Compile Include="Events\OWP\IMatching.cs" />
     <Compile Include="Events\Types\Command.cs" />
+    <Compile Include="Extensions\IVsHierarchyExtension.cs" />
+    <Compile Include="Extensions\ProjectExtension.cs" />
     <Compile Include="Extensions\StringExtension.cs" />
     <Compile Include="IAppSettings.cs" />
+    <Compile Include="IPkg.cs" />
     <Compile Include="IsolatedEnv.cs" />
     <Compile Include="ISolutionEvents.cs" />
     <Compile Include="Logger\ILog.cs" />
     <Compile Include="Logger\Initializer.cs" />
     <Compile Include="Logger\MessageArgs.cs" />
-    <Compile Include="MSBuild\Exceptions\PossibleLoopException.cs" />
+    <Compile Include="MainToolCommand.cs" />
+    <Compile Include="MSBuild.cs" />
+    <Compile Include="OwpEnv.cs" />
+    <Compile Include="Pkg.cs" />
     <Compile Include="Receiver\Output\ItemType.cs" />
     <Compile Include="Receiver\Output\EWType.cs" />
     <Compile Include="Receiver\Output\IItems.cs" />
     <Compile Include="Receiver\Output\IItemEW.cs" />
     <Compile Include="Receiver\Output\Ident.cs" />
     <Compile Include="Receiver\Output\PaneArgs.cs" />
-    <Compile Include="SBEScripts\Components\BoxComponent.cs" />
-    <Compile Include="SBEScripts\Components\Build\ProjectsMap.cs" />
-    <Compile Include="SBEScripts\Components\Condition\Expression.cs" />
-    <Compile Include="SBEScripts\Components\MSBuildComponent.cs" />
-    <Compile Include="SBEScripts\Components\NuGetComponent.cs" />
-    <Compile Include="SBEScripts\Components\NuGet\GetNuTool\Core.cs" />
-    <Compile Include="SBEScripts\Components\NuGet\GetNuTool\GNT.cs" />
-    <Compile Include="SBEScripts\Components\SevenZipComponent.cs" />
-    <Compile Include="SBEScripts\Components\TryComponent.cs" />
-    <Compile Include="SBEScripts\Exceptions\ArgumentPMException.cs" />
-    <Compile Include="SBEScripts\Exceptions\IncorrectNodeException.cs" />
-    <Compile Include="SBEScripts\SNode\Argument.cs" />
-    <Compile Include="SBEScripts\SNode\ArgumentType.cs" />
-    <Compile Include="SBEScripts\SNode\EvalType.cs" />
-    <Compile Include="SBEScripts\SNode\ILevel.cs" />
-    <Compile Include="SBEScripts\SNode\IPM.cs" />
-    <Compile Include="SBEScripts\SNode\Level.cs" />
-    <Compile Include="SBEScripts\SNode\LevelType.cs" />
-    <Compile Include="SBEScripts\SNode\PM.cs" />
-    <Compile Include="Sln\ConfigPrj.cs" />
-    <Compile Include="Sln\ConfigSln.cs" />
-    <Compile Include="Sln\Parser.cs" />
-    <Compile Include="Sln\Project.cs" />
+    <Compile Include="SzArchiver.cs" />
     <Compile Include="UI\ITransfer.cs" />
     <Compile Include="UI\Resource.Designer.cs">
       <DependentUpon>Resource.resx</DependentUpon>
@@ -291,6 +398,7 @@
     <Compile Include="UI\WForms\ComponentsFrm.Designer.cs">
       <DependentUpon>ComponentsFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\WForms\Controls\CompletionData.cs" />
     <Compile Include="UI\WForms\Controls\FileTextBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -332,20 +440,19 @@
     <Compile Include="UI\WForms\Wizards\Version\StepsType.cs" />
     <Compile Include="UI\WForms\Wizards\Version\StepStruct.cs" />
     <Compile Include="UI\WForms\Wizards\Version\GenType.cs" />
-    <Compile Include="Actions\Action.cs" />
+    <Compile Include="Actions\ActionAbstract.cs" />
     <Compile Include="Actions\ActionFile.cs" />
     <Compile Include="Actions\ActionOperation.cs" />
     <Compile Include="Actions\ActionCSharp.cs" />
     <Compile Include="Actions\ActionTargets.cs" />
     <Compile Include="Actions\ActionScript.cs" />
     <Compile Include="Actions\ActionInterpreter.cs" />
-    <Compile Include="Actions\Connection.cs" />
+    <Compile Include="Actions\Binder.cs" />
     <Compile Include="Actions\DTEOperation.cs" />
-    <Compile Include="Actions\HProcess.cs" />
     <Compile Include="Actions\IAction.cs" />
     <Compile Include="Actions\ICommand.cs" />
-    <Compile Include="Binder.cs" />
-    <Compile Include="IBinder.cs" />
+    <Compile Include="EvLevel.cs" />
+    <Compile Include="IEvLevel.cs" />
     <Compile Include="Configuration\Component.cs" />
     <Compile Include="Environment.cs" />
     <Compile Include="Events\CommandEvents\Filter.cs" />
@@ -381,96 +488,36 @@
     <Compile Include="Events\IMode.cs" />
     <Compile Include="Events\EventProcess.cs" />
     <Compile Include="Events\IEventProcess.cs" />
-    <Compile Include="Exceptions\IncorrectSyntaxException.cs" />
-    <Compile Include="Exceptions\MismatchException.cs" />
-    <Compile Include="Exceptions\InvalidArgumentException.cs" />
-    <Compile Include="Exceptions\LimitException.cs" />
-    <Compile Include="Exceptions\NotFoundException.cs" />
-    <Compile Include="Exceptions\ComponentException.cs" />
     <Compile Include="Extensions\ArrayExtension.cs" />
     <Compile Include="Extensions\ObjectExtension.cs" />
     <Compile Include="IEnvironmentExt.cs" />
-    <Compile Include="ILogData.cs" />
     <Compile Include="IOW.cs" />
     <Compile Include="JsonSerializationBinder.cs" />
-    <Compile Include="MSBuild\Exceptions\MSBProjectNotFoundException.cs" />
-    <Compile Include="MSBuild\Exceptions\MSBPropertyNotFoundException.cs" />
-    <Compile Include="MSBuild\PropertyItem.cs" />
-    <Compile Include="MSBuild\RPattern.cs" />
-    <Compile Include="MSBuild\StringHandler.cs" />
     <Compile Include="OW.cs" />
-    <Compile Include="SBEScripts\Bootloader.cs" />
-    <Compile Include="SBEScripts\Components\Component.cs" />
-    <Compile Include="SBEScripts\Dom\CompletionData.cs" />
-    <Compile Include="SBEScripts\Dom\ComponentAttribute.cs" />
-    <Compile Include="SBEScripts\Dom\IAttrDomLevelA.cs" />
-    <Compile Include="SBEScripts\Dom\DefinitionAttribute.cs" />
-    <Compile Include="SBEScripts\CValueType.cs" />
-    <Compile Include="SBEScripts\Dom\IAttrDomLevelB.cs" />
-    <Compile Include="SBEScripts\Dom\Icon.Designer.cs">
+    <Compile Include="UI\WForms\Controls\DomIcon.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Icon.resx</DependentUpon>
+      <DependentUpon>DomIcon.resx</DependentUpon>
     </Compile>
-    <Compile Include="SBEScripts\Dom\IInspector.cs" />
-    <Compile Include="SBEScripts\Dom\InfoType.cs" />
-    <Compile Include="SBEScripts\Dom\INodeInfo.cs" />
-    <Compile Include="SBEScripts\Dom\Inspector.cs" />
-    <Compile Include="SBEScripts\Dom\NodeIdent.cs" />
-    <Compile Include="SBEScripts\Dom\NodeInfo.cs" />
-    <Compile Include="SBEScripts\Dom\DomParser.cs" />
-    <Compile Include="SBEScripts\Exceptions\ScriptException.cs" />
-    <Compile Include="SBEScripts\Exceptions\SelectorMismatchException.cs" />
-    <Compile Include="SBEScripts\Exceptions\SyntaxIncorrectException.cs" />
-    <Compile Include="SBEScripts\Exceptions\SubtypeNotFoundException.cs" />
-    <Compile Include="SBEScripts\Exceptions\OperandNotFoundException.cs" />
-    <Compile Include="SBEScripts\Exceptions\OperationNotFoundException.cs" />
-    <Compile Include="SBEScripts\IBootloader.cs" />
-    <Compile Include="Scripts\EvaluatorBlank.cs" />
-    <Compile Include="Scripts\IEvaluator.cs" />
-    <Compile Include="SBEScripts\Exceptions\NotSupportedOperationException.cs" />
     <Compile Include="Events\IModeFile.cs" />
     <Compile Include="Events\IModeInterpreter.cs" />
     <Compile Include="Events\IModeOperation.cs" />
     <Compile Include="Receiver\Output\IItem.cs" />
     <Compile Include="Receiver\Output\Items.cs" />
-    <Compile Include="SBEScripts\Components\CommentComponent.cs" />
-    <Compile Include="SBEScripts\Components\ConditionComponent.cs" />
-    <Compile Include="SBEScripts\Components\FileComponent.cs" />
-    <Compile Include="SBEScripts\Components\FunctionComponent.cs" />
-    <Compile Include="SBEScripts\Components\OWPComponent.cs" />
-    <Compile Include="SBEScripts\Components\DTEComponent.cs" />
-    <Compile Include="SBEScripts\Components\BuildComponent.cs" />
-    <Compile Include="SBEScripts\Components\UserVariableComponent.cs" />
-    <Compile Include="SBEScripts\Components\IComponent.cs" />
-    <Compile Include="SBEScripts\Components\InternalComponent.cs" />
+    <Compile Include="SobaScript\Components\InternalComponent.cs" />
     <Compile Include="Actions\IStatus.cs" />
     <Compile Include="Actions\Status.cs" />
-    <Compile Include="Scripts\IUserVariableDebug.cs" />
-    <Compile Include="Scripts\IUserVariable.cs" />
-    <Compile Include="SBEScripts\ISBEScript.cs" />
     <Compile Include="Events\ModeFile.cs" />
     <Compile Include="Events\ModeInterpreter.cs" />
     <Compile Include="Events\ModeOperation.cs" />
     <Compile Include="Events\SolutionEventType.cs" />
-    <Compile Include="Exceptions\SBEException.cs" />
+    <Compile Include="Exceptions\UnspecSBEException.cs" />
     <Compile Include="IEnvironment.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Receiver\Output\Matcher.cs" />
     <Compile Include="Events\ISolutionEventOWP.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SBEScripts\Dom\PropertyAttribute.cs" />
-    <Compile Include="SBEScripts\RPattern.cs" />
-    <Compile Include="SBEScripts\Script.cs" />
-    <Compile Include="SBEScripts\Dom\MethodAttribute.cs" />
-    <Compile Include="SBEScripts\StringHandler.cs" />
-    <Compile Include="Scripts\TUserVariable.cs" />
-    <Compile Include="Scripts\UserVariable.cs" />
-    <Compile Include="SBEScripts\Value.cs" />
-    <Compile Include="Scripts\StringProtector.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="Scripts\Tokens.cs" />
-    <Compile Include="MSBuild\PreparedData.cs" />
     <Compile Include="UI\Util.cs" />
     <Compile Include="UI\WForms\Components\DataGridViewExt.cs">
       <SubType>Component</SubType>
@@ -505,11 +552,8 @@
     <Compile Include="UI\WForms\PropertiesFrm.Designer.cs">
       <DependentUpon>PropertiesFrm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MSBuild\IMSBuild.cs" />
     <Compile Include="Receiver\Output\OWP.cs" />
     <Compile Include="Receiver\Output\ItemEW.cs" />
-    <Compile Include="MSBuild\Parser.cs" />
-    <Compile Include="MSBuild\Exceptions\MSBPropertyParseException.cs" />
     <Compile Include="Actions\Command.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="GuidList.cs" />
@@ -531,7 +575,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>VSPackage.resx</DependentUpon>
     </Compile>
-    <Compile Include="vsCommandEventPackage.cs" />
     <Compile Include="PkgCmdID.cs" />
     <Compile Include="VSTools\ErrorList\IPane.cs" />
     <Compile Include="VSTools\ErrorList\Pane.cs" />
@@ -559,9 +602,9 @@
     <EmbeddedResource Include="UI\WForms\EventsFrm.resx">
       <DependentUpon>EventsFrm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SBEScripts\Dom\Icon.resx">
+    <EmbeddedResource Include="UI\WForms\Controls\DomIcon.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Icon.Designer.cs</LastGenOutput>
+      <LastGenOutput>DomIcon.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\WForms\Controls\FileTextBox.resx">
       <DependentUpon>FileTextBox.cs</DependentUpon>
@@ -615,9 +658,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="sdk10.vsixmanifest" />
+    <Content Include="sdk15.vsixmanifest" />
     <Resource Include="Resources\Package_16.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <None Include="app.config" />
     <None Include="Resources\Package_32.ico" />
     <Content Include="Resources\preview.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -627,24 +673,26 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="..\changelog.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="..\LICENSE">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="LICENSE.vsixinfo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Resources\License.md">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <None Include="key.snk" />
-    <None Include="packages.config" />
-    <None Include="Properties\vsix-compress.props" />
-    <Content Include="Resources\vsixinfo">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
+    <None Include="key.snk" />
+    <None Include="packages.config" />
+    <None Include="Properties\vsix-compress.props" />
     <None Include="$(SolutionDir).version" />
     <None Include="xshd\CppLang.xshd" />
     <None Include="xshd\CSharpLang.xshd" />
@@ -660,23 +708,25 @@
     <None Include="Resources\components\alias.png" />
   </ItemGroup>
   <ItemGroup>
-    <VSCTCompile Include="vsCommandEvent.vsct">
+    <VSCTCompile Include="Pkg.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
       <SubType>Designer</SubType>
     </VSCTCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bridge\Bridge.csproj">
+      <Project>{73919171-44B6-4536-B892-F1FCA653887C}</Project>
+      <Name>Bridge</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>
   </PropertyGroup>
-  <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-  </PropertyGroup>
   <PropertyGroup Label="VsixCompress">
+    <VsixCompressTargets Condition=" $(Configuration.StartsWith('DBG_')) or $(Configuration.StartsWith('DCI_')) ">Disabled_VsixCompressTargets</VsixCompressTargets>
     <VsixCompressTargets Condition=" '$(VsixCompressTargets)'=='' ">$([System.IO.Path]::GetFullPath( $(MSBuildProjectDirectory)\..\packages\VsixCompress.1.0.1\tools\vsix-compress.targets ))</VsixCompressTargets>
   </PropertyGroup>
   <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <MSBExtPathU Condition="Exists('$(MSBuildExtensionsPath32)')">$(MSBuildExtensionsPath32)</MSBExtPathU>
     <MSBExtPathU Condition="'$(MSBExtPathU)' == ''">$(MSBuildExtensionsPath)</MSBExtPathU>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBExtPathU)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -685,31 +735,53 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(VsixCompressTargets)" Condition="Exists('$(VsixCompressTargets)')" Label="VsixCompress" />
+  <Target Name="VsixIncDepDll" AfterTargets="GetVsixSourceItems">
+    <ItemGroup>
+      <VSIXSourceItem Include="@(ReferencePath)" />
+    </ItemGroup>
+  </Target>
   <Import Project="$(SolutionDir)\VsixLib.targets" />
   <ItemGroup>
     <Content Include="@(VsixLib)">
       <Visible>false</Visible>
       <Link>%(Filename)%(Extension)</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(DocumentationFile)">
+    <Content Include="@(VsixLibX64)">
+      <Visible>false</Visible>
+      <Link>x64\%(Filename)%(Extension)</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(OutputPath)\$(AssemblyName).xml" Condition="Exists('$(OutputPath)\$(AssemblyName).xml')">
       <Visible>false</Visible>
       <Link>%(Filename)%(Extension)</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Bridge\Bridge.csproj">
-      <Project>{73919171-44b6-4536-b892-f1fca653887c}</Project>
-      <Name>Bridge</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Target Name="BeforeBuild">
-    <Delete Files="$(OutputPath)\*.dll" />
-    <Copy SourceFiles="@(VsixLib)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" />
+  <!-- SDK15+ -->
+  <Choose>
+    <When Condition=" '$(IsVSSDK15)' == 'true' ">
+      <PropertyGroup>
+        <NoWarn>$(NoWarn);IDE1003</NoWarn>
+        <!-- TODO: IDE1003. Analyzer assembly ... depends on netstandard 2 -->
+      </PropertyGroup>
+      <ItemGroup>
+        <Analyzer Include="..\packages\Microsoft.VisualStudio.SDK.Analyzers.16.3.2\analyzers\cs\Microsoft.VisualStudio.SDK.Analyzers.dll" />
+        <Analyzer Include="..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.209\analyzers\cs\Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.dll" />
+        <Analyzer Include="..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.209\analyzers\cs\Microsoft.VisualStudio.Threading.Analyzers.dll" />
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="..\packages\Microsoft.VisualStudio.SDK.EmbedInteropTypes.15.0.27\build\Microsoft.VisualStudio.SDK.EmbedInteropTypes.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.SDK.EmbedInteropTypes.15.0.27\build\Microsoft.VisualStudio.SDK.EmbedInteropTypes.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.SDK.EmbedInteropTypes.15.0.27\build\Microsoft.VisualStudio.SDK.EmbedInteropTypes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.SDK.EmbedInteropTypes.15.0.27\build\Microsoft.VisualStudio.SDK.EmbedInteropTypes.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.209\build\Microsoft.VisualStudio.Threading.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.209\build\Microsoft.VisualStudio.Threading.Analyzers.targets'))" />
   </Target>
-  <!--
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.209\build\Microsoft.VisualStudio.Threading.Analyzers.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.209\build\Microsoft.VisualStudio.Threading.Analyzers.targets')" />
+  <!-- /SDK15+ -->
 </Project>

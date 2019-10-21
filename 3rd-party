@@ -1,21 +1,33 @@
+vsCommandEvent  [ github.com/3F/vsCommandEvent ]
+- - - - - - - - - - - - - - - - - - - - - - - - 
+
 # Third-party software components
 
 ## The vsCommandEvent includes:
 
+    * SobaScript (github.com/3F/SobaScript)
+        * Core Components (github.com/3F/SobaScript.Z.Core)
+        * Ext Components (github.com/3F/SobaScript.Z.Ext)
+        * VS Components (github.com/3F/SobaScript.Z.VS)
+        
+    * E-MSBuild (github.com/3F/E-MSBuild)
+        * Varhead (github.com/3F/Varhead)
+        
     * AvalonEdit (avalonedit.net)
     * Json.NET (json.codeplex.com)
     * NLog (nlog-project.org)
     * Ude (code.google.com/p/ude/)
     * SevenZipSharp (sevenzipsharp.codeplex.com)
     * 7-Zip (www.7-zip.org)
-    * GetNuTool logic (github.com/3F/GetNuTool)
+    * GetNuTool (github.com/3F/GetNuTool)
     
-## Maintenance of this project includes next additional software:
+## Maintaining of this project also includes the following tools:
 
     * Moq (www.moqthis.com)
     * VsixCompress (nuget.org/packages/VsixCompress)
     * GetNuTool (github.com/3F/GetNuTool)
     * vsSolutionBuildEvent CI.MSBuild (vssbe.r-eg.net)
+    * hMSBuild (github.com/3F/hMSBuild)
 
 
 ## Additional packages

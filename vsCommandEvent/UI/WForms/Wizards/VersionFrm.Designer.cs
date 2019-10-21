@@ -58,6 +58,9 @@
             this.tcRevNumber = new System.Windows.Forms.TabControl();
             this.tpRevRaw = new System.Windows.Forms.TabPage();
             this.tpRevDeltaTime = new System.Windows.Forms.TabPage();
+            this.numRevTimeMax = new System.Windows.Forms.NumericUpDown();
+            this.numRevTimeMin = new System.Windows.Forms.NumericUpDown();
+            this.chkRevTimeMod = new System.Windows.Forms.CheckBox();
             this.cbRevTimeType = new System.Windows.Forms.ComboBox();
             this.labelRevTimeType = new System.Windows.Forms.Label();
             this.dtRevTimeBase = new System.Windows.Forms.DateTimePicker();
@@ -124,6 +127,8 @@
             this.gbCfgData.SuspendLayout();
             this.tcRevNumber.SuspendLayout();
             this.tpRevDeltaTime.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numRevTimeMax)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRevTimeMin)).BeginInit();
             this.tabPageRepl.SuspendLayout();
             this.tcReplType.SuspendLayout();
             this.tpReplRegex.SuspendLayout();
@@ -466,6 +471,9 @@
             // 
             // tpRevDeltaTime
             // 
+            this.tpRevDeltaTime.Controls.Add(this.numRevTimeMax);
+            this.tpRevDeltaTime.Controls.Add(this.numRevTimeMin);
+            this.tpRevDeltaTime.Controls.Add(this.chkRevTimeMod);
             this.tpRevDeltaTime.Controls.Add(this.cbRevTimeType);
             this.tpRevDeltaTime.Controls.Add(this.labelRevTimeType);
             this.tpRevDeltaTime.Controls.Add(this.dtRevTimeBase);
@@ -477,6 +485,60 @@
             this.tpRevDeltaTime.TabIndex = 0;
             this.tpRevDeltaTime.Text = "DeltaTime";
             this.tpRevDeltaTime.UseVisualStyleBackColor = true;
+            // 
+            // numRevTimeMax
+            // 
+            this.numRevTimeMax.Location = new System.Drawing.Point(173, 58);
+            this.numRevTimeMax.Maximum = new decimal(new int[] {
+            100000000,
+            0,
+            0,
+            0});
+            this.numRevTimeMax.Minimum = new decimal(new int[] {
+            100000000,
+            0,
+            0,
+            -2147483648});
+            this.numRevTimeMax.Name = "numRevTimeMax";
+            this.numRevTimeMax.Size = new System.Drawing.Size(72, 20);
+            this.numRevTimeMax.TabIndex = 27;
+            this.numRevTimeMax.Value = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            // 
+            // numRevTimeMin
+            // 
+            this.numRevTimeMin.Location = new System.Drawing.Point(106, 58);
+            this.numRevTimeMin.Maximum = new decimal(new int[] {
+            100000000,
+            0,
+            0,
+            0});
+            this.numRevTimeMin.Minimum = new decimal(new int[] {
+            100000000,
+            0,
+            0,
+            -2147483648});
+            this.numRevTimeMin.Name = "numRevTimeMin";
+            this.numRevTimeMin.Size = new System.Drawing.Size(61, 20);
+            this.numRevTimeMin.TabIndex = 26;
+            this.numRevTimeMin.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // chkRevTimeMod
+            // 
+            this.chkRevTimeMod.AutoSize = true;
+            this.chkRevTimeMod.Location = new System.Drawing.Point(6, 62);
+            this.chkRevTimeMod.Name = "chkRevTimeMod";
+            this.chkRevTimeMod.Size = new System.Drawing.Size(105, 17);
+            this.chkRevTimeMod.TabIndex = 25;
+            this.chkRevTimeMod.Text = "Modulo min-max:";
+            this.chkRevTimeMod.UseVisualStyleBackColor = true;
             // 
             // cbRevTimeType
             // 
@@ -509,9 +571,9 @@
             this.labelRevTimeBase.AutoSize = true;
             this.labelRevTimeBase.Location = new System.Drawing.Point(3, 36);
             this.labelRevTimeBase.Name = "labelRevTimeBase";
-            this.labelRevTimeBase.Size = new System.Drawing.Size(72, 13);
+            this.labelRevTimeBase.Size = new System.Drawing.Size(56, 13);
             this.labelRevTimeBase.TabIndex = 22;
-            this.labelRevTimeBase.Text = "Basis for time:";
+            this.labelRevTimeBase.Text = "The Base:";
             // 
             // labelInputNum
             // 
@@ -698,7 +760,7 @@
             this.tbHelpWildcards.BackColor = System.Drawing.SystemColors.Control;
             this.tbHelpWildcards.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbHelpWildcards.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbHelpWildcards.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbHelpWildcards.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbHelpWildcards.Location = new System.Drawing.Point(0, 10);
             this.tbHelpWildcards.Multiline = true;
             this.tbHelpWildcards.Name = "tbHelpWildcards";
@@ -895,7 +957,7 @@
             this.dgvFieldsDescription});
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(248)))));
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -1116,6 +1178,8 @@
             this.tcRevNumber.ResumeLayout(false);
             this.tpRevDeltaTime.ResumeLayout(false);
             this.tpRevDeltaTime.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numRevTimeMax)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRevTimeMin)).EndInit();
             this.tabPageRepl.ResumeLayout(false);
             this.tabPageRepl.PerformLayout();
             this.tcReplType.ResumeLayout(false);
@@ -1227,5 +1291,8 @@
         private System.Windows.Forms.TextBox tbHelpWildcards;
         private System.Windows.Forms.Label labelExampleSource;
         private System.Windows.Forms.Label labelSampleSource;
+        private System.Windows.Forms.NumericUpDown numRevTimeMax;
+        private System.Windows.Forms.NumericUpDown numRevTimeMin;
+        private System.Windows.Forms.CheckBox chkRevTimeMod;
     }
 }

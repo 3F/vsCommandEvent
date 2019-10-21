@@ -19,7 +19,7 @@ namespace net.r_eg.vsCE.UI {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resource {
@@ -126,13 +126,14 @@ namespace net.r_eg.vsCE.UI {
         ///
         ///#[($(Configuration) ~= Deb || true)
         ///{
-        ///    #[var tStart    = $([System.DateTime]::Parse(&quot;%mdate%&quot;).ToBinary())]
+        ///    #[var tBase     = $([System.DateTime]::Parse(&apos;%mdate%&apos;).ToBinary())]
         ///    #[var tNow      = $([System.DateTime]::UtcNow.Ticks)]
-        ///    #[var revBuild  = $([System.TimeSpan]::FromTicks($([MSBuild]::Subtract(#[var tNow], #[var tStart]))).TotalMinutes.ToString(&quot;0&quot;))]
-        ///    #[var v         = #[var v].$([MSBuild]::Modulo(#[var revBuild], $([System.Math]::Pow(2, 14))))]
+        ///    #[var revBuild  = $([System.TimeSpan]::FromTicks(&apos;$([MSBuild]::Subtract($(tNow), $(tBase)))&apos;).TotalMinutes.ToString(&apos;0&apos;))]
+        ///    
+        ///    #[var v = #[var v].$([MSBuild]::Modulo($(revBuild), $([System.Math]::Pow(2, 14))))]
         ///}]
         ///
-        ///#[var v = $([System.String]:: [rest of string was truncated]&quot;;.
+        ///#[var v = $([System.String]::Format(&quot;v{0}\ [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string StringScriptExampleSBE {
             get {
@@ -141,9 +142,9 @@ namespace net.r_eg.vsCE.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This option is means a wait for completion action with main thread! therefore:
-        ///* [Performance] - For repeated events such as EW, OWP, Logging etc. probably need a more time for services of your all defined actions. Remember this!
-        ///* [Compatibility] - However, some your actions can require a lock of the main thread for waiting to the next steps, otherwise some actions can lose a some technical data for processes of your script on next step..
+        ///   Looks up a localized string similar to Waiting for an complete action in main thread means the following:
+        ///* [Performance] - For events such as EW, OWP, Logging, etc: it may take longer to service all activated actions.
+        ///* [Compatibility] - Some actions may require locking the main thread to wait for the next step..
         /// </summary>
         internal static string StringWarnForWaiting {
             get {
@@ -197,7 +198,7 @@ namespace net.r_eg.vsCE.UI {
         ///
         ///            TNum() : TNum(0, 12, 4, 17639) { }
         ///
-        ///      [rest of string was truncated]&quot;;.
+        ///        [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string WizardVerCppStruct {
             get {

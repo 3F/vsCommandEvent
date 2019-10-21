@@ -20,14 +20,14 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using net.r_eg.SobaScript;
+using net.r_eg.SobaScript.Mapper;
 using net.r_eg.vsCE.Bridge;
 using net.r_eg.vsCE.Configuration;
 using net.r_eg.vsCE.Events;
 using net.r_eg.vsCE.Events.CommandEvents;
 using net.r_eg.vsCE.Events.Types;
 using net.r_eg.vsCE.Extensions;
-using net.r_eg.vsCE.SBEScripts;
-using net.r_eg.vsCE.SBEScripts.Dom;
 using net.r_eg.vsCE.UI.WForms.Components;
 using net.r_eg.vsCE.UI.WForms.Controls;
 using EOWP = net.r_eg.vsCE.Events.OWP;
@@ -37,7 +37,7 @@ namespace net.r_eg.vsCE.UI.WForms
     /// <summary>
     /// TODO: !Most important! This from vsSBE 'as is', need to refactor.
     /// </summary>
-    public partial class EventsFrm: Form, ITransfer
+    internal partial class EventsFrm: Form, ITransfer
     {
         /// <summary>
         /// Operations with events etc.,
@@ -92,7 +92,7 @@ namespace net.r_eg.vsCE.UI.WForms
         /// <summary>
         /// Binder of main events 
         /// </summary>
-        protected IBinder binder;
+        private IEvLevel elvl;
 
         /// <summary>
         /// Flag of notification if it's required
@@ -179,30 +179,26 @@ namespace net.r_eg.vsCE.UI.WForms
             dgvCEFilters.Rows.Add(guid, id, customIn, customOut, description);
         }
 
-        /// <param name="binder"></param>
-        public EventsFrm(IBinder binder)
+        public EventsFrm(Bootloader loader)
         {
             InitializeComponent();
 
-            this.binder = binder;
-            inspector   = new Inspector(binder.Bootloader);
-            logic       = new Logic.Events(binder.Bootloader);
+            elvl        = loader.EvLevel;
+            inspector   = new Inspector(loader.Soba);
+            logic       = new Logic.Events(loader);
 
-            textEditor.codeCompletionInit(inspector, new MSBuild.Parser(binder.Bootloader.Env, binder.Bootloader.UVariable));
+            textEditor.codeCompletionInit(inspector, loader.Soba.EvMSBuild);
 
             Icon = Resource.Package_32;
             toolTip.SetToolTip(pictureBoxWarnWait, Resource.StringWarnForWaiting);
 
+            Text = $"{loader.Env.SolutionFileName} - {Settings.APP_NAME}";
+
 #if DEBUG
-            this.Text                       = String.Format("{0} [Debug version]", Settings.APP_NAME);
-            toolStripMenuDebugMode.Checked  = true;
-            toolStripMenuDebugMode.Enabled  = false;
-            toolStripMenuVersion.Text       = String.Format("based on {0}", Version.branchSha1);
+            Text += " [Debug version]";
+            toolStripMenuVersion.Text = $"based on {Version.B_SHA1}";
 #else
-            if(Version.branchName.ToLower() != "releases") {
-                this.Text = String.Format("{0}  [Unofficial release]", Settings.APP_NAME);
-            }
-            toolStripMenuVersion.Text = String.Format("v{0} [ {1} ]", Version.numberString, Version.branchSha1);
+            toolStripMenuVersion.Text = $"v{Version.S_NUM}+{Version.B_SHA1}";
 #endif
 
             btnApply.Location = new Point((statusStrip.Location.X - btnApply.Width) - 10, btnApply.Location.Y);
@@ -350,8 +346,8 @@ namespace net.r_eg.vsCE.UI.WForms
                     continue;
                 }
 
-                object customIn  = Value.packArgument(row.Cells[dgvCEFiltersColumnCustomIn.Name].Value);
-                object customOut = Value.packArgument(row.Cells[dgvCEFiltersColumnCustomOut.Name].Value);
+                object customIn  = Value.PackArgument(row.Cells[dgvCEFiltersColumnCustomIn.Name].Value);
+                object customOut = Value.PackArgument(row.Cells[dgvCEFiltersColumnCustomOut.Name].Value);
                 object guid      = row.Cells[dgvCEFiltersColumnGuid.Name].Value;
 
                 list.Add(new Filter()
@@ -494,7 +490,7 @@ namespace net.r_eg.vsCE.UI.WForms
                 return;
             }
             foreach(IFilter f in evt.Filters) {
-                dgvCEFilters.Rows.Add(f.Guid, f.Id, Value.pack(f.CustomIn), Value.pack(f.CustomOut), f.Description, f.Cancel, f.Pre, f.Post);
+                dgvCEFilters.Rows.Add(f.Guid, f.Id, Value.Pack(f.CustomIn), Value.Pack(f.CustomOut), f.Description, f.Cancel, f.Pre, f.Post);
             }
         }
 
@@ -542,7 +538,7 @@ namespace net.r_eg.vsCE.UI.WForms
                 return;
             }
             foreach(CommandDte c in commands) {
-                dgvEnvCmd.Rows.Add(c.Guid, c.Id, Value.pack(c.CustomIn), Value.pack(c.CustomOut));
+                dgvEnvCmd.Rows.Add(c.Guid, c.Id, Value.Pack(c.CustomIn), Value.Pack(c.CustomOut));
             }
         }
 
@@ -555,8 +551,8 @@ namespace net.r_eg.vsCE.UI.WForms
                     continue;
                 }
 
-                object customIn  = Value.packArgument(row.Cells[dgvEnvCmdColumnCustomIn.Name].Value);
-                object customOut = Value.packArgument(row.Cells[dgvEnvCmdColumnCustomOut.Name].Value);
+                object customIn  = Value.PackArgument(row.Cells[dgvEnvCmdColumnCustomIn.Name].Value);
+                object customOut = Value.PackArgument(row.Cells[dgvEnvCmdColumnCustomOut.Name].Value);
                 object guid      = row.Cells[dgvEnvCmdColumnGuid.Name].Value;
 
                 list.Add(new CommandDte()
@@ -614,6 +610,21 @@ namespace net.r_eg.vsCE.UI.WForms
         {
             logic.setEventIndexes(index);
             refreshSettings();
+        }
+
+        protected void addFirstAction()
+        {
+            if(dgvActions.Rows.Count > 0) {
+                return;
+            }
+
+            ISolutionEvent evt  = logic.addEventItem(-1);
+            evt.Enabled         = true;
+            evt.Name            = "MyFirstAct1";
+            evt.Caption         = "You can find our Sniffer and more tools in [#] Settings - Tools";
+
+            dgvActions.Rows.Add(evt.Enabled, evt.Name, evt.Caption);
+            selectAction(0, true);
         }
 
         protected ISolutionEvent addAction(int copyFrom = -1)
@@ -890,8 +901,8 @@ namespace net.r_eg.vsCE.UI.WForms
             Util.noticeAboutChanges(typeof(PropertyGrid), this, call);
             textEditor._.TextChanged += call;
 
-            binder.OpenedSolution += onSolutionChanged;
-            binder.ClosedSolution += onSolutionChanged;
+            elvl.OpenedSolution += onSolutionChanged;
+            elvl.ClosedSolution += onSolutionChanged;
 
             try {
                 Util.setDescriptionHeightFor(pGridCompilerCfg, 38);
@@ -904,7 +915,8 @@ namespace net.r_eg.vsCE.UI.WForms
                 Log.Error("Failed to load form: {0}", ex.Message);
             }
 
-            notice(false);
+            //notice(false);
+            addFirstAction();
         }
 
         private void textBoxCommand_KeyDown(object sender, KeyEventArgs e)
@@ -1045,12 +1057,12 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void toolStripMenuChangelog_Click(object sender, EventArgs e)
         {
-            Util.openUrl("http://vsce.r-eg.net/Changelist/#vsix");
+            Util.openUrl("https://vsce.r-eg.net/Changelist/#vsix");
         }
 
         private void toolStripMenuWiki_Click(object sender, EventArgs e)
         {
-            Util.openUrl("http://vsce.r-eg.net/");
+            Util.openUrl("https://vsce.r-eg.net/");
         }
 
         private void toolStripMenuIssue_Click(object sender, EventArgs e)
@@ -1065,12 +1077,12 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void toolStripMenuLicense_Click(object sender, EventArgs e)
         {
-            Util.openUrl("http://vsce.r-eg.net/License/");
+            Util.openUrl("https://github.com/3F/vsSolutionBuildEvent/blob/master/LICENSE");
         }
 
         private void menuGetVSSBE_Click(object sender, EventArgs e)
         {
-            Util.openUrl("https://visualstudiogallery.msdn.microsoft.com/0d1dbfd7-ed8a-40af-ae39-281bfeca2334/");
+            Util.openUrl("https://github.com/3F/vsSolutionBuildEvent");
         }
 
         private void toolStripMenuAbout_Click(object sender, EventArgs e)
@@ -1089,10 +1101,8 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void toolStripMenuDebugMode_Click(object sender, EventArgs e)
         {
-#if !DEBUG
             App.UserConfig.Global.DebugMode = App.DebugMode = toolStripMenuDebugMode.Checked = !toolStripMenuDebugMode.Checked;
             logic.updateUserCfg();
-#endif
         }
 
         private void menuLogIgnoreTrace_Click(object sender, EventArgs e)
@@ -1196,7 +1206,7 @@ namespace net.r_eg.vsCE.UI.WForms
             if(Util.focusForm(frmComponents)) {
                 return;
             }
-            frmComponents = new ComponentsFrm(logic.Bootloader, inspector);
+            frmComponents = new ComponentsFrm(logic.Loader, inspector);
             frmComponents.Show();
         }
 
@@ -1205,7 +1215,7 @@ namespace net.r_eg.vsCE.UI.WForms
             if(Util.focusForm(frmWizVersion)) {
                 return;
             }
-            frmWizVersion = new Wizards.VersionFrm(logic.Bootloader, this);
+            frmWizVersion = new Wizards.VersionFrm(logic.Loader, this);
             frmWizVersion.Show();
         }
 
@@ -1221,8 +1231,8 @@ namespace net.r_eg.vsCE.UI.WForms
             Util.closeTool(frmWizVersion);
             logic.restoreData();
 
-            binder.OpenedSolution -= onSolutionChanged;
-            binder.ClosedSolution -= onSolutionChanged;
+            elvl.OpenedSolution -= onSolutionChanged;
+            elvl.ClosedSolution -= onSolutionChanged;
         }
 
         private void menuActionsAdd_Click(object sender, EventArgs e)
@@ -1237,7 +1247,7 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void linkAddAction_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            addAction();
+            addFirstAction();
         }
 
         private void menuActionsEditName_Click(object sender, EventArgs e)
@@ -1485,10 +1495,7 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void toolStripMenuBug_DropDownOpening(object sender, EventArgs e)
         {
-
-#if !DEBUG
             toolStripMenuDebugMode.Checked = App.DebugMode;
-#endif
             
             Func<string, bool> IsIgnoreLevel = (string level) =>
             {
