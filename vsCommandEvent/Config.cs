@@ -137,6 +137,14 @@ namespace net.r_eg.vsCE
             InRAM = false;
             var newCfg = new SolutionEvents();
 
+#if SDK17
+            Log.Info($"SDK17 & {vsCE.Version.S_INFO}");
+#elif SDK15
+            Log.Info($"SDK15 & {vsCE.Version.S_INFO}");
+#else
+            Log.Info($"SDK10 & {vsCE.Version.S_INFO}");
+#endif
+
             try
             {
                 Data = loadJsonConfig(link);

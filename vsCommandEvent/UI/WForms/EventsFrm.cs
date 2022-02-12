@@ -600,7 +600,7 @@ namespace net.r_eg.vsCE.UI.WForms
             ISolutionEvent evt  = logic.addEventItem(-1);
             evt.Enabled         = true;
             evt.Name            = "MyFirstAct1";
-            evt.Caption         = "You can find our Sniffer and more tools in [#] Settings - Tools";
+            evt.Caption         = "You can find Sniffer and other tools in [#] Settings - Tools";
 
             dgvActions.Rows.Add(evt.Enabled, evt.Name, evt.Caption);
             selectAction(0, true);

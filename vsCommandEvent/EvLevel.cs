@@ -125,16 +125,8 @@ namespace net.r_eg.vsCE
         /// </summary>
         protected void init()
         {
-#if SDK17
-            Log.Info($"SDK17 & {vsCE.Version.S_INFO}");
-#elif SDK15
-            Log.Info($"SDK15 & {vsCE.Version.S_INFO}");
-#else
-            Log.Info($"SDK10 & {vsCE.Version.S_INFO}");
-#endif
-
 #if DEBUG
-            Log.Warn($"Debug version");
+            Log.Warn("Debug version");
 #endif
 
             loader = Bootloader.Init(this);
