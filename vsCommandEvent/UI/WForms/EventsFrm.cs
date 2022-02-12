@@ -615,7 +615,8 @@ namespace net.r_eg.vsCE.UI.WForms
                 return evt;
             }
             catch(Exception ex) {
-                Log.Error("Failed to add event-item: '{0}'", ex.Message);
+                Log.Error($"Failed to add event-item: {ex.Message}");
+                Log.Debug(ex.StackTrace);
             }
             finally {
                 notice(true);
@@ -884,7 +885,8 @@ namespace net.r_eg.vsCE.UI.WForms
                 logic.setEventIndexes(0);
             }
             catch(Exception ex) {
-                Log.Error("Failed to load form: {0}", ex.Message);
+                Log.Error($"Failed to load form: {ex.Message}");
+                Log.Debug(ex.StackTrace);
             }
 
             addFirstAction();

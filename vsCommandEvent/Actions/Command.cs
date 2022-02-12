@@ -93,8 +93,11 @@ namespace net.r_eg.vsCE.Actions
                 return false;
             }
 
-            Log.Info($"Launching action '{evt.Name}': {evt.Caption}");
-            return actionBy(evt);
+            Log.Info($"Launching '{evt.Name}' due to '{type}' using {evt.Mode.Type} mode.");
+            if(!string.IsNullOrWhiteSpace(evt.Caption)) {
+                Log.Info(evt.Caption);
+            }
+            return actionBy(evt.Mode.Type, evt);
         }
 
         /// <summary>
@@ -125,49 +128,19 @@ namespace net.r_eg.vsCE.Actions
             actions[ModeType.EnvCommand]    = new ActionEnvCommand(this);
         }
 
-        protected bool actionBy(ISolutionEvent evt)
-        {
-            switch(evt.Mode.Type)
-            {
-                case ModeType.Operation: {
-                    Log.Info("Use Operation Mode");
-                    return actionBy(ModeType.Operation, evt);
-                }
-                case ModeType.Interpreter: {
-                    Log.Info("Use Interpreter Mode");
-                    return actionBy(ModeType.Interpreter, evt);
-                }
-                case ModeType.Script: {
-                    Log.Info("Use Script Mode");
-                    return actionBy(ModeType.Script, evt);
-                }
-                case ModeType.Targets: {
-                    Log.Info("Use Targets Mode");
-                    return actionBy(ModeType.Targets, evt);
-                }
-                case ModeType.CSharp: {
-                    Log.Info("Use C# Mode");
-                    return actionBy(ModeType.CSharp, evt);
-                }
-                case ModeType.EnvCommand: {
-                    Log.Info("Use EnvCommand Mode");
-                    return actionBy(ModeType.EnvCommand, evt);
-                }
-            }
-            Log.Info("Use Files Mode");
-            return actionBy(ModeType.File, evt);
-        }
-
         protected bool actionBy(ModeType type, ISolutionEvent evt)
         {
+            if(!actions.ContainsKey(type))
+            {
+                Log.Warn($"{type} is not found as a registered action type");
+                actions[type] = new ActionScript(this);
+            }
+
             if(evt.Process.Waiting) {
                 return actions[type].process(evt);
             }
             
             string marker = null;
-            //if(Thread.CurrentThread.Name == Events.LoggingEvent.IDENT_TH) {
-            //    marker = Events.LoggingEvent.IDENT_TH;
-            //}
 
             (new Task(() => {
 
@@ -175,12 +148,13 @@ namespace net.r_eg.vsCE.Actions
                     Thread.CurrentThread.Name = marker;
                 }
 
-                Log.Trace($"Task ({type}) for another thread is started for '{evt.Name}'");
+                Log.Trace($"Task for '{evt.Name}' due to '{type}' ...");
                 try {
                     actions[type].process(evt);
                 }
                 catch(Exception ex) {
-                    Log.Error($"Task ({type}) for another thread is failed. '{evt.Name}' Error: `{ex.Message}`");
+                    Log.Error($"Failed task for '{evt.Name}': {ex.Message}");
+                    Log.Debug(ex.StackTrace);
                 }
 
             })).Start();

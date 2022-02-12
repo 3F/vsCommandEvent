@@ -28,8 +28,6 @@ namespace net.r_eg.vsCE.Actions
     {
         protected ISobaCLoader cLoader;
 
-        private readonly object sync = new object();
-
         /// <summary>
         /// The main handler of commands.
         /// </summary>
@@ -139,14 +137,17 @@ namespace net.r_eg.vsCE.Actions
                 return VSConstants.S_OK;
             }
 
-            try {
+            try
+            {
                 if(Cmd.exec(evt, SolutionEventType.OWP)) {
                     Log.Info($"[Output] finished '{evt.Name}': {evt.Caption}");
                 }
                 return VSConstants.S_OK;
             }
-            catch(Exception ex) {
-                Log.Error("SBE 'Output' error: {0}", ex.Message);
+            catch(Exception ex)
+            {
+                Log.Error($"SBE 'Output' error: {ex.Message}");
+                Log.Debug(ex.StackTrace);
             }
             return VSConstants.S_FALSE;
         }
@@ -223,12 +224,13 @@ namespace net.r_eg.vsCE.Actions
             try
             {
                 if(Cmd.exec(item, SolutionEventType.CommandEvent)) {
-                    Log.Info("[CommandEvent] finished: '{0}'", item.Caption);
+                    Log.Info($"[CommandEvent] finished: '{item.Caption}'");
                 }
                 Status._.add(SolutionEventType.CommandEvent, StatusType.Success);
             }
             catch(Exception ex) {
-                Log.Error("CommandEvent error: '{0}'", ex.Message);
+                Log.Error($"CommandEvent error: {ex.Message}");
+                Log.Debug(ex.StackTrace);
             }
             Status._.add(SolutionEventType.CommandEvent, StatusType.Fail);
         }
