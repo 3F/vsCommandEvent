@@ -49,7 +49,7 @@ namespace net.r_eg.vsCE.Events
 
         /// <inheritdoc cref="ISolutionEvent.Mode"/>
         [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
-        public IMode Mode { get; set; } = new ModeFile();
+        public IMode Mode { get; set; } = new ModeScript();
 
         /// <inheritdoc cref="ICommandEvent.Filters"/>
         [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
@@ -63,7 +63,8 @@ namespace net.r_eg.vsCE.Events
         [JsonIgnore]
         public Guid Id => id;
 
-        public bool ShouldSerializeEnabled() => !Enabled;
+        //TODO: We are currently using compatibility with 1.0. True is configured for default values only in v1.4
+        //public bool ShouldSerializeEnabled() => !Enabled;
         public bool ShouldSerializeCaption() => !string.IsNullOrEmpty(Caption);
         public bool ShouldSerializeSupportMSBuild() => !SupportMSBuild;
         public bool ShouldSerializeSupportSBEScripts() => !SupportSBEScripts;
