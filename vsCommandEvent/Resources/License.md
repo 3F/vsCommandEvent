@@ -5,13 +5,6 @@
 * * http://twitter.com/gasyoun
 * url: https://www.iconfinder.com/icons/16140/bug_icon#size=16
 
-# ./Exclamation_16.png
-
-* License: Free for commercial use
-* By: Victor Erixon 
-* * http://victorerixon.com
-* url: https://www.iconfinder.com/icons/106231/exclamation_icon#size=16
-
 # ./help-16.png
 
 * License: MIT License
@@ -76,11 +69,6 @@
 * * https://www.iconfinder.com/vasabii
 * url: https://www.iconfinder.com/icons/473641/#size=16
 
-# ./lgplv3-88x31.png
-
-* License: CC BY-ND 3.0 US
-* url: https://www.gnu.org/graphics/license-logos.html
-
 # ./cfg_exclamation.png
 
 * License: Creative Commons (Attribution 3.0 Unported)
@@ -88,20 +76,11 @@
 * * http://p.yusukekamiyamane.com
 * url: https://www.iconfinder.com/icons/26386/exclamation_gear_icon#size=16
 
-# ./donate.gif
-
-* official link: https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif
-
-# ./paypal.png
-
-* License: Free for commercial use
-* url: https://www.iconfinder.com/icons/38604/curved_donate_payment_paypal_icon#size=51
-
 # ./Package.ico & ./Package.png
 
-*!* Modified *!* And this notice also provides the following information under terms from the CC BY 3.0:
+*!* Modified under the terms of CC BY 3.0:
 
-Initial image:
+Original image:
 
 * License: Creative Commons Attribution 3.0 Unported (CC BY 3.0)
 * By: PixelKit 
@@ -110,7 +89,7 @@ Initial image:
 
 Modified by:
 
-* Denis Kuzmin (reg) <entry.reg@gmail.com> / r-eg.net
+* Denis Kuzmin <x-3F@outlook.com> github/3F
 
 # ./lightning.png
 

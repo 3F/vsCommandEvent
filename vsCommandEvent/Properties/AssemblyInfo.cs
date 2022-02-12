@@ -11,7 +11,7 @@ using net.r_eg.vsCE;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("vsCommandEvent")]
-[assembly: AssemblyCopyright("Denis Kuzmin - GitHub/3F")]
+[assembly: AssemblyCopyright("Denis Kuzmin - github/3F")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

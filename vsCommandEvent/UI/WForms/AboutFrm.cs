@@ -1,18 +1,8 @@
-﻿/*
- * Copyright (c) 2015,2016,2019  Denis Kuzmin < entry.reg@gmail.com > GitHub/3F
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+﻿/*!
+ * Copyright (c) 2015  Denis Kuzmin <x-3F@outlook.com> github/3F
+ * Copyright (c) vsCommandEvent contributors https://github.com/3F/vsCommandEvent/graphs/contributors
+ * Licensed under the GNU LGPLv3.
+ * See accompanying LICENSE file or visit https://github.com/3F/vsCommandEvent
 */
 
 using System;
@@ -193,8 +183,6 @@ namespace net.r_eg.vsCE.UI.WForms
 
             space = new DeepSpace(pictureBoxSpace.CreateGraphics(), pictureBoxSpace.Width, pictureBoxSpace.Height);
 
-            labelCopyright.Text = String.Format("Copyright (c) 2015-{0}  Denis Kuzmin <entry.reg@gmail.com> GitHub/3F", Math.Max(2019, DateTime.Now.Year));
-
 #if !DEBUG
             labelVersionVal.Text = $"v{Version.S_NUM_REV}+{Version.B_SHA1}";
             if(Version.B_NAME.ToLower() != "releases") {
@@ -231,7 +219,7 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void linkEmail_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Util.openUrl("mailto:entry.reg@gmail.com");
+            Util.openUrl("mailto:x-3F@outlook.com");
         }
 
         private void buttonOk_Click(object sender, EventArgs e)
@@ -251,24 +239,12 @@ namespace net.r_eg.vsCE.UI.WForms
 
         private void linkLabelDonationHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Util.openUrl("https://3F.github.com/Donation/");
+            Util.openUrl("https://3F.github.io/Donation/");
         }
 
-        private void pictureBoxDonation_Click(object sender, EventArgs e)
+        private void btnDonate_Click(object sender, EventArgs e)
         {
-            Util.openUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=entry%2ereg%40gmail%2ecom&lc=US&item_name=Open%20Source%20%5b%20GitHub%2F3F&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted");
-        }
-
-        private void pictureBoxDonation_MouseHover(object sender, EventArgs e)
-        {
-            pictureBoxDonation.Padding = new Padding(1);
-            pictureBoxDonation.Refresh();
-        }
-
-        private void pictureBoxDonation_MouseLeave(object sender, EventArgs e)
-        {
-            pictureBoxDonation.Padding = new Padding(0);
-            pictureBoxDonation.Refresh();
+            Util.openUrl("https://3F.github.io/Donation/");
         }
 
         private void linkVSSBE_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
