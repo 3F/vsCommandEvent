@@ -23,7 +23,7 @@ namespace net.r_eg.vsCE
 {
     // TODO: more unified integration with IsolatedEnv /EnvDTE to MvsSln as possible 
     //       ~such as full processing by MvsSln through information about .sln file from EnvDTE.
-    public class Environment: EnvAbstract, IEnvironment, IEnvironmentExt
+    public class Environment: EnvAbstract, IEnvironment, IEnvironmentExt, IEvEnv
     {
         [Obsolete("Use " + nameof(PropertyNames), false)]
         public const string PROP_UNAV_STRING = PropertyNames.UNDEFINED;

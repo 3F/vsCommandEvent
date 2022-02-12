@@ -22,7 +22,7 @@ namespace net.r_eg.vsCE
     /// <summary>
     /// Isolated environment for work without DTE
     /// </summary>
-    public class IsolatedEnv: EnvAbstract, IEnvironment
+    public class IsolatedEnv: EnvAbstract, IEnvironment, IEvEnv
     {
         protected IDictionary<string, string> slnProperties = new Dictionary<string, string>();
 
