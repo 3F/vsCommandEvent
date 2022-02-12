@@ -13,13 +13,6 @@
 * * http://ionicons.com
 * url: https://www.iconfinder.com/icons/211757/help_outline_icon#size=16
 
-# ./Package.ico
-
-* License: Free for commercial use (Do not resell)
-* By: S. Shek
-* * http://www.sshek.com
-* url: https://www.iconfinder.com/icons/46889/analysis_data_report_statistics_icon#size=80
-
 # ./Settings_16.png
 
 * License: Free for commercial use

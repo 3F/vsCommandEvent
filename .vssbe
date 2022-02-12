@@ -87,15 +87,14 @@
         "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
         "Type": "Script",
         "Command__": [
-          "",
+          "L-660 Your project does not reference \"...\" framework. Add a reference to ...",
+          "#[File scall(\"tools\\hmsbuild.bat\", \"-t:restore /v:q /nologo /p:Configuration=$(Configuration) /p:Platform=\\\"Any CPU\\\"\", 1000)]",
           "",
           "#[\" Packages \"]",
           "",
           "#[( !(#[IO exists.file(\"packages/__checked\")]) )",
           "{",
           "    #[IO writeLine(STDOUT): Restoring packages. Please wait ...]",
-          "    ",
-          "    #[File call(\"tools\\hmsbuild.bat\", \"-t:restore /v:q /nologo /p:Configuration=$(Configuration) /p:Platform=\\\"Any CPU\\\"\", 1000)]",
           "    ",
           "    #[NuGet gnt.raw(\"/p:ngconfig=\\\"tools/packages.config;vsCommandEvent/packages.config;vsCommandEventTest/packages.config\\\" /nologo /v:m /m:6\")]",
           "    ",
@@ -189,7 +188,7 @@
         "Command__": [
           "#[var cfg       = #[( $(Configuration) ^= \"REL_\" || $(Configuration) ^= \"RCI_\" ){Release}else{Debug}]]",
           "#[var cfgFull   = $(Configuration)]",
-          "#[var vsixLib   = $(SolutionDir)VsixLib\\bin\\]",
+          "#[var vsixLib   = $(SolutionDir)bin\\prj\\vsCommandEvent\\$(Configuration)\\]",
           "",
           "#[var netStamp      = $(NetTargetVName:vsCommandEvent)]",
           "#[var netVerString  = $(TargetFrameworkVersion:vsCommandEvent)]",
@@ -237,7 +236,7 @@
         "Type": "Script",
         "Command__": [
           "#[IO copy.file(",
-          "            \"$(pDir)bin\\$(cfg)\\vsCommandEvent.vsix\", ",
+          "            \"$(vsixLib)vsCommandEvent.vsix\", ",
           "            \"$(odir)vsCommandEvent.$(vsixvnum)+$(bSha1)-SDK$(cfgSDK).vsix\", ",
           "            true)]"
         ]

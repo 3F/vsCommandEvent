@@ -1,9 +1,9 @@
-vsCommandEvent  [ github.com/3F/vsCommandEvent ]
-- - - - - - - - - - - - - - - - - - - - - - - - 
+vsCommandEvent - https://github.com/3F/vsCommandEvent
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # Third-party software components
 
-## The vsCommandEvent includes:
+## The vsCommandEvent includes
 
     * SobaScript (github.com/3F/SobaScript)
         * Core Components (github.com/3F/SobaScript.Z.Core)
@@ -21,10 +21,9 @@ vsCommandEvent  [ github.com/3F/vsCommandEvent ]
     * 7-Zip (www.7-zip.org)
     * GetNuTool (github.com/3F/GetNuTool)
     
-## Dev Dependencies includes the following tools for src:
+## Dev Dependencies includes the following tools for src
 
     * Moq (www.moqthis.com)
-    * VsixCompress (nuget.org/packages/VsixCompress)
     * GetNuTool (github.com/3F/GetNuTool)
     * vsSolutionBuildEvent (github.com/3F/vsSolutionBuildEvent)
     * hMSBuild (github.com/3F/hMSBuild)
