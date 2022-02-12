@@ -96,7 +96,7 @@
           "{",
           "    #[IO writeLine(STDOUT): Restoring packages. Please wait ...]",
           "    ",
-          "    #[NuGet gnt.raw(\"/p:ngconfig=\\\"tools/packages.config;vsCommandEvent/packages.config;vsCommandEventTest/packages.config\\\" /nologo /v:m /m:6\")]",
+          "    #[NuGet gnt.raw(\"/p:ngconfig=\\\"tools/packages.config\\\" /nologo /v:m /m:6\")]",
           "    ",
           "    #[IO copy.directory(\"\", \"packages/\", true)]",
           "    #[File write(\"packages/__checked\"): ]",
