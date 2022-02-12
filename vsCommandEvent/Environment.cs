@@ -414,7 +414,7 @@ namespace net.r_eg.vsCE
             {
                 if(dte2.Globals.VariableExists[DTE_DOC_SLN] && dte2.Globals[DTE_DOC_SLN] != null)
                 {
-                    /// <see cref="Pkg.OnAfterOpenSolution"/>
+                    // see Pkg.OnAfterOpenSolution
                     return ((EnvDTE.Document)dte2.Globals[DTE_DOC_SLN]).FullName;
                 }
 
