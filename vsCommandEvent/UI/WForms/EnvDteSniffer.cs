@@ -7,11 +7,11 @@
 
 using System;
 using System.Windows.Forms;
-using net.r_eg.vsCE.Extensions;
 using net.r_eg.SobaScript;
+using net.r_eg.vsCE.Extensions;
 using net.r_eg.vsCE.UI.WForms.Controls;
-using CEAfterEventHandler = EnvDTE._dispCommandEvents_AfterExecuteEventHandler;
-using CEBeforeEventHandler = EnvDTE._dispCommandEvents_BeforeExecuteEventHandler;
+using CEAfterEventHandler = net.r_eg.vsCE.Events.AggregatedEventsEnvDte.AfterExecuteEventHandler;
+using CEBeforeEventHandler = net.r_eg.vsCE.Events.AggregatedEventsEnvDte.BeforeExecuteEventHandler;
 
 namespace net.r_eg.vsCE.UI.WForms
 {
@@ -28,44 +28,30 @@ namespace net.r_eg.vsCE.UI.WForms
         protected ITransfer link;
 
         /// <summary>
-        /// Provides command events for automation clients
-        /// </summary>
-        protected EnvDTE.CommandEvents cmdEvents;
-
-        /// <summary>
         /// Size of buffer for existing records.
         /// </summary>
         protected int rcBuffer = 2048;
 
-        /// <summary>
-        /// object synch.
-        /// </summary>
-        private Object _lock = new Object();
-
+        private readonly object sync = new();
 
         public void attachCommandEvents(CEBeforeEventHandler before, CEAfterEventHandler after)
         {
-            cmdEvents = env.Events?.CommandEvents;
-            if(cmdEvents == null) {
-                return;
-            }
-
-            lock(_lock) {
-                cmdEvents.BeforeExecute -= before;
-                cmdEvents.BeforeExecute += before;
-                cmdEvents.AfterExecute  -= after;
-                cmdEvents.AfterExecute  += after;
+            if(env?.AggregatedEvents == null) return;
+            lock(sync)
+            {
+                detachCommandEvents(before, after);
+                env.AggregatedEvents.BeforeExecute += before;
+                env.AggregatedEvents.AfterExecute  += after;
             }
         }
 
         public void detachCommandEvents(CEBeforeEventHandler before, CEAfterEventHandler after)
         {
-            if(cmdEvents == null) {
-                return;
-            }
-            lock(_lock) {
-                cmdEvents.BeforeExecute -= before;
-                cmdEvents.AfterExecute  -= after;
+            if(env?.AggregatedEvents == null) return;
+            lock(sync)
+            {
+                env.AggregatedEvents.BeforeExecute -= before;
+                env.AggregatedEvents.AfterExecute  -= after;
             }
         }
 
@@ -162,25 +148,19 @@ namespace net.r_eg.vsCE.UI.WForms
                     object cIn      = Value.PackArgument(rc.Cells[dgvCESnifferColumnCustomIn.Name].Value);
                     object cOut     = Value.PackArgument(rc.Cells[dgvCESnifferColumnCustomOut.Name].Value);
 
-                    object customIn     = cIn.IsNullOrEmptyString()? String.Empty : cIn;
-                    object customOut    = cOut.IsNullOrEmptyString()? String.Empty : cOut;
+                    object customIn     = cIn.IsNullOrEmptyString()? string.Empty : cIn;
+                    object customOut    = cOut.IsNullOrEmptyString()? string.Empty : cOut;
 
-                    env.raise(
-                        ((string)cGuid).Trim(), 
-                        Convert.ToInt32(cId), 
-                        ref customIn, 
-                        ref customOut
-                    );
+                    id      = Convert.ToInt32(cId);
+                    guid    = cGuid.ToString().Trim();
+
+                    env.raise(guid, id, ref customIn, ref customOut);
                 }
             }
-            catch(Exception ex) {
-                Log.Error("Raise: problem with command: '{0}', '{1}' :: '{2}'", guid, id, ex.Message);
+            catch(Exception ex)
+            {
+                Log.Error($"Failed raise command '{guid}', '{id}': {ex.Message}");
             }
-        }
-
-        private void buttonFlush_Click(object sender, EventArgs e)
-        {
-            dgvCESniffer.Rows.Clear();
         }
 
         private void btnAddToFilters_Click(object sender, EventArgs e)
@@ -201,11 +181,6 @@ namespace net.r_eg.vsCE.UI.WForms
             }
         }
 
-        private void menuAddToFilters_Click(object sender, EventArgs e)
-        {
-            btnAddToFilters_Click(sender, e);
-        }
-
         private void menuCopy_Click(object sender, EventArgs e)
         {
             if(dgvCESniffer.SelectedRows.Count < 1) {
@@ -223,14 +198,12 @@ namespace net.r_eg.vsCE.UI.WForms
             }
         }
 
-        private void menuRaise_Click(object sender, EventArgs e)
-        {
-            btnRaise_Click(sender, e);
-        }
+        private void buttonFlush_Click(object sender, EventArgs e) => dgvCESniffer.Rows.Clear();
 
-        private void menuFlush_Click(object sender, EventArgs e)
-        {
-            buttonFlush_Click(sender, e);
-        }
+        private void menuAddToFilters_Click(object sender, EventArgs e) => btnAddToFilters_Click(sender, e);
+
+        private void menuRaise_Click(object sender, EventArgs e) => btnRaise_Click(sender, e);
+
+        private void menuFlush_Click(object sender, EventArgs e) => buttonFlush_Click(sender, e);
     }
 }

@@ -7,8 +7,8 @@
 
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using net.r_eg.EvMSBuild;
 using net.r_eg.vsCE.Bridge;
+using net.r_eg.vsCE.Events;
 using DProject = EnvDTE.Project;
 using EProject = Microsoft.Build.Evaluation.Project;
 
@@ -66,6 +66,8 @@ namespace net.r_eg.vsCE
         /// Events in the extensibility model
         /// </summary>
         EnvDTE.Events Events { get; }
+
+        AggregatedEventsEnvDte AggregatedEvents { get; }
 
         /// <summary>
         /// Get status of opened solution.

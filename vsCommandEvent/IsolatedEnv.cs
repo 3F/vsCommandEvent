@@ -13,6 +13,7 @@ using net.r_eg.EvMSBuild;
 using net.r_eg.MvsSln;
 using net.r_eg.MvsSln.Core;
 using net.r_eg.MvsSln.Extensions;
+using net.r_eg.vsCE.Events;
 using net.r_eg.vsCE.Extensions;
 using DProject = EnvDTE.Project;
 using EProject = Microsoft.Build.Evaluation.Project;
@@ -98,21 +99,11 @@ namespace net.r_eg.vsCE
             protected set => _startupProjectString = value;
         }
 
-        /// <summary>
-        /// DTE2 context.
-        /// </summary>
-        public EnvDTE80.DTE2 Dte2
-        {
-            get => __disabled<EnvDTE80.DTE2>(nameof(Dte2));
-        }
+        public EnvDTE80.DTE2 Dte2 => __disabled<EnvDTE80.DTE2>(nameof(Dte2));
 
-        /// <summary>
-        /// Events in the extensibility model
-        /// </summary>
-        public EnvDTE.Events Events
-        {
-            get => __disabled<EnvDTE.Events>(nameof(Events));
-        }
+        public EnvDTE.Events Events => __disabled<EnvDTE.Events>(nameof(Events));
+
+        public AggregatedEventsEnvDte AggregatedEvents { get; }
 
         /// <summary>
         /// Get status of opened solution.
@@ -258,6 +249,8 @@ namespace net.r_eg.vsCE
             slnProperties       = Sln.Properties.ExtractDictionary.AddOrUpdate(_properties);
             SolutionFileName    = slnProperties.GetOrDefault(PropertyNames.SLN_NAME, PropertyNames.UNDEFINED);
             IsOpenedSolution    = true;
+
+            AggregatedEvents = new(this);
         }
 
         /// <summary>

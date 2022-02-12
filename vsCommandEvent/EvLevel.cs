@@ -24,12 +24,9 @@ namespace net.r_eg.vsCE
     {
         internal readonly CancelBuildState buildState = new CancelBuildState();
 
-        /// <remarks>protects from GC</remarks>
-        protected EnvDTE.CommandEvents cmdEvents;
-
         private Bootloader loader;
 
-        private readonly object sync = new object();
+        private readonly object sync = new();
 
         public event EventHandler OpenedSolution = delegate (object sender, EventArgs e) { };
 
@@ -130,7 +127,14 @@ namespace net.r_eg.vsCE
 #endif
 
             loader = Bootloader.Init(this);
-            attachCommandEvents();
+
+            lock(sync)
+            {
+                Environment.AggregatedEvents.BeforeExecute -= onCmdBeforeExecute;
+                Environment.AggregatedEvents.AfterExecute -= onCmdAfterExecute;
+                Environment.AggregatedEvents.BeforeExecute += onCmdBeforeExecute;
+                Environment.AggregatedEvents.AfterExecute += onCmdAfterExecute;
+            }
 
             Action = new Actions.Binder
             (
@@ -187,31 +191,6 @@ namespace net.r_eg.vsCE
             msbuild.SetGlobalProperty($"{_PFX}_CommonPath", app.CommonPath);
             msbuild.SetGlobalProperty($"{_PFX}_LibPath", app.LibPath);
             msbuild.SetGlobalProperty($"{_PFX}_WorkPath", app.WorkPath);
-        }
-
-        protected void attachCommandEvents()
-        {
-            if(Environment.Events == null) {
-                Log.Info("Context of build action: uses a limited types.");
-                return; //this can be for emulated DTE2 context
-            }
-
-            cmdEvents = Environment.Events.CommandEvents; // protection from garbage collector
-            lock(sync) {
-                detachCommandEvents();
-                cmdEvents.BeforeExecute += onCmdBeforeExecute;
-                cmdEvents.AfterExecute  += onCmdAfterExecute;
-            }
-        }
-
-        protected void detachCommandEvents()
-        {
-            if(cmdEvents == null) return;
-
-            lock(sync) {
-                cmdEvents.BeforeExecute -= onCmdBeforeExecute;
-                cmdEvents.AfterExecute  -= onCmdAfterExecute;
-            }
         }
 
         /// <summary>

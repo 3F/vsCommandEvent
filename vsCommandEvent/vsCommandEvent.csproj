@@ -177,6 +177,7 @@
     <Compile Include="Configuration\User\Route.cs" />
     <Compile Include="Configuration\User\UserValue.cs" />
     <Compile Include="DataArgs.cs" />
+    <Compile Include="Events\AggregatedEventsEnvDte.cs" />
     <Compile Include="SobaScript\Components\DteComponent.cs" />
     <Compile Include="DteEnv.cs" />
     <Compile Include="DteSlnCfg.cs" />

@@ -15,6 +15,7 @@ using net.r_eg.EvMSBuild;
 using net.r_eg.MvsSln;
 using net.r_eg.MvsSln.Core;
 using net.r_eg.MvsSln.Extensions;
+using net.r_eg.vsCE.Events;
 using net.r_eg.vsCE.Extensions;
 using DProject = EnvDTE.Project;
 using EProject = Microsoft.Build.Evaluation.Project;
@@ -75,30 +76,13 @@ namespace net.r_eg.vsCE
             }
         }
 
-        /// <summary>
-        /// DTE2 context.
-        /// </summary>
-        public DTE2 Dte2
-        {
-            get;
-            protected set;
-        }
+        public DTE2 Dte2 { get; protected set; }
 
-        /// <summary>
-        /// Events in the extensibility model
-        /// </summary>
-        public EnvDTE.Events Events
-        {
-            get => Dte2?.Events;
-        }
+        public EnvDTE.Events Events => Dte2?.Events;
 
-        /// <summary>
-        /// Contains all of the commands in the environment
-        /// </summary>
-        public EnvDTE.Commands Commands
-        {
-            get => Dte2?.Commands;
-        }
+        public AggregatedEventsEnvDte AggregatedEvents { get; }
+
+        public EnvDTE.Commands Commands => Dte2?.Commands;
 
         /// <summary>
         /// Active configuration for current solution
@@ -375,6 +359,8 @@ namespace net.r_eg.vsCE
         {
             Dte2        = dte2;
             this.elvl   = elvl;
+
+            AggregatedEvents = new(this);
 
             //TODO: ?disposing whole environment
 

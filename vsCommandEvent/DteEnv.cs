@@ -15,10 +15,10 @@ namespace net.r_eg.vsCE
     internal sealed class DteEnv: IDteCeEnv
     {
         private readonly IEnvironment env;
-        private readonly Lazy<DTEOperation> dteo;
-        private readonly _DteCommand _dtec = new();
 
-        private EnvDTE.CommandEvents cmdEvents;
+        private readonly Lazy<DTEOperation> dteo;
+
+        private readonly _DteCommand _dtec = new();
 
         private readonly object sync = new();
 
@@ -57,30 +57,26 @@ namespace net.r_eg.vsCE
 
         private void AttachCommandEvents()
         {
-            if(!IsAvaialbleDteCmd || env.Events?.CommandEvents == null)
+            if(!IsAvaialbleDteCmd)
             {
-                Log.Info("CommandEvents: aren't available for current context.");
-                return; //this can be for emulated DTE2 context
+                Log.Info($"{ToString()} aren't available for current context.");
+                return;
             }
-
-            cmdEvents = env.Events.CommandEvents;
 
             lock(sync)
             {
                 DetachCommandEvents();
-                cmdEvents.BeforeExecute += OnCommandEventBefore;
-                cmdEvents.AfterExecute  += OnCommandEventAfter;
+                env.AggregatedEvents.BeforeExecute += OnCommandEventBefore;
+                env.AggregatedEvents.AfterExecute  += OnCommandEventAfter;
             }
         }
 
         private void DetachCommandEvents()
         {
-            if(cmdEvents == null) {
-                return;
-            }
+            if(env.AggregatedEvents == null) return;
 
-            cmdEvents.BeforeExecute -= OnCommandEventBefore;
-            cmdEvents.AfterExecute  -= OnCommandEventAfter;
+            env.AggregatedEvents.BeforeExecute -= OnCommandEventBefore;
+            env.AggregatedEvents.AfterExecute  -= OnCommandEventAfter;
         }
 
         private void OnCommandEventBefore(string guid, int id, object customIn, object customOut, ref bool cancelDefault)
