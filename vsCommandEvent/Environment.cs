@@ -28,6 +28,11 @@ namespace net.r_eg.vsCE
         [Obsolete("Use " + nameof(PropertyNames), false)]
         public const string PROP_UNAV_STRING = PropertyNames.UNDEFINED;
 
+        /// <summary>
+        /// VS treats a single file (.dmp etc) when its starting as an open solution.
+        /// </summary>
+        internal const string DTE_DOC_SLN = "EnvDteDocumentSlnVSCE";
+
         protected IEvLevel elvl;
 
         private string startupProject;
@@ -397,21 +402,36 @@ namespace net.r_eg.vsCE
         /// <returns></returns>
         protected string getFullPathToSln(DTE2 dte2)
         {
-            string path = dte2?.Solution?.FullName; // can be empty when new solution is creating
+            if(dte2 == null)
+            {
+                return null;
+            }
+
+            string path = dte2.Solution?.FullName; // can be empty when new solution is creating
+            if(!string.IsNullOrWhiteSpace(path))
+            {
+                return path;
+            }
 
             try
             {
-                if(string.IsNullOrWhiteSpace(path)) {
-                    return dte2.Solution.Properties.Item("Path").Value.ToString();
+                if(dte2.Globals.VariableExists[DTE_DOC_SLN] && dte2.Globals[DTE_DOC_SLN] != null)
+                {
+                    /// <see cref="Pkg.OnAfterOpenSolution"/>
+                    return ((EnvDTE.Document)dte2.Globals[DTE_DOC_SLN]).FullName;
                 }
 
-                return path;
+                // VS may throw an exception when accessing to "Path" for such .dmp file (no .sln),
+                // try/catch is official way https://docs.microsoft.com/en-us/dotnet/api/envdte80.solution2.properties
+
+                return dte2.Solution.Properties.Item("Path").Value.ToString();
             }
             catch(Exception ex)
             {
-                Log.Debug($"getFullPathToSln returns null: `{ex.Message}`");
-                return null;
+                Log.Trace($"{nameof(getFullPathToSln)} returns null because of {ex.Message}");
             }
+
+            return null;
         }
 
         private void onClosedSolution(object sender, EventArgs e)

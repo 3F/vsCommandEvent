@@ -68,6 +68,8 @@ namespace net.r_eg.vsCE
         /// </summary>
         private uint _pdwCookieSolution;
 
+        private DocumentEvents DocumentEvents;
+
         /// <summary>
         /// The command for: Tools / { main app tool }
         /// </summary>
@@ -129,7 +131,22 @@ namespace net.r_eg.vsCE
         {
             Monitor.Enter(sync);
 
-            try {
+            try
+            {
+                if(PackageBinder.Environment.SolutionFile == null)
+                {
+                    void _onDocOpened(Document Document)
+                    {
+                        DocumentEvents.DocumentOpened -= _onDocOpened;
+
+                        Dte2.Globals[Environment.DTE_DOC_SLN] = Document;
+                        PackageBinder.solutionOpened(pUnkReserved, fNewSolution);
+                    };
+                    DocumentEvents.DocumentOpened += _onDocOpened;
+
+                    return VSConstants.S_OK;
+                }
+
                 return PackageBinder.solutionOpened(pUnkReserved, fNewSolution);
             }
             catch(Exception ex) {
@@ -153,8 +170,16 @@ namespace net.r_eg.vsCE
         {
             Monitor.Enter(sync);
 
-            try {
-                return PackageBinder.solutionClosed(pUnkReserved);
+            try
+            {
+                int ret = PackageBinder.solutionClosed(pUnkReserved);
+
+                if(Dte2.Globals.VariableExists[Environment.DTE_DOC_SLN])
+                {
+                    Dte2.Globals[Environment.DTE_DOC_SLN] = null;
+                }
+
+                return ret;
             }
             catch(Exception ex) {
                 Log.Fatal("Problem when closing solution: " + ex.Message);
@@ -325,6 +350,8 @@ namespace net.r_eg.vsCE
             owpListener.Receiving += (object sender, Receiver.Output.PaneArgs e) => {
                 ((Bridge.IEvent)PackageBinder).onBuildRaw(e.Raw, e.Guid, e.Item);
             };
+
+            DocumentEvents = PackageBinder.Environment.Events.DocumentEvents;
         }
 
         private void _showCriticalVsMsg(IVsUIShell uiShell, Exception ex)
