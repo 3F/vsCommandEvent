@@ -39,9 +39,10 @@ namespace net.r_eg.vsCE.UI.WForms
         /// <param name="components"></param>
         public void updateComponents(Configuration.Component[] components)
         {
-            Settings.Cfg.Components = components;
+            Settings.Cfg.Components = components.Where(c => !c.Enabled).ToArray(); // L-585
+
             foreach(IComponent c in bootloader.Soba.Registered) {
-                Configuration.Component found = components.Where(p => p.ClassName == c.GetType().Name).FirstOrDefault();
+                Configuration.Component found = components.FirstOrDefault(p => p.ClassName == c.GetType().Name);
                 if(found != null) {
                     c.Enabled = found.Enabled;
                 }
@@ -77,12 +78,9 @@ namespace net.r_eg.vsCE.UI.WForms
                 bool enabled        = c.Enabled;
                 string className    = c.GetType().Name;
 
-                Configuration.Component[] cfg = Settings.Cfg.Components;
-                if(cfg != null && cfg.Length > 0) {
-                    Configuration.Component v = cfg.Where(p => p.ClassName == className).FirstOrDefault();
-                    if(v != null) {
-                        enabled = v.Enabled;
-                    }
+                Configuration.Component v = Settings.Cfg.Components?.FirstOrDefault(p => p.ClassName == className);
+                if(v != null) {
+                    enabled = v.Enabled;
                 }
 
                 cInfo[className] = new List<INodeInfo>();

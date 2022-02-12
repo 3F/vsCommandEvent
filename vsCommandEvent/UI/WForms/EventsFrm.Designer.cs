@@ -399,48 +399,48 @@
             // menuSBEScript
             // 
             this.menuSBEScript.Name = "menuSBEScript";
-            this.menuSBEScript.Size = new System.Drawing.Size(177, 22);
+            this.menuSBEScript.Size = new System.Drawing.Size(178, 22);
             this.menuSBEScript.Text = "Testing tool";
             this.menuSBEScript.Click += new System.EventHandler(this.menuSBEScript_Click);
             // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(174, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(175, 6);
             // 
             // toolStripMenuMSBuildProp
             // 
             this.toolStripMenuMSBuildProp.Name = "toolStripMenuMSBuildProp";
-            this.toolStripMenuMSBuildProp.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuMSBuildProp.Size = new System.Drawing.Size(178, 22);
             this.toolStripMenuMSBuildProp.Text = "MSBuild Properties";
             this.toolStripMenuMSBuildProp.Click += new System.EventHandler(this.toolStripMenuMSBuildProp_Click);
             // 
             // toolStripMenuEvaluatingProperty
             // 
             this.toolStripMenuEvaluatingProperty.Name = "toolStripMenuEvaluatingProperty";
-            this.toolStripMenuEvaluatingProperty.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuEvaluatingProperty.Size = new System.Drawing.Size(178, 22);
             this.toolStripMenuEvaluatingProperty.Text = "Evaluate Property";
             this.toolStripMenuEvaluatingProperty.Click += new System.EventHandler(this.toolStripMenuEvaluatingProperty_Click);
             // 
             // toolStripMenuDTECmd
             // 
             this.toolStripMenuDTECmd.Name = "toolStripMenuDTECmd";
-            this.toolStripMenuDTECmd.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuDTECmd.Size = new System.Drawing.Size(178, 22);
             this.toolStripMenuDTECmd.Text = "DTE-Commands";
             this.toolStripMenuDTECmd.Click += new System.EventHandler(this.toolStripMenuDTECmd_Click);
             // 
             // toolStripMenuDTECmdExec
             // 
             this.toolStripMenuDTECmdExec.Name = "toolStripMenuDTECmdExec";
-            this.toolStripMenuDTECmdExec.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuDTECmdExec.Size = new System.Drawing.Size(178, 22);
             this.toolStripMenuDTECmdExec.Text = "Execute commands";
             this.toolStripMenuDTECmdExec.Click += new System.EventHandler(this.toolStripMenuDTECmdExec_Click);
             // 
             // menuItemSniffer
             // 
             this.menuItemSniffer.Name = "menuItemSniffer";
-            this.menuItemSniffer.Size = new System.Drawing.Size(177, 22);
-            this.menuItemSniffer.Text = "EnvDTE Sniffer";
+            this.menuItemSniffer.Size = new System.Drawing.Size(178, 22);
+            this.menuItemSniffer.Text = "Sniffer";
             this.menuItemSniffer.Click += new System.EventHandler(this.menuItemSniffer_Click);
             // 
             // menuWizards
@@ -479,7 +479,7 @@
             this.menuTplTargets.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuTplTargetsDefault});
             this.menuTplTargets.Name = "menuTplTargets";
-            this.menuTplTargets.Size = new System.Drawing.Size(146, 22);
+            this.menuTplTargets.Size = new System.Drawing.Size(145, 22);
             this.menuTplTargets.Text = "Targets Mode";
             // 
             // menuTplTargetsDefault
@@ -494,7 +494,7 @@
             this.menuTplCSharp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuTplCSharpDefault});
             this.menuTplCSharp.Name = "menuTplCSharp";
-            this.menuTplCSharp.Size = new System.Drawing.Size(146, 22);
+            this.menuTplCSharp.Size = new System.Drawing.Size(145, 22);
             this.menuTplCSharp.Text = "C# Mode";
             // 
             // menuTplCSharpDefault
@@ -522,21 +522,21 @@
             // 
             this.toolStripMenuPluginDir.Name = "toolStripMenuPluginDir";
             this.toolStripMenuPluginDir.Size = new System.Drawing.Size(154, 22);
-            this.toolStripMenuPluginDir.Text = "Open directory";
+            this.toolStripMenuPluginDir.Text = "Open plugin directory";
             this.toolStripMenuPluginDir.Click += new System.EventHandler(this.toolStripMenuPluginDir_Click);
             // 
             // menuCommonCfgDir
             // 
             this.menuCommonCfgDir.Name = "menuCommonCfgDir";
             this.menuCommonCfgDir.Size = new System.Drawing.Size(154, 22);
-            this.menuCommonCfgDir.Text = "Common .vsce";
+            this.menuCommonCfgDir.Text = "Open directory where common .vsce";
             this.menuCommonCfgDir.Click += new System.EventHandler(this.menuCommonCfgDir_Click);
             // 
             // menuGetVSSBE
             // 
             this.menuGetVSSBE.Name = "menuGetVSSBE";
             this.menuGetVSSBE.Size = new System.Drawing.Size(185, 22);
-            this.menuGetVSSBE.Text = "vsSolutionBuildEvent";
+            this.menuGetVSSBE.Text = "+ vsSolutionBuildEvent";
             this.menuGetVSSBE.Click += new System.EventHandler(this.menuGetVSSBE_Click);
             // 
             // toolStripMenuHelp
@@ -784,8 +784,8 @@
             // splitContainerMain.Panel2
             // 
             this.splitContainerMain.Panel2.Controls.Add(this.splitContainerCfg);
-            this.splitContainerMain.Size = new System.Drawing.Size(866, 418);
-            this.splitContainerMain.SplitterDistance = 107;
+            this.splitContainerMain.Size = new System.Drawing.Size(866, 571);
+            this.splitContainerMain.SplitterDistance = 124;
             this.splitContainerMain.TabIndex = 5;
             // 
             // linkAddAction
@@ -805,7 +805,7 @@
             this.panelSeparator1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panelSeparator1.BackgroundImage")));
             this.panelSeparator1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.panelSeparator1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelSeparator1.Location = new System.Drawing.Point(0, 106);
+            this.panelSeparator1.Location = new System.Drawing.Point(0, 123);
             this.panelSeparator1.Margin = new System.Windows.Forms.Padding(0);
             this.panelSeparator1.Name = "panelSeparator1";
             this.panelSeparator1.Size = new System.Drawing.Size(866, 1);
@@ -860,7 +860,7 @@
             this.dgvActions.RowTemplate.Height = 17;
             this.dgvActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvActions.ShowEditingIcon = false;
-            this.dgvActions.Size = new System.Drawing.Size(866, 107);
+            this.dgvActions.Size = new System.Drawing.Size(866, 124);
             this.dgvActions.TabIndex = 46;
             this.dgvActions.DragDropSortedRow += new System.EventHandler<net.r_eg.vsCE.UI.WForms.Components.DataGridViewExt.MovingRowArgs>(this.dgvActions_DragDropSortedRow);
             this.dgvActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvActions_CellContentClick);
@@ -920,8 +920,8 @@
             this.splitContainerCfg.Panel2.Controls.Add(this.tabControlCfg);
             this.splitContainerCfg.Panel2.Controls.Add(this.groupBoxPMode);
             this.splitContainerCfg.Panel2.Controls.Add(this.panelStatusSide);
-            this.splitContainerCfg.Size = new System.Drawing.Size(866, 307);
-            this.splitContainerCfg.SplitterDistance = 144;
+            this.splitContainerCfg.Size = new System.Drawing.Size(866, 443);
+            this.splitContainerCfg.SplitterDistance = 169;
             this.splitContainerCfg.TabIndex = 0;
             // 
             // tabControlCommands
@@ -935,7 +935,7 @@
             this.tabControlCommands.Name = "tabControlCommands";
             this.tabControlCommands.Padding = new System.Drawing.Point(0, 0);
             this.tabControlCommands.SelectedIndex = 0;
-            this.tabControlCommands.Size = new System.Drawing.Size(866, 144);
+            this.tabControlCommands.Size = new System.Drawing.Size(866, 169);
             this.tabControlCommands.TabIndex = 0;
             // 
             // tabPageEnvDTE
@@ -945,7 +945,7 @@
             this.tabPageEnvDTE.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageEnvDTE.Name = "tabPageEnvDTE";
             this.tabPageEnvDTE.Padding = new System.Windows.Forms.Padding(10, 0, 5, 0);
-            this.tabPageEnvDTE.Size = new System.Drawing.Size(858, 115);
+            this.tabPageEnvDTE.Size = new System.Drawing.Size(858, 140);
             this.tabPageEnvDTE.TabIndex = 0;
             this.tabPageEnvDTE.Text = "EnvDTE";
             this.tabPageEnvDTE.UseVisualStyleBackColor = true;
@@ -991,7 +991,7 @@
             this.dgvCEFilters.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvCEFilters.RowTemplate.Height = 17;
             this.dgvCEFilters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvCEFilters.Size = new System.Drawing.Size(843, 115);
+            this.dgvCEFilters.Size = new System.Drawing.Size(843, 140);
             this.dgvCEFilters.TabIndex = 7;
             this.dgvCEFilters.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCEFilters_CellClick);
             // 
@@ -1143,7 +1143,7 @@
             this.tabPageOWP.Location = new System.Drawing.Point(4, 25);
             this.tabPageOWP.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageOWP.Name = "tabPageOWP";
-            this.tabPageOWP.Size = new System.Drawing.Size(858, 115);
+            this.tabPageOWP.Size = new System.Drawing.Size(858, 146);
             this.tabPageOWP.TabIndex = 1;
             this.tabPageOWP.Text = "Output window";
             this.tabPageOWP.UseVisualStyleBackColor = true;
@@ -1182,7 +1182,7 @@
             this.dgvOWP.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvOWP.RowTemplate.Height = 17;
             this.dgvOWP.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvOWP.Size = new System.Drawing.Size(858, 115);
+            this.dgvOWP.Size = new System.Drawing.Size(858, 146);
             this.dgvOWP.TabIndex = 7;
             this.dgvOWP.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewOutput_CellClick);
             // 
@@ -1260,7 +1260,7 @@
             this.tabControlCfg.Margin = new System.Windows.Forms.Padding(0);
             this.tabControlCfg.Name = "tabControlCfg";
             this.tabControlCfg.SelectedIndex = 0;
-            this.tabControlCfg.Size = new System.Drawing.Size(730, 153);
+            this.tabControlCfg.Size = new System.Drawing.Size(730, 264);
             this.tabControlCfg.TabIndex = 68;
             // 
             // tabPageCommand
@@ -1270,7 +1270,7 @@
             this.tabPageCommand.Location = new System.Drawing.Point(4, 22);
             this.tabPageCommand.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageCommand.Name = "tabPageCommand";
-            this.tabPageCommand.Size = new System.Drawing.Size(722, 127);
+            this.tabPageCommand.Size = new System.Drawing.Size(722, 238);
             this.tabPageCommand.TabIndex = 0;
             this.tabPageCommand.Text = "Command";
             // 
@@ -1278,9 +1278,10 @@
             // 
             this.textEditor.CodeCompletionEnabled = false;
             this.textEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textEditor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textEditor.Location = new System.Drawing.Point(0, 0);
             this.textEditor.Name = "textEditor";
-            this.textEditor.Size = new System.Drawing.Size(722, 127);
+            this.textEditor.Size = new System.Drawing.Size(722, 238);
             this.textEditor.TabIndex = 0;
             // 
             // tabPageEnvCmd
@@ -1290,7 +1291,7 @@
             this.tabPageEnvCmd.Location = new System.Drawing.Point(4, 22);
             this.tabPageEnvCmd.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageEnvCmd.Name = "tabPageEnvCmd";
-            this.tabPageEnvCmd.Size = new System.Drawing.Size(722, 127);
+            this.tabPageEnvCmd.Size = new System.Drawing.Size(722, 247);
             this.tabPageEnvCmd.TabIndex = 5;
             this.tabPageEnvCmd.Text = "Environment Commands";
             // 
@@ -1330,7 +1331,7 @@
             this.dgvEnvCmd.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvEnvCmd.RowTemplate.Height = 17;
             this.dgvEnvCmd.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvEnvCmd.Size = new System.Drawing.Size(722, 127);
+            this.dgvEnvCmd.Size = new System.Drawing.Size(722, 247);
             this.dgvEnvCmd.TabIndex = 8;
             this.dgvEnvCmd.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEnvCmd_CellClick);
             // 
@@ -1398,7 +1399,7 @@
             this.tabPageOperations.Location = new System.Drawing.Point(4, 22);
             this.tabPageOperations.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageOperations.Name = "tabPageOperations";
-            this.tabPageOperations.Size = new System.Drawing.Size(722, 127);
+            this.tabPageOperations.Size = new System.Drawing.Size(722, 247);
             this.tabPageOperations.TabIndex = 6;
             this.tabPageOperations.Text = "Operations";
             this.tabPageOperations.UseVisualStyleBackColor = true;
@@ -1437,7 +1438,7 @@
             this.dgvOperations.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvOperations.RowTemplate.Height = 17;
             this.dgvOperations.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvOperations.Size = new System.Drawing.Size(722, 127);
+            this.dgvOperations.Size = new System.Drawing.Size(722, 247);
             this.dgvOperations.TabIndex = 9;
             this.dgvOperations.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOperations_CellClick);
             // 
@@ -1494,7 +1495,7 @@
             this.tabPageSettings.Location = new System.Drawing.Point(4, 22);
             this.tabPageSettings.Name = "tabPageSettings";
             this.tabPageSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSettings.Size = new System.Drawing.Size(722, 127);
+            this.tabPageSettings.Size = new System.Drawing.Size(722, 247);
             this.tabPageSettings.TabIndex = 1;
             this.tabPageSettings.Text = "Settings";
             this.tabPageSettings.UseVisualStyleBackColor = true;
@@ -1623,7 +1624,7 @@
             this.tabPageCfgInterpreter.Location = new System.Drawing.Point(4, 22);
             this.tabPageCfgInterpreter.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageCfgInterpreter.Name = "tabPageCfgInterpreter";
-            this.tabPageCfgInterpreter.Size = new System.Drawing.Size(722, 127);
+            this.tabPageCfgInterpreter.Size = new System.Drawing.Size(722, 247);
             this.tabPageCfgInterpreter.TabIndex = 2;
             this.tabPageCfgInterpreter.Text = "Interpreter";
             this.tabPageCfgInterpreter.UseVisualStyleBackColor = true;
@@ -1694,7 +1695,7 @@
             this.tabPageCompilerCfg.Location = new System.Drawing.Point(4, 22);
             this.tabPageCompilerCfg.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageCompilerCfg.Name = "tabPageCompilerCfg";
-            this.tabPageCompilerCfg.Size = new System.Drawing.Size(722, 127);
+            this.tabPageCompilerCfg.Size = new System.Drawing.Size(722, 247);
             this.tabPageCompilerCfg.TabIndex = 4;
             this.tabPageCompilerCfg.Text = "Compiler";
             this.tabPageCompilerCfg.UseVisualStyleBackColor = true;
@@ -1706,7 +1707,7 @@
             this.pGridCompilerCfg.Location = new System.Drawing.Point(0, 0);
             this.pGridCompilerCfg.Margin = new System.Windows.Forms.Padding(0);
             this.pGridCompilerCfg.Name = "pGridCompilerCfg";
-            this.pGridCompilerCfg.Size = new System.Drawing.Size(722, 127);
+            this.pGridCompilerCfg.Size = new System.Drawing.Size(722, 247);
             this.pGridCompilerCfg.TabIndex = 0;
             this.pGridCompilerCfg.ToolbarVisible = false;
             // 
@@ -1812,7 +1813,7 @@
             this.panelStatusSide.BackColor = System.Drawing.Color.Gray;
             this.panelStatusSide.Location = new System.Drawing.Point(132, 6);
             this.panelStatusSide.Name = "panelStatusSide";
-            this.panelStatusSide.Size = new System.Drawing.Size(11, 152);
+            this.panelStatusSide.Size = new System.Drawing.Size(11, 263);
             this.panelStatusSide.TabIndex = 72;
             // 
             // dgvOutput
@@ -1853,10 +1854,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(866, 418);
+            this.ClientSize = new System.Drawing.Size(866, 571);
             this.Controls.Add(this.btnApply);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.splitContainerMain);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MinimumSize = new System.Drawing.Size(755, 444);
             this.Name = "EventsFrm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

@@ -85,10 +85,10 @@
         <CommandFlag>Pict</CommandFlag>
         <Strings>
           <CommandName>vsCE.Cfg.RemoveWarnings</CommandName>
-          <ButtonText>Remove Warnings from ErrorList</ButtonText>
-          <MenuText>Remove Warnings from ErrorList</MenuText>
+          <ButtonText>Clear ErrorList</ButtonText>
+          <MenuText>Clear ErrorList</MenuText>
           <CanonicalName>vsCE.Cfg.RemoveWarnings</CanonicalName>
-          <ToolTipText>vsCommandEvent - Remove Warnings from ErrorList</ToolTipText>
+          <ToolTipText>vsCommandEvent - Clear ErrorList</ToolTipText>
         </Strings>
       </Button>
       

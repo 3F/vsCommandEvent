@@ -22,9 +22,13 @@ namespace net.r_eg.vsCE
     /// <summary>
     /// Isolated environment for work without DTE
     /// </summary>
-    public class IsolatedEnv: EnvAbstract, IEnvironment
+    public class IsolatedEnv: EnvAbstract, IEnvironment, IEvEnv
     {
         protected IDictionary<string, string> slnProperties = new Dictionary<string, string>();
+
+        protected readonly IConfPlatform defaultCfg = new ConfigSln("Debug", "Any CPU");
+
+        private ConfigItem currentSlnConf;
 
         private string _startupProjectString;
 
@@ -51,46 +55,31 @@ namespace net.r_eg.vsCE
                     .Where(p => !string.IsNullOrWhiteSpace(p.GetProjectName()));
         }
 
-        /// <summary>
-        /// Simple list of names from EnvDTE projects
-        /// </summary>
         public List<string> ProjectsList
         {
-            get => SlnEnv?.ValidProjects
-                // TODO: possible duplicates because only ProjectsDTE provides an uniqiue list
-                .Select(p => p.GetProjectName())
-                .Where(name => !string.IsNullOrWhiteSpace(name))
+            get => (Sln?.ProjectItems ?? Enumerable.Empty<MvsSln.Core.ProjectItem>())
+                .Where(p => !string.IsNullOrWhiteSpace(p.name))
+                .Select(p => p.name)
                 .ToList();
         }
 
         /// <summary>
         /// Active configuration for current solution
         /// </summary>
-        public EnvDTE80.SolutionConfiguration2 SolutionActiveCfg
-        {
-            //TODO:
-            get => __disabled<EnvDTE80.SolutionConfiguration2>(nameof(SolutionActiveCfg));
-        }
+        public EnvDTE80.SolutionConfiguration2 SolutionActiveCfg => new DteSlnCfg(extractCfg(slnProperties));
 
         /// <summary>
         /// Formatted string with an active configuration for current solution.
         /// </summary>
-        public string SolutionActiveCfgString
-        {
-            get => formatCfg(slnProperties);
-        }
+        public string SolutionActiveCfgString => formatCfg(slnProperties);
 
         /// <summary>
         /// All configurations for current solution
         /// </summary>
         public IEnumerable<EnvDTE80.SolutionConfiguration2> SolutionConfigurations
         {
-            get
-            {
-                //TODO: only list see in .sln -> SolutionConfigurationPlatforms
-                __disabled(nameof(SolutionConfigurations));
-                yield break;
-            }
+            get => (Sln?.SolutionConfigs ?? new[] { extractCfg(slnProperties) })
+                        .Select(c => new DteSlnCfg(c.Configuration, c.Platform));
         }
 
         /// <summary>
@@ -177,6 +166,8 @@ namespace net.r_eg.vsCE
             get => __disabled<IOW>(nameof(OutputWindowPane));
         }
 
+        protected override ConfigItem ActiveSlnConf => extractCfg(slnProperties);
+
         /// <summary>
         /// An unified unscoped and out of Project instance the property value by its name.
         /// Remarks: Any property values cannot be null.
@@ -256,15 +247,15 @@ namespace net.r_eg.vsCE
         public IsolatedEnv(string solutionFile, IDictionary<string, string> properties)
         {
             SolutionFile    = solutionFile ?? throw new ArgumentNullException(nameof(solutionFile));
-            _properties     = properties ?? throw new ArgumentNullException(nameof(properties));
+            _properties     = ConfigureAsNew(properties ?? throw new ArgumentNullException(nameof(properties)));
 
             // better to use it before accessing to {Sln} property due to possible custom env updating 
-            foreach(var p in properties) {
+            foreach(var p in _properties.Where(p => p.Value != null)) {
                 ProjectCollection.GlobalProjectCollection.SetGlobalProperty(p.Key, p.Value);
             }
 
             SolutionPath        = Sln.SolutionDir;
-            slnProperties       = Sln.Properties.ExtractDictionary.AddOrUpdate(properties);
+            slnProperties       = Sln.Properties.ExtractDictionary.AddOrUpdate(_properties);
             SolutionFileName    = slnProperties.GetOrDefault(PropertyNames.SLN_NAME, PropertyNames.UNDEFINED);
             IsOpenedSolution    = true;
         }
@@ -275,23 +266,54 @@ namespace net.r_eg.vsCE
         /// <param name="properties">Solution properties.</param>
         public IsolatedEnv(IDictionary<string, string> properties)
         {
-            slnProperties = properties;
+            slnProperties = ConfigureAsNew(properties);
         }
 
-        protected override void UpdateSlnEnv(ISlnResult sln)
+        protected override void UpdateSlnEnv(ISlnResult sln) => AssignEnv(new XProjectEnv(sln, _properties));
+
+        protected IDictionary<string, string> ConfigureAsNew(IDictionary<string, string> properties)
+            => Configure(properties?.ToDictionary(k => k.Key, v => v.Value));
+
+        protected IDictionary<string, string> Configure(IDictionary<string, string> properties)
         {
-            SlnEnv = new XProjectEnv(sln, _properties);
-            SlnEnv.Assign();
+            if(properties == null)
+            {
+                return null;
+            }
+
+            void _SetIfNull(string key, string value)
+            {
+                if(!properties.ContainsKey(key) || properties[key] == null)
+                {
+                    properties[key] = value;
+                }
+            }
+
+            _SetIfNull(nameof(defaultCfg.Configuration), defaultCfg.Configuration);
+            _SetIfNull(nameof(defaultCfg.Platform), defaultCfg.Platform);
+            return properties;
+        }
+
+        protected ConfigItem extractCfg(IDictionary<string, string> properties)
+        {
+            IConfPlatform def = Sln?.DefaultConfig;
+
+            string configuration = properties.GetOrDefault(PropertyNames.CONFIG, def?.Configuration);
+            string platform = properties.GetOrDefault(PropertyNames.PLATFORM, def?.Platform);
+
+            if(currentSlnConf?.IsEqualByRule(configuration, platform) == true)
+            {
+                return currentSlnConf;
+            }
+
+            currentSlnConf = new(configuration, platform);
+            return currentSlnConf;
         }
 
         protected string formatCfg(IDictionary<string, string> properties)
         {
-            IConfPlatform def = Sln?.DefaultConfig;
-
-            return formatCfg(
-                properties.GetOrDefault(PropertyNames.CONFIG, def?.Configuration),
-                properties.GetOrDefault(PropertyNames.PLATFORM, def?.Platform)
-            );
+            IConfPlatform def = extractCfg(properties);
+            return formatCfg(def.Configuration, def.Platform);
         }
 
         private void __disabled(string name)
@@ -299,7 +321,7 @@ namespace net.r_eg.vsCE
             Log.Debug($"Accessing to '{name}' is disabled in Isolated environment.");
         }
 
-        private T __disabled<T>(string name, T val = default(T))
+        private T __disabled<T>(string name, T val = default)
         {
             __disabled(name);
             return val;

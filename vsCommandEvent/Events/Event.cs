@@ -15,79 +15,30 @@ namespace net.r_eg.vsCE.Events
 {
     public class Event: ISolutionEvent, ISolutionEventOWP, ICommandEvent
     {
-        /// <summary>
-        /// Status of activation.
-        /// </summary>
-        public bool Enabled
-        {
-            get { return enabled; }
-            set { enabled = value; }
-        }
-        private bool enabled = false;
+        private Guid id = Guid.NewGuid();
 
-        /// <summary>
-        /// Unique name for identification.
-        /// </summary>
-        public string Name
-        {
-            get;
-            set;
-        }
+        /// <inheritdoc cref="ISolutionEvent.Enabled"/>
+        public bool Enabled { get; set; } = true;
 
-        /// <summary>
-        /// About event.
-        /// </summary>
-        public string Caption
-        {
-            get { return caption; }
-            set { caption = value; }
-        }
-        private string caption = String.Empty;
+        /// <inheritdoc cref="ISolutionEvent.Name"/>
+        public string Name { get; set; }
 
-        /// <summary>
-        /// Support of the MSBuild engine.
-        /// </summary>
-        public bool SupportMSBuild
-        {
-            get { return supportMSBuild; }
-            set { supportMSBuild = value; }
-        }
-        private bool supportMSBuild = true;
+        /// <inheritdoc cref="ISolutionEvent.Caption"/>
+        public string Caption { get; set; } = string.Empty;
 
-        /// <summary>
-        /// Support of the SBE-Scripts engine.
-        /// </summary>
-        public bool SupportSBEScripts
-        {
-            get { return supportSBEScripts; }
-            set { supportSBEScripts = value; }
-        }
-        private bool supportSBEScripts = true;
+        /// <inheritdoc cref="ISolutionEvent.SupportMSBuild"/>
+        public bool SupportMSBuild { get; set; } = true;
 
-        /// <summary>
-        /// The context of action.
-        /// </summary>
-        public BuildType BuildType
-        {
-            get { return buildType; }
-            set { buildType = value; }
-        }
-        private BuildType buildType = BuildType.Common;
+        /// <inheritdoc cref="ISolutionEvent.SupportSBEScripts"/>
+        public bool SupportSBEScripts { get; set; } = true;
 
-        /// <summary>
-        /// User interaction.
-        /// Waiting until user presses yes/no etc,
-        /// </summary>
-        public bool Confirmation
-        {
-            get { return confirmation; }
-            set { confirmation = value; }
-        }
-        private bool confirmation = false;
+        /// <inheritdoc cref="ISolutionEvent.BuildType"/>
+        public BuildType BuildType { get; set; } = BuildType.Common;
 
-        /// <summary>
-        /// Handling process.
-        /// </summary>
+        /// <inheritdoc cref="ISolutionEvent.Confirmation"/>
+        public bool Confirmation { get; set; } = false;
+
+        /// <inheritdoc cref="ISolutionEvent.Process"/>
         [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
         public IEventProcess Process
         {
@@ -96,47 +47,29 @@ namespace net.r_eg.vsCE.Events
         }
         private EventProcess process = new EventProcess();
 
-        /// <summary>
-        /// Used mode.
-        /// </summary>
+        /// <inheritdoc cref="ISolutionEvent.Mode"/>
         [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
-        public IMode Mode
-        {
-            get { return mode; }
-            set { mode = value; }
-        }
-        private IMode mode = new ModeFile();
+        public IMode Mode { get; set; } = new ModeScript();
 
-        /// <summary>
-        /// Conditions from EnvDTE commands.
-        /// </summary>
+        /// <inheritdoc cref="ICommandEvent.Filters"/>
         [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
-        public IFilter[] Filters
-        {
-            get;
-            set;
-        }
+        public IFilter[] Filters { get; set; }
 
-        /// <summary>
-        /// List of statements from OWP.
-        /// </summary>
+        /// <inheritdoc cref="ISolutionEventOWP.Match"/>
         [JsonProperty(TypeNameHandling = TypeNameHandling.All, ItemTypeNameHandling = TypeNameHandling.All)]
-        public IMatching[] Match
-        {
-            get;
-            set;
-        }
+        public IMatching[] Match { get; set; }
 
-        /// <summary>
-        /// Unique identifier at runtime.
-        /// </summary>
+        /// <inheritdoc cref="ISolutionEvent.Id"/>
         [JsonIgnore]
-        public Guid Id
-        {
-            get {
-                return id;
-            }
-        }
-        private Guid id = Guid.NewGuid();
+        public Guid Id => id;
+
+        //TODO: We are currently using compatibility with 1.0. True is configured for default values only in v1.4
+        //public bool ShouldSerializeEnabled() => !Enabled;
+        public bool ShouldSerializeCaption() => !string.IsNullOrEmpty(Caption);
+        public bool ShouldSerializeSupportMSBuild() => !SupportMSBuild;
+        public bool ShouldSerializeSupportSBEScripts() => !SupportSBEScripts;
+        public bool ShouldSerializeBuildType() => BuildType != BuildType.Common;
+        public bool ShouldSerializeConfirmation() => Confirmation;
+        public bool ShouldSerializeProcess() => new EventProcess() != Process as EventProcess;
     }
 }

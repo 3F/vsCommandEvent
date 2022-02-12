@@ -16,7 +16,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using net.r_eg.vsCE.Configuration;
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
@@ -24,7 +24,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace net.r_eg.vsCE
 {
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
     // Managed Package Registration
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
 
@@ -48,7 +48,7 @@ namespace net.r_eg.vsCE
     [Guid(GuidList.PACKAGE_STRING)]
     public sealed class Pkg:
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
          AsyncPackage,
 #else
          Package,
@@ -67,6 +67,8 @@ namespace net.r_eg.vsCE
         /// http://msdn.microsoft.com/en-us/library/microsoft.visualstudio.shell.interop.ivssolution.advisesolutionevents.aspx
         /// </summary>
         private uint _pdwCookieSolution;
+
+        private DocumentEvents DocumentEvents;
 
         /// <summary>
         /// The command for: Tools / { main app tool }
@@ -109,7 +111,7 @@ namespace net.r_eg.vsCE
         {
             get
             {
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
                 return DisposalToken;
 #else
                 return CancellationToken.None;
@@ -129,7 +131,22 @@ namespace net.r_eg.vsCE
         {
             Monitor.Enter(sync);
 
-            try {
+            try
+            {
+                if(PackageBinder.Environment.SolutionFile == null)
+                {
+                    void _onDocOpened(Document Document)
+                    {
+                        DocumentEvents.DocumentOpened -= _onDocOpened;
+
+                        Dte2.Globals[Environment.DTE_DOC_SLN] = Document;
+                        PackageBinder.solutionOpened(pUnkReserved, fNewSolution);
+                    };
+                    DocumentEvents.DocumentOpened += _onDocOpened;
+
+                    return VSConstants.S_OK;
+                }
+
                 return PackageBinder.solutionOpened(pUnkReserved, fNewSolution);
             }
             catch(Exception ex) {
@@ -153,8 +170,16 @@ namespace net.r_eg.vsCE
         {
             Monitor.Enter(sync);
 
-            try {
-                return PackageBinder.solutionClosed(pUnkReserved);
+            try
+            {
+                int ret = PackageBinder.solutionClosed(pUnkReserved);
+
+                if(Dte2.Globals.VariableExists[Environment.DTE_DOC_SLN])
+                {
+                    Dte2.Globals[Environment.DTE_DOC_SLN] = null;
+                }
+
+                return ret;
             }
             catch(Exception ex) {
                 Log.Fatal("Problem when closing solution: " + ex.Message);
@@ -166,7 +191,7 @@ namespace net.r_eg.vsCE
             return VSConstants.S_FALSE;
         }
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
 
         /// <summary>
         /// Finds or creates tool window.
@@ -216,12 +241,8 @@ namespace net.r_eg.vsCE
 
 #endif
 
-        public Pkg()
-        {
-            Trace.WriteLine($"Plugin is activated: { ToString() }");
-        }
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
 
         /// <summary>
         /// Modern 15+ Initialization of the package; this method is called right after the package is sited.
@@ -230,10 +251,6 @@ namespace net.r_eg.vsCE
         /// <param name="progress">A provider for progress updates.</param>
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            Trace.WriteLine($"Entering InitializeAsync() of: { ToString() }");
-
-            //await base.InitializeAsync(cancellationToken, progress);
-
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
@@ -243,24 +260,9 @@ namespace net.r_eg.vsCE
                 initAppEvents(cancellationToken);
 
                 mainToolCmd = await MainToolCommand.InitAsync(this, PackageBinder);
-                
-                // VS bug: https://github.com/microsoft/extendvs/issues/68
-                // MSVS Shell.15.0 15.7.27703
-                // MSVS Threading 15.8.209
-                //_ = Task.Run(async () =>
-                //{
-                    // // this line fixes related bug in new MSVS Shell.15.0 15.9.28307
-                    // // when tool is already attached when starting VS.
-                    // // do not use true value in non-UI thread ........................v
-                    // var tool = await getToolWindowAsync(StatusToolCommand.ToolType, false);
 
-                    // await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-
-                    // sToolCmd = await StatusToolCommand.InitAsync(this, Event, tool);
-
-                    // https://github.com/3F/vsSolutionBuildEvent/pull/45#discussion_r291835939
-                    if(Dte2.Solution.IsOpen) OnAfterOpenSolution(pUnkReserved, 0);
-                //});
+                // https://github.com/3F/vsSolutionBuildEvent/pull/45#discussion_r291835939
+                if(Dte2.Solution.IsOpen) OnAfterOpenSolution(pUnkReserved, 0);
 
                 spSolution = await GetServiceAsync(typeof(SVsSolution)) as IVsSolution;
                 spSolution?.AdviseSolutionEvents(this, out _pdwCookieSolution);
@@ -325,11 +327,13 @@ namespace net.r_eg.vsCE
             owpListener.Receiving += (object sender, Receiver.Output.PaneArgs e) => {
                 ((Bridge.IEvent)PackageBinder).onBuildRaw(e.Raw, e.Guid, e.Item);
             };
+
+            DocumentEvents = PackageBinder.Environment.Events.DocumentEvents;
         }
 
         private void _showCriticalVsMsg(IVsUIShell uiShell, Exception ex)
         {
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
             ThreadHelper.ThrowIfNotOnUIThread();
 #endif
             string msg = String.Format
@@ -474,6 +478,7 @@ namespace net.r_eg.vsCE
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         protected override void Dispose(bool disposing)
@@ -491,8 +496,8 @@ namespace net.r_eg.vsCE
                     ((IDisposable)ErrorList).Dispose();
                 }
 
-#if VSSDK_15_AND_NEW
-            ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+#if SDK15_OR_HIGH
+            _ = ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
             {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(DisposalToken);
 #endif
@@ -503,7 +508,7 @@ namespace net.r_eg.vsCE
 
                 Log._.paneDetach((IVsOutputWindow)GetGlobalService(typeof(SVsOutputWindow)));
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
             });
 #endif
 

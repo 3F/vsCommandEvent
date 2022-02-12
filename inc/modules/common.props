@@ -1,0 +1,42 @@
+<Project>
+  <PropertyGroup>
+    <RepoDirRoot>..\..\..\</RepoDirRoot>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputPath>..\bin\$(MSBuildProjectName)\</OutputPath>
+    <IntermediateOutputPath>..\obj\$(MSBuildProjectName)\</IntermediateOutputPath>
+    <EnableDefaultItems>false</EnableDefaultItems>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFrameworks Condition="'$(TargetFrameworks)'==''">netstandard2.0;net40</TargetFrameworks>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(RepoDirRoot)com.github.3F.vsce.snk</AssemblyOriginatorKeyFile>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Copyright Condition="'$(Copyright)'==''">Copyright (c) 2015-2021  Denis Kuzmin &lt;x-3F@outlook.com&gt; github/3F</Copyright>
+    <!-- <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile> -->
+    <Configurations>DBG_SDK10;REL_SDK10;DBG_SDK15;REL_SDK15;DBG_SDK17;REL_SDK17</Configurations>
+    <OverrideLSenderConfigurations>$(Configurations)</OverrideLSenderConfigurations>
+    <NoWarn>1701;1702;CS1591</NoWarn>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug' Or $(Configuration.Contains('DBG_'))">
+    <DefineConstants>DEBUG;TRACE;$(DefineConstants)</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' Or '$(Configuration)' == 'PublicRelease' Or $(Configuration.Contains('REL_'))">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NoDefaultExcludes>true</NoDefaultExcludes> <!-- NU5119: ..\.version -->
+  </PropertyGroup>
+
+</Project>

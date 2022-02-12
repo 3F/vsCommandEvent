@@ -29,6 +29,8 @@ namespace net.r_eg.vsCE
         /// </summary>
         public abstract string SolutionFile { get; protected set; }
 
+        protected abstract ConfigItem ActiveSlnConf { get; }
+
         protected abstract void UpdateSlnEnv(ISlnResult sln);
 
         /// <summary>
@@ -65,6 +67,16 @@ namespace net.r_eg.vsCE
         } protected IXProjectEnv _slnEnv;
 
         /// <summary>
+        /// Get Project instance for work with data inside specified scope.
+        /// </summary>
+        /// <param name="ident">Abstract identifier of the specified scope. It can be a GUID, or FullPath, or project name, etc.</param>
+        /// <returns>Expected the instance that is associated with the identifier or any default instance if not found any related to pushed ident.</returns>
+        public EProject GetProject(object ident)
+        {
+            return getProject(ident?.ToString());
+        }
+
+        /// <summary>
         /// Get instance of the Build.Evaluation.Project for accessing to properties etc.
         /// </summary>
         /// <param name="name">Specified project name. null value will use the name from startup-project.</param>
@@ -77,16 +89,19 @@ namespace net.r_eg.vsCE
 
             Log.Trace($"getProject: started with '{name}' /{StartupProjectString}");
 
-            if(String.IsNullOrEmpty(name)) {
-                name = StartupProjectString;
-            }
+            if(string.IsNullOrEmpty(name)) name = StartupProjectString;
 
             ProjectItem project = Sln.ProjectItems.FirstOrDefault(p => p.name == name);
             if(project.fullPath == null) {
                 throw new NotFoundException($"Project '{name}' was not found. ['{project.name}', '{project.pGuid}']");
             }
 
-            return SlnEnv?.GetOrLoadProject(project);
+            IConfPlatformPrj cfg = Sln.ProjectItemsConfigs
+                                        .FirstOrDefault(p => ActiveSlnConf?.Equals(p.solutionConfig) == true)
+                                        .projectConfig;
+
+            return (cfg == null) ? SlnEnv?.GetOrLoadProject(project) 
+                                 : SlnEnv?.GetOrLoadProject(project, cfg);
         }
 
         /// <summary>
@@ -103,6 +118,15 @@ namespace net.r_eg.vsCE
         protected string formatCfg(string name, string platform = null)
         {
             return ConfigItem.Format(name, platform ?? name);
+        }
+
+        protected void AssignEnv(IXProjectEnv env)
+        {
+            if(env == null) {
+                throw new ArgumentNullException(nameof(env));
+            }
+            env.Assign();
+            SlnEnv = env;
         }
 
         private ISlnResult UpdateSln()

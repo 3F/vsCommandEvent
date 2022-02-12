@@ -23,22 +23,26 @@ namespace net.r_eg.vsCE
 {
     // TODO: more unified integration with IsolatedEnv /EnvDTE to MvsSln as possible 
     //       ~such as full processing by MvsSln through information about .sln file from EnvDTE.
-    public class Environment: EnvAbstract, IEnvironment, IEnvironmentExt
+    public class Environment: EnvAbstract, IEnvironment, IEnvironmentExt, IEvEnv
     {
         [Obsolete("Use " + nameof(PropertyNames), false)]
         public const string PROP_UNAV_STRING = PropertyNames.UNDEFINED;
+
+        /// <summary>
+        /// VS treats a single file (.dmp etc) when its starting as an open solution.
+        /// </summary>
+        internal const string DTE_DOC_SLN = "EnvDteDocumentSlnVSCE";
 
         protected IEvLevel elvl;
 
         private string startupProject;
 
+        private ConfigItem currentSlnConf;
+
         /// <summary>
         /// List of EnvDTE projects.
         /// </summary>
-        public IEnumerable<DProject> ProjectsDTE
-        {
-            get => _DTEProjects;
-        }
+        public IEnumerable<DProject> ProjectsDTE => _DTEProjects;
 
         /// <summary>
         /// List of Microsoft.Build.Evaluation projects.
@@ -64,6 +68,7 @@ namespace net.r_eg.vsCE
                 }
                 catch(Exception ex) {
                     Log.Error($"Failed getting project from EnvDTE: {ex.Message}");
+                    Log.Debug(ex.StackTrace);
                 }
 
                 return new List<string>();
@@ -263,6 +268,24 @@ namespace net.r_eg.vsCE
             }
         }
 
+        protected override ConfigItem ActiveSlnConf
+        {
+            get
+            {
+                SolutionConfiguration2 cfg = SolutionActiveCfg;
+                if(cfg == null) return null;
+
+                if(currentSlnConf?.IsEqualByRule(cfg.Name, cfg.PlatformName) == true)
+                {
+                    return currentSlnConf;
+                }
+
+                currentSlnConf = new(cfg.Name, cfg.PlatformName);
+                return currentSlnConf;
+            }
+        }
+
+
         /// <summary>
         /// An unified unscoped and out of Project instance the property value by its name.
         /// Remarks: Any property values cannot be null.
@@ -330,7 +353,7 @@ namespace net.r_eg.vsCE
             }
             catch(OutOfMemoryException) {
                 // this can be from Devenv
-                Log.Debug("exec: We can't work with DTE commands at this moment in used environment. Command - '{0}'", name);
+                Log.Debug($"We can't work with DTE commands at this moment in used environment. Command: {name} ({args})");
             }
         }
 
@@ -360,11 +383,7 @@ namespace net.r_eg.vsCE
             }
         }
 
-        protected override void UpdateSlnEnv(ISlnResult sln)
-        {
-            SlnEnv = new MvsSln.Core.IsolatedEnv(sln);
-            SlnEnv.Assign();
-        }
+        protected override void UpdateSlnEnv(ISlnResult sln) => AssignEnv(new MvsSln.Core.IsolatedEnv(sln));
 
         protected virtual string getProjectNameFrom(DProject dteProject, bool force = false)
         {
@@ -397,21 +416,36 @@ namespace net.r_eg.vsCE
         /// <returns></returns>
         protected string getFullPathToSln(DTE2 dte2)
         {
-            string path = dte2?.Solution?.FullName; // can be empty when new solution is creating
+            if(dte2 == null)
+            {
+                return null;
+            }
+
+            string path = dte2.Solution?.FullName; // can be empty when new solution is creating
+            if(!string.IsNullOrWhiteSpace(path))
+            {
+                return path;
+            }
 
             try
             {
-                if(string.IsNullOrWhiteSpace(path)) {
-                    return dte2.Solution.Properties.Item("Path").Value.ToString();
+                if(dte2.Globals.VariableExists[DTE_DOC_SLN] && dte2.Globals[DTE_DOC_SLN] != null)
+                {
+                    // see Pkg.OnAfterOpenSolution
+                    return ((EnvDTE.Document)dte2.Globals[DTE_DOC_SLN]).FullName;
                 }
 
-                return path;
+                // VS may throw an exception when accessing to "Path" for such .dmp file (no .sln),
+                // try/catch is official way https://docs.microsoft.com/en-us/dotnet/api/envdte80.solution2.properties
+
+                return dte2.Solution.Properties.Item("Path").Value.ToString();
             }
             catch(Exception ex)
             {
-                Log.Debug($"getFullPathToSln returns null: `{ex.Message}`");
-                return null;
+                Log.Trace($"{nameof(getFullPathToSln)} returns null because of {ex.Message}");
             }
+
+            return null;
         }
 
         private void onClosedSolution(object sender, EventArgs e)

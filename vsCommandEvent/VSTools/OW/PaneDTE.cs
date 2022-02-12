@@ -67,7 +67,8 @@ namespace net.r_eg.vsCE.VSTools.OW
                 pane = dte2.ToolWindows.OutputWindow.OutputWindowPanes.Add(name);
             }
             catch(Exception ex) {
-                Log.Error($"PaneDTE init: '{ex.Message}'");
+                Log.Error($"Failed PaneDTE init: {ex.Message}");
+                Log.Debug(ex.StackTrace);
             }
         }
     }

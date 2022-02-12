@@ -1,41 +1,23 @@
 @echo off
+echo Usage: %~nx0 [RCI flag] [configuration name or nothing to build all]
+echo DBG == Debug; REL == Release; + _SDK10/15/17
+if "%~1"=="RCI" ( set "IsRCI=1" & set "cfg=%~2" ) else ( set "IsRCI=" & set "cfg=%~1" )
 
-REM https://github.com/3F/vsSolutionBuildEvent/pull/45#issuecomment-506754001
-set hMSBuild=-notamd64
-
-set cim=packages\vsSolutionBuildEvent\cim.cmd
-
-REM # Verbosity level: q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
-set level=m
-
-REM # Configuration name without postfix _SDK...
-:: DBG == Debug; REL == Release; DCI == CI Debug; RCI == CI Release;
-
-set reltype=%~1
-if "%reltype%"=="" set "reltype=DCI"
-
-:::: --------
-
+::::::::::::::::::::
 set __p_call=1
+call tools\gnt /p:ngconfig="tools/packages.config" || goto err
 
-:: Activate vsSBE
+set bnode=packages\vsSolutionBuildEvent\cim.cmd -vsw-priority Microsoft.NetCore.Component.SDK /m:7 /v:m /p:Platform="Any CPU"
+if not defined cfg (
 
-call tools\gnt /p:ngpath="%cd%/packages" /p:ngconfig="%cd%/tools/packages.config" || goto err
+    call %bnode% /p:Configuration=REL_SDK10 || goto err
+    call %bnode% /p:Configuration=REL_SDK15 || goto err
+    call %bnode% /p:Configuration=REL_SDK17 || goto err
 
-:: Build
+) else call %bnode% /p:Configuration=%cfg% || goto err
 
-set bnode=%cim% %hMSBuild% vsCommandEvent.sln /m:6 /p:Platform="Any CPU" /v:%level%
-
-rem call git clean -x -e \.vs -e \.user -d
-call %bnode% /p:Configuration=%reltype%_SDK10 || goto err
-call %bnode% /p:Configuration=%reltype%_SDK15 || goto err
-
-goto ok
+exit /B 0
 
 :err
-
 echo. Failed. 1>&2
 exit /B 1
-
-:ok
-exit /B 0

@@ -15,41 +15,16 @@ namespace net.r_eg.vsCE
     [Serializable]
     public class SolutionEvents: ISolutionEvents
     {
-        /// <summary>
-        /// Header of information.
-        /// </summary>
-        public Header Header
-        {
-            get { return header; }
-            set { header = value; }
-        }
-        [NonSerialized]
-        private Header header = new Header();
+        /// <inheritdoc cref="ISolutionEvents.Header"/>
+        public Header Header { get; set; } = new Header();
 
-        /// <summary>
-        /// Configuration of components.
-        /// </summary>
-        public Component[] Components
-        {
-            get;
-            set;
-        }
+        /// <inheritdoc cref="ISolutionEvents.Components"/>
+        public Component[] Components { get; set; }
 
-        /// <summary>
-        /// Configuration of event.
-        /// </summary>
-        public Event[] Event
-        {
-            get { return evt; }
-            set { evt = value; }
-        }
-        [NonSerialized]
-        private Event[] evt = new Event[] { };
+        /// <inheritdoc cref="ISolutionEvents.Event"/>
+        public Event[] Event { get; set; } = new Event[] { };
 
-        /// <summary>
-        /// The event by type.
-        /// </summary>
-        /// <param name="type">Available event.</param>
+        /// <inheritdoc cref="ISolutionEvents.getEvent"/>
         /// <exception cref="NotFoundException"></exception>
         public ISolutionEvent[] getEvent(SolutionEventType type)
         {
@@ -64,5 +39,8 @@ namespace net.r_eg.vsCE
 
             throw new NotFoundException(type);
         }
+
+        public bool ShouldSerializeComponents() => Components?.Length > 0;
+        public bool ShouldSerializePreBuild() => Event?.Length > 0;
     }
 }

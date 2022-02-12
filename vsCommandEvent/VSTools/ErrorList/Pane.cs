@@ -9,7 +9,7 @@ using System;
 using System.Threading;
 using Microsoft.VisualStudio.Shell;
 
-#if !VSSDK_15_AND_NEW
+#if !SDK15_OR_HIGH
 using System.Threading.Tasks;
 using Task = System.Threading.Tasks.Task;
 #endif
@@ -72,8 +72,8 @@ namespace net.r_eg.vsCE.VSTools.ErrorList
         {
             // prevents possible bug from `Process.ErrorDataReceived` because of NLog
 
-#if VSSDK_15_AND_NEW
-            ThreadHelper.JoinableTaskFactory.RunAsync(async () => 
+#if SDK15_OR_HIGH
+            _ = ThreadHelper.JoinableTaskFactory.RunAsync(async () => 
             {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 #else
@@ -89,7 +89,7 @@ namespace net.r_eg.vsCE.VSTools.ErrorList
                     ErrorCategory = type,
                 });
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
             });
 #else
             }, 
@@ -99,30 +99,25 @@ namespace net.r_eg.vsCE.VSTools.ErrorList
 #endif
         }
 
-#region IDisposable
+        #region IDisposable
 
-        // To detect redundant calls
         private bool disposed = false;
 
-        // To correctly implement the disposable pattern.
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if(disposed) {
-                return;
-            }
-            disposed = true;
-            //...
-
-            if(provider != null) {
-                provider.Dispose();
+            if(!disposed)
+            {
+                provider?.Dispose();
+                disposed = true;
             }
         }
 
-#endregion
+        #endregion
     }
 }

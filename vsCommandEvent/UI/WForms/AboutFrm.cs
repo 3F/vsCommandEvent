@@ -183,18 +183,20 @@ namespace net.r_eg.vsCE.UI.WForms
 
             space = new DeepSpace(pictureBoxSpace.CreateGraphics(), pictureBoxSpace.Width, pictureBoxSpace.Height);
 
-#if !DEBUG
-            labelVersionVal.Text = $"v{Version.S_NUM_REV}+{Version.B_SHA1}";
-            if(Version.B_NAME.ToLower() != "releases") {
-                labelVersionVal.Text += String.Format(" /\"{0}\":{1}", Version.B_NAME, Version.B_REVC);
-            }
+#if SDK17
+            string lSdk = "SDK17";
+#elif SDK15
+            string lSdk = "SDK15";
 #else
-            labelVersionVal.Text = String.Format("v{0} Debug [ {1} ] /\"{2}\":{3}",
-                                                    Version.S_NUM_REV,
-                                                    Version.B_SHA1,
-                                                    Version.B_NAME,
-                                                    Version.B_REVC);
+            string lSdk = "SDK10";
 #endif
+#if DEBUG
+            string lDbg = "DBG";
+#else
+            string lDbg = "REL";
+#endif
+
+            labelVersionVal.Text = $"[{lSdk}/{lDbg}] {Version.S_INFO}";
         }
 
         private void AboutFrm_Load(object sender, EventArgs e)
@@ -215,11 +217,6 @@ namespace net.r_eg.vsCE.UI.WForms
         private void pictureBoxSpace_MouseUp(object sender, MouseEventArgs e)
         {
             space.speedup = false;
-        }
-
-        private void linkEmail_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Util.openUrl("mailto:x-3F@outlook.com");
         }
 
         private void buttonOk_Click(object sender, EventArgs e)

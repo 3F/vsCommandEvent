@@ -15,7 +15,7 @@ using net.r_eg.vsCE.Extensions;
 using OWPIdent = net.r_eg.vsCE.Receiver.Output.Ident;
 using OWPItems = net.r_eg.vsCE.Receiver.Output.Items;
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
 using Microsoft.VisualStudio.Shell;
 #endif
 
@@ -26,9 +26,9 @@ namespace net.r_eg.vsCE.Actions
     /// </summary>
     public class Binder
     {
-        protected ISobaCLoader cLoader;
+        internal readonly CancelBuildState buildState = new CancelBuildState();
 
-        private readonly object sync = new object();
+        protected ISobaCLoader cLoader;
 
         /// <summary>
         /// The main handler of commands.
@@ -126,6 +126,12 @@ namespace net.r_eg.vsCE.Actions
             cLoader = loader ?? throw new ArgumentNullException(nameof(loader));
         }
 
+        internal Binder(ICommand cmd, ISobaCLoader loader, CancelBuildState state)
+            : this(cmd, loader)
+        {
+            buildState = state ?? throw new ArgumentNullException(nameof(state));
+        }
+
         /// <summary>
         /// Entry point to the OWP
         /// </summary>
@@ -139,14 +145,17 @@ namespace net.r_eg.vsCE.Actions
                 return VSConstants.S_OK;
             }
 
-            try {
+            try
+            {
                 if(Cmd.exec(evt, SolutionEventType.OWP)) {
                     Log.Info($"[Output] finished '{evt.Name}': {evt.Caption}");
                 }
                 return VSConstants.S_OK;
             }
-            catch(Exception ex) {
-                Log.Error("SBE 'Output' error: {0}", ex.Message);
+            catch(Exception ex)
+            {
+                Log.Error($"SBE 'Output' error: {ex.Message}");
+                Log.Debug(ex.StackTrace);
             }
             return VSConstants.S_FALSE;
         }
@@ -223,12 +232,13 @@ namespace net.r_eg.vsCE.Actions
             try
             {
                 if(Cmd.exec(item, SolutionEventType.CommandEvent)) {
-                    Log.Info("[CommandEvent] finished: '{0}'", item.Caption);
+                    Log.Info($"[CommandEvent] finished: '{item.Caption}'");
                 }
                 Status._.add(SolutionEventType.CommandEvent, StatusType.Success);
             }
             catch(Exception ex) {
-                Log.Error("CommandEvent error: '{0}'", ex.Message);
+                Log.Error($"CommandEvent error: {ex.Message}");
+                Log.Debug(ex.StackTrace);
             }
             Status._.add(SolutionEventType.CommandEvent, StatusType.Fail);
         }
@@ -240,7 +250,7 @@ namespace net.r_eg.vsCE.Actions
                 return projectName;
             }
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
             ThreadHelper.ThrowIfNotOnUIThread(); //TODO: upgrade to 15
 #endif
 

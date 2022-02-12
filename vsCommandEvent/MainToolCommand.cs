@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.Shell;
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
 using System.Threading.Tasks;
 #endif
 
@@ -39,7 +39,7 @@ namespace net.r_eg.vsCE
             UI.Util.closeTool(configFrm);
         }
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
 
         public static async Task<MainToolCommand> InitAsync(IPkg pkg, IEvLevel evt)
         {
@@ -116,36 +116,34 @@ namespace net.r_eg.vsCE
                 configFrm.Show();
             }
             catch(Exception ex) {
-                Log.Error("Failed UI: `{0}`", ex.Message);
+                Log.Error($"Failed UI: {ex.Message}");
+                Log.Debug(ex.StackTrace);
             }
         }
 
-        private void free()
-        {
-            if(configFrm != null && !configFrm.IsDisposed) {
-                configFrm.Close();
-            }
-        }
+        #region IDisposable
 
-#region IDisposable
-
-        private bool disposed = false;
+        private bool disposed;
 
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        private void Dispose(bool disposing)
+        void Dispose(bool _)
         {
-            if(disposed) {
-                return;
-            }
-            disposed = true;
+            if(!disposed)
+            {
+                if(configFrm != null && !configFrm.IsDisposed)
+                {
+                    configFrm.Close();
+                }
 
-            free();
+                disposed = true;
+            }
         }
 
-#endregion
+        #endregion
     }
 }

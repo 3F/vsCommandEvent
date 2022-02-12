@@ -21,13 +21,12 @@ namespace net.r_eg.vsCE.Events.Mapping.Json
         /// Command for handling.
         /// </summary>
         [Browsable(false)]
-        [JsonIgnore]
+        [JsonIgnore] // "Command" was never released for vsCE. Only for vsSBE but removed after 1.14.0
         public string Command
         {
-            get {
-                return command; 
-            }
-            set {
+            get => command;
+            set
+            {
                 if(value != null) {
                     _command = value.Replace("\r\n", "\n").Split('\n');
                 }
@@ -42,10 +41,9 @@ namespace net.r_eg.vsCE.Events.Mapping.Json
         [JsonProperty(PropertyName = "Command")]
         protected string[] _Command
         {
-            get {
-                return _command;
-            }
-            set {
+            get => _command;
+            set
+            {
                 if(value != null) {
                     command = String.Join("\n", value);
                 }

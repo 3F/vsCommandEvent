@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\common.props" />
+
+  <PropertyGroup>
+    <DefineConstants>LSR_FEATURE_S_VECTOR;$(DefineConstants)</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(IncModulesDir)LSender\LSender.csproj" />
+    <ProjectReference Include="..\DepA\DepA.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="$(RepoDirRoot)LSender\tests\LSenderTest\**\*.cs" />
+  </ItemGroup>
+
+</Project>
