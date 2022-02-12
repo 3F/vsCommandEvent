@@ -52,7 +52,6 @@
     <PackageReference Include="MvsSln" Version="$(MvsSlnVersion)" />
     <PackageReference Include="Varhead" Version="$(VarheadVersion)" />
     <PackageReference Include="SobaScript" Version="$(SobaScriptVersion)" />
-    <PackageReference Include="SobaScript.Mapper" Version="$(SobaScriptMapperVersion)" />
     <PackageReference Include="SobaScript.Z.Core" Version="$(SobaScriptZCoreVersion)" />
     <PackageReference Include="SobaScript.Z.Ext" Version="$(SobaScriptZExtVersion)" />
     <PackageReference Include="SobaScript.Z.VS" Version="$(SobaScriptZVSVersion)" />
@@ -534,7 +533,6 @@
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
     <None Include="Properties\vsix-compress.props" />
     <None Include="$(SolutionDir).version" />
     <None Include="xshd\CppLang.xshd" />

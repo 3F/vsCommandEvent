@@ -16,8 +16,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.XML" />
 
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-
     <PackageReference Include="E-MSBuild" Version="$(EvMSBuildVersion)" />
     <PackageReference Include="LSender" Version="$(LSenderVersion)" />
     <PackageReference Include="MvsSln" Version="$(MvsSlnVersion)" />

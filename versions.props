@@ -5,7 +5,7 @@
     <MicrosoftNETTestSdkVersion>17.0.0</MicrosoftNETTestSdkVersion>
     <xunitVersion>2.4.1</xunitVersion>
     <xunitRunnerVisualstudioVersion>2.4.3</xunitRunnerVisualstudioVersion>
-    <EvMSBuildVersion>1.14.1</EvMSBuildVersion>
+    <EvMSBuildVersion>1.14.0</EvMSBuildVersion>
     <LSenderVersion>1.16.0</LSenderVersion>
     <MvsSlnVersion>2.6.1</MvsSlnVersion>
     <VarheadVersion>1.14.0</VarheadVersion>
