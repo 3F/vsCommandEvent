@@ -11,6 +11,7 @@ using System.Text;
 using net.r_eg.MvsSln.Extensions;
 using net.r_eg.vsCE.Configuration;
 using net.r_eg.vsCE.Exceptions;
+using SysVersion = System.Version;
 
 namespace net.r_eg.vsCE
 {
@@ -30,7 +31,7 @@ namespace net.r_eg.vsCE
             /// Config version.
             /// Version of app managed by Package!
             /// </summary>
-            public static readonly System.Version Version = new System.Version(1, 0);
+            public static readonly SysVersion Version = new SysVersion(1, 0);
 
             /// <summary>
             /// To file system
@@ -133,52 +134,55 @@ namespace net.r_eg.vsCE
         protected virtual bool loadByLink(string link)
         {
             InRAM = false;
-            Log.Debug("Configuration: trying to load - '{0}'", link);
+            var newCfg = new SolutionEvents();
+
             try
             {
-                using(StreamReader stream = new StreamReader(link, Encoding.UTF8, true))
-                {
-                    Data = deserialize(stream);
-                    if(Data == null) {
-                        throw new UnspecSBEException("file is empty");
-                    }
-                    compatibility(stream);
-                }
-                Log.Info("Loaded settings (v{0}): '{1}'", Data.Header.Compatibility, Settings.WPath);
+                Data = loadJsonConfig(link);
+                warnAboutJsonConfig(SysVersion.Parse(Data.Header.Compatibility));
             }
             catch(FileNotFoundException)
             {
-                Data    = new SolutionEvents();
+                Data    = newCfg;
                 InRAM   = true;
                 Log.Info("Initialized with new settings.");
             }
             catch(Exception ex)
             {
-                Log.Error("Configuration file is corrupt - '{0}'", ex.Message);
-                Data    = new SolutionEvents(); //TODO: actions in UI, e.g.: restore, new..
+                Log.Error($"Configuration file `{link}` is corrupted: {ex.Message}");
+                Data    = newCfg; //TODO: actions in UI, e.g.: restore, new..
                 InRAM   = true;
             }
 
-            // Now we work with latest version
+            // Now we'll work with latest version
             Data.Header.Compatibility = Entity.Version.ToString();
             Updated(this, new DataArgs<ISolutionEvents>() { Data = Data });
 
             return !InRAM;
         }
 
-        /// <summary>
-        /// Checks version and reorganizes structure if needed..
-        /// </summary>
-        /// <param name="stream"></param>
-        private void compatibility(StreamReader stream)
+        private SolutionEvents loadJsonConfig(string link)
         {
-            System.Version cfg = System.Version.Parse(Data.Header.Compatibility);
+            using(StreamReader stream = new StreamReader(link, Encoding.UTF8, true))
+            {
+                var ret = deserialize(stream);
+                if(ret == null) {
+                    throw new UnspecSBEException("file is empty");
+                }
 
-            if(cfg.Major > Entity.Version.Major || (cfg.Major == Entity.Version.Major && cfg.Minor > Entity.Version.Minor)) {
+                Log.Info($"Loaded settings (v{ ret.Header.Compatibility}): '{Settings.WPath}'");
+                return ret;
+            }
+        }
+
+        private void warnAboutJsonConfig(SysVersion cfgVer)
+        {
+            if(cfgVer > Entity.Version)
+            {
                 Log.Warn(
-                    "Version {0} of configuration file is higher supported version {1}. Please update application. Several settings may be not correctly loaded.",
-                    cfg.ToString(2), Entity.Version.ToString(2)
+                    $"Configuration file v{cfgVer} is higher than supported v{Entity.Version}. Update app for best known behavior."
                 );
+                return;
             }
         }
     }
