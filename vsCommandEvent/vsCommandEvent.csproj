@@ -177,6 +177,7 @@
     <Compile Include="Configuration\User\Route.cs" />
     <Compile Include="Configuration\User\UserValue.cs" />
     <Compile Include="DataArgs.cs" />
+    <Compile Include="SobaScript\Components\DteComponent.cs" />
     <Compile Include="DteEnv.cs" />
     <Compile Include="DteSlnCfg.cs" />
     <Compile Include="EncDetector.cs" />
@@ -209,6 +210,7 @@
     <Compile Include="Receiver\Output\IItemEW.cs" />
     <Compile Include="Receiver\Output\Ident.cs" />
     <Compile Include="Receiver\Output\PaneArgs.cs" />
+    <Compile Include="SobaScript\Components\IDteCeEnv.cs" />
     <Compile Include="SzArchiver.cs" />
     <Compile Include="UI\ITransfer.cs" />
     <Compile Include="UI\Resource.Designer.cs">

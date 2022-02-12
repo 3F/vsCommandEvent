@@ -8,17 +8,19 @@
 using System;
 using net.r_eg.SobaScript.Z.VS.Dte;
 using net.r_eg.vsCE.Actions;
+using net.r_eg.vsCE.SobaScript.Components;
 
 namespace net.r_eg.vsCE
 {
-    internal sealed class DteEnv: IDteEnv
+    internal sealed class DteEnv: IDteCeEnv
     {
-        private IEnvironment env;
-        private Lazy<DTEOperation> dteo;
+        private readonly IEnvironment env;
+        private readonly Lazy<DTEOperation> dteo;
+        private readonly _DteCommand _dtec = new();
 
         private EnvDTE.CommandEvents cmdEvents;
 
-        private readonly object sync = new object();
+        private readonly object sync = new();
 
         /// <summary>
         /// Ability of work with DTE Commands.
@@ -28,11 +30,7 @@ namespace net.r_eg.vsCE
         /// <summary>
         /// The last received command from EnvDTE.
         /// </summary>
-        public IDteCommand LastCmd
-        {
-            get;
-            private set;
-        } = new _DteCommand();
+        public IDteCommand LastCmd => _dtec;
 
         /// <summary>
         /// Execute command through EnvDTE.
@@ -40,6 +38,9 @@ namespace net.r_eg.vsCE
         /// <param name="cmd"></param>
         public void Execute(string cmd)
             => dteo.Value.exec(new string[] { cmd }, false);
+
+        public void Raise(string guid, int id, ref object customIn, ref object customOut)
+            => env.raise(guid, id, ref customIn, ref customOut);
 
         public void Dispose() => DetachCommandEvents();
 
@@ -90,14 +91,11 @@ namespace net.r_eg.vsCE
 
         private void CommandEvent(bool pre, string guid, int id, object customIn, object customOut)
         {
-            LastCmd = new _DteCommand()
-            {
-                Guid        = guid,
-                Id          = id,
-                CustomIn    = customIn,
-                CustomOut   = customOut,
-                Pre         = pre
-            };
+            _dtec.Guid      = guid;
+            _dtec.Id        = id;
+            _dtec.CustomIn  = customIn;
+            _dtec.CustomOut = customOut;
+            _dtec.Pre       = pre;
         }
 
         private sealed class _DteCommand: IDteCommand

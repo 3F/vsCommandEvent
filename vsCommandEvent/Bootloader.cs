@@ -13,6 +13,7 @@ using net.r_eg.SobaScript.Z.Ext.IO;
 using net.r_eg.SobaScript.Z.VS;
 using net.r_eg.Varhead;
 using net.r_eg.vsCE.SobaScript.Components;
+using DteCeComponent = net.r_eg.vsCE.SobaScript.Components.DteComponent;
 
 namespace net.r_eg.vsCE
 {
@@ -80,7 +81,7 @@ namespace net.r_eg.vsCE
             soba.Register(new ConditionComponent(soba));
             soba.Register(new UserVariableComponent(soba));
             soba.Register(new OwpComponent(soba, new OwpEnv(env)));
-            soba.Register(new DteComponent(soba, new DteEnv(env)));
+            soba.Register(new DteCeComponent(soba, new DteEnv(env)));
             soba.Register(new InternalComponent(soba, env, fc.Exer));
             soba.Register(new EvMSBuildComponent(soba));
             soba.Register(new BuildComponent(soba, new BuildEnv(env)));
