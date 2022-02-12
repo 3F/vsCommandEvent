@@ -170,7 +170,7 @@ namespace net.r_eg.vsCE
                     throw new UnspecSBEException("file is empty");
                 }
 
-                Log.Info($"Loaded settings (v{ ret.Header.Compatibility}): '{Settings.WPath}'");
+                Log.Info($"Loaded settings v{ret.Header.Compatibility} '{Settings.WPath.MakeRelativePath(link)}'");
                 return ret;
             }
         }

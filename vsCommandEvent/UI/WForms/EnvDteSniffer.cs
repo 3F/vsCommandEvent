@@ -45,7 +45,11 @@ namespace net.r_eg.vsCE.UI.WForms
 
         public void attachCommandEvents(CEBeforeEventHandler before, CEAfterEventHandler after)
         {
-            cmdEvents = env.Events.CommandEvents;
+            cmdEvents = env.Events?.CommandEvents;
+            if(cmdEvents == null) {
+                return;
+            }
+
             lock(_lock) {
                 cmdEvents.BeforeExecute -= before;
                 cmdEvents.BeforeExecute += before;

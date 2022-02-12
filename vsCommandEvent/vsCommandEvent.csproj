@@ -348,6 +348,7 @@
     <Compile Include="Configuration\User\UserValue.cs" />
     <Compile Include="DataArgs.cs" />
     <Compile Include="DteEnv.cs" />
+    <Compile Include="DteSlnCfg.cs" />
     <Compile Include="EncDetector.cs" />
     <Compile Include="EnvAbstract.cs" />
     <Compile Include="Events\Types\CommandDte.cs" />

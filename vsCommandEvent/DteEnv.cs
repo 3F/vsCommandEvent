@@ -56,7 +56,7 @@ namespace net.r_eg.vsCE
 
         private void AttachCommandEvents()
         {
-            if(!IsAvaialbleDteCmd || env.Events.CommandEvents == null)
+            if(!IsAvaialbleDteCmd || env.Events?.CommandEvents == null)
             {
                 Log.Info("CommandEvents: aren't available for current context.");
                 return; //this can be for emulated DTE2 context
