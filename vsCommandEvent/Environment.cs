@@ -336,7 +336,7 @@ namespace net.r_eg.vsCE
             }
             catch(OutOfMemoryException) {
                 // this can be from Devenv
-                Log.Debug("exec: We can't work with DTE commands at this moment in used environment. Command - '{0}'", name);
+                Log.Debug($"We can't work with DTE commands at this moment in used environment. Command: {name} ({args})");
             }
         }
 

@@ -26,6 +26,8 @@ namespace net.r_eg.vsCE.Actions
     /// </summary>
     public class Binder
     {
+        internal readonly CancelBuildState buildState = new CancelBuildState();
+
         protected ISobaCLoader cLoader;
 
         /// <summary>
@@ -122,6 +124,12 @@ namespace net.r_eg.vsCE.Actions
         {
             Cmd     = cmd ?? throw new ArgumentNullException(nameof(cmd));
             cLoader = loader ?? throw new ArgumentNullException(nameof(loader));
+        }
+
+        internal Binder(ICommand cmd, ISobaCLoader loader, CancelBuildState state)
+            : this(cmd, loader)
+        {
+            buildState = state ?? throw new ArgumentNullException(nameof(state));
         }
 
         /// <summary>

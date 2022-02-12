@@ -22,9 +22,7 @@ namespace net.r_eg.vsCE
 {
     public class EvLevel: IEvLevel, Bridge.IEvent
     {
-        public event EventHandler OpenedSolution = delegate(object sender, EventArgs e) { };
-
-        public event EventHandler ClosedSolution = delegate(object sender, EventArgs e) { };
+        internal readonly CancelBuildState buildState = new CancelBuildState();
 
         /// <remarks>protects from GC</remarks>
         protected EnvDTE.CommandEvents cmdEvents;
@@ -32,6 +30,10 @@ namespace net.r_eg.vsCE
         private Bootloader loader;
 
         private readonly object sync = new object();
+
+        public event EventHandler OpenedSolution = delegate (object sender, EventArgs e) { };
+
+        public event EventHandler ClosedSolution = delegate (object sender, EventArgs e) { };
 
         public Actions.Binder Action { get; protected set; }
 
@@ -57,6 +59,7 @@ namespace net.r_eg.vsCE
 
             refreshComponents();
             initPropByDefault(Action.Cmd.MSBuild); //LC: #815, #814
+            buildState.Reset();
 
             OpenedSolution(this, EventArgs.Empty);
             return VSConstants.S_OK;
@@ -143,7 +146,8 @@ namespace net.r_eg.vsCE
                     loader.Soba,
                     loader.Soba.EvMSBuild
                 ),
-                loader.Soba
+                loader.Soba,
+                buildState
             );
 
             initPropByDefault(Action.Cmd.MSBuild);

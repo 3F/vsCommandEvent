@@ -453,6 +453,7 @@
     <Compile Include="Actions\ICommand.cs" />
     <Compile Include="EvLevel.cs" />
     <Compile Include="IEvLevel.cs" />
+    <Compile Include="CancelBuildState.cs" />
     <Compile Include="Configuration\Component.cs" />
     <Compile Include="Environment.cs" />
     <Compile Include="Events\CommandEvents\Filter.cs" />
