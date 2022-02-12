@@ -56,7 +56,7 @@
     <TargetFrameworkVersion Condition="'$(UsingMicrosoftNETSdk)'!='true'">$(VsSbeTfmVersionSdk15)</TargetFrameworkVersion>
     <SdklibTarget>net45</SdklibTarget>
     <VsSbeSdkBase>15</VsSbeSdkBase>
-    <DefineConstants>$(DefineConstants);VSSDK_15_AND_NEW;SDK15_OR_HIGH;SDK15;CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>$(DefineConstants);SDK15_OR_HIGH;SDK15;CODE_ANALYSIS</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration.Contains('SDK17'))">
@@ -64,7 +64,7 @@
     <TargetFrameworkVersion Condition="'$(UsingMicrosoftNETSdk)'!='true'">$(VsSbeTfmVersionSdk17)</TargetFrameworkVersion>
     <SdklibTarget>net45</SdklibTarget>
     <VsSbeSdkBase>17</VsSbeSdkBase>
-    <DefineConstants>$(DefineConstants);VSSDK_15_AND_NEW;SDK15_OR_HIGH;SDK17;CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>$(DefineConstants);SDK15_OR_HIGH;SDK17;CODE_ANALYSIS</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug' Or $(Configuration.Contains('DBG_'))">

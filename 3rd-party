@@ -3,7 +3,8 @@ vsCommandEvent - https://github.com/3F/vsCommandEvent
 
 # Third-party software components
 
-## The vsCommandEvent includes
+## vsCommandEvent and its various packages may* include or reference:
+    (*- specific target platforms or some complex archives)
 
     * SobaScript (github.com/3F/SobaScript)
         * Core Components (github.com/3F/SobaScript.Z.Core)
@@ -27,6 +28,7 @@ vsCommandEvent - https://github.com/3F/vsCommandEvent
     * GetNuTool (github.com/3F/GetNuTool)
     * vsSolutionBuildEvent (github.com/3F/vsSolutionBuildEvent)
     * hMSBuild (github.com/3F/hMSBuild)
+    * netfx4sdk (github.com/3F/netfx4sdk)
 
 
 ## Additional packages

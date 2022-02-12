@@ -15,7 +15,7 @@ using net.r_eg.vsCE.Extensions;
 using OWPIdent = net.r_eg.vsCE.Receiver.Output.Ident;
 using OWPItems = net.r_eg.vsCE.Receiver.Output.Items;
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
 using Microsoft.VisualStudio.Shell;
 #endif
 
@@ -250,7 +250,7 @@ namespace net.r_eg.vsCE.Actions
                 return projectName;
             }
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
             ThreadHelper.ThrowIfNotOnUIThread(); //TODO: upgrade to 15
 #endif
 

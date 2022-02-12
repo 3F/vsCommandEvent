@@ -1,5 +1,7 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
 vsCommandEvent - https://github.com/3F/vsCommandEvent
-- - - - - - - 
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 [v1.3] 2019.10.21
 

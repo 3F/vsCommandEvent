@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.Shell;
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
 using System.Threading.Tasks;
 #endif
 
@@ -39,7 +39,7 @@ namespace net.r_eg.vsCE
             UI.Util.closeTool(configFrm);
         }
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
 
         public static async Task<MainToolCommand> InitAsync(IPkg pkg, IEvLevel evt)
         {

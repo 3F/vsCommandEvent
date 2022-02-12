@@ -14,7 +14,7 @@ using net.r_eg.SobaScript.Components;
 using System.Linq;
 using AppSettings = net.r_eg.vsCE.Settings;
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
 using Microsoft.VisualStudio.Shell;
 #endif
 
@@ -125,7 +125,9 @@ namespace net.r_eg.vsCE
         /// </summary>
         protected void init()
         {
-#if VSSDK_15_AND_NEW
+#if SDK17
+            Log.Info($"SDK17 & {vsCE.Version.S_INFO}");
+#elif SDK15
             Log.Info($"SDK15 & {vsCE.Version.S_INFO}");
 #else
             Log.Info($"SDK10 & {vsCE.Version.S_INFO}");

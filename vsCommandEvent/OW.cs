@@ -55,7 +55,7 @@ namespace net.r_eg.vsCE
         /// <param name="name"></param>
         public void deleteByName(string name)
         {
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
             ThreadHelper.ThrowIfNotOnUIThread(); //TODO: upgrade to 15
 #endif
 
@@ -69,7 +69,7 @@ namespace net.r_eg.vsCE
         /// <param name="guid"></param>
         public void deleteByGuid(Guid guid)
         {
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
             ThreadHelper.ThrowIfNotOnUIThread(); //TODO: upgrade to 15
 #endif
 

@@ -16,7 +16,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using net.r_eg.vsCE.Configuration;
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
@@ -24,7 +24,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace net.r_eg.vsCE
 {
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
     // Managed Package Registration
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
 
@@ -48,7 +48,7 @@ namespace net.r_eg.vsCE
     [Guid(GuidList.PACKAGE_STRING)]
     public sealed class Pkg:
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
          AsyncPackage,
 #else
          Package,
@@ -111,7 +111,7 @@ namespace net.r_eg.vsCE
         {
             get
             {
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
                 return DisposalToken;
 #else
                 return CancellationToken.None;
@@ -191,7 +191,7 @@ namespace net.r_eg.vsCE
             return VSConstants.S_FALSE;
         }
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
 
         /// <summary>
         /// Finds or creates tool window.
@@ -242,7 +242,7 @@ namespace net.r_eg.vsCE
 #endif
 
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
 
         /// <summary>
         /// Modern 15+ Initialization of the package; this method is called right after the package is sited.
@@ -333,7 +333,7 @@ namespace net.r_eg.vsCE
 
         private void _showCriticalVsMsg(IVsUIShell uiShell, Exception ex)
         {
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
             ThreadHelper.ThrowIfNotOnUIThread();
 #endif
             string msg = String.Format
@@ -496,7 +496,7 @@ namespace net.r_eg.vsCE
                     ((IDisposable)ErrorList).Dispose();
                 }
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
             _ = ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
             {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(DisposalToken);
@@ -508,7 +508,7 @@ namespace net.r_eg.vsCE
 
                 Log._.paneDetach((IVsOutputWindow)GetGlobalService(typeof(SVsOutputWindow)));
 
-#if VSSDK_15_AND_NEW
+#if SDK15_OR_HIGH
             });
 #endif
 

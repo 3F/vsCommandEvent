@@ -12,6 +12,7 @@ if not defined cfg (
 
     call %bnode% /p:Configuration=REL_SDK10 || goto err
     call %bnode% /p:Configuration=REL_SDK15 || goto err
+    call %bnode% /p:Configuration=REL_SDK17 || goto err
 
 ) else call %bnode% /p:Configuration=%cfg% || goto err
 
