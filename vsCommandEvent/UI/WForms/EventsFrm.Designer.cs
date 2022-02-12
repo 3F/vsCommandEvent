@@ -1857,6 +1857,7 @@
             this.Controls.Add(this.btnApply);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.splitContainerMain);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.MinimumSize = new System.Drawing.Size(755, 444);
             this.Name = "EventsFrm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
