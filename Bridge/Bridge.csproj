@@ -3,7 +3,7 @@
 
   <PropertyGroup>
     <Version>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)\.version"))</Version>
-    <AssemblyName>Bridge</AssemblyName>
+    <AssemblyName>vsCommandEvent.Bridge</AssemblyName>
     <RootNamespace>net.r_eg.vsCE.Bridge</RootNamespace>
   </PropertyGroup>
 

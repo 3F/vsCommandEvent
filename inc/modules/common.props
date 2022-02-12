@@ -12,7 +12,7 @@
   <PropertyGroup>
     <TargetFrameworks Condition="'$(TargetFrameworks)'==''">netstandard2.0;net40</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(RepoDirRoot)com.github.3F.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>$(RepoDirRoot)com.github.3F.vsce.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Copyright Condition="'$(Copyright)'==''">Copyright (c) 2015-2021  Denis Kuzmin &lt;x-3F@outlook.com&gt; github/3F</Copyright>
     <!-- <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile> -->
