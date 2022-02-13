@@ -89,7 +89,16 @@ namespace net.r_eg.vsCE.UI.WForms
             }
 
             string tFormat = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern + " .fff";
-            dgvCESniffer.Rows.Add(DateTime.Now.ToString(tFormat), pre, guid, id, Value.Pack(customIn), Value.Pack(customOut), Util.enumViewBy(guid, id));
+            dgvCESniffer.Rows.Add
+            (
+                DateTime.Now.ToString(tFormat),
+                pre,
+                guid,
+                id,
+                Value.Pack(customIn),
+                Value.Pack(customOut),
+                EnumDecor.Shorten(Util.enumViewBy(guid, id))
+            );
         }
 
         protected void flash(Lights.FlashType type, int delay = 250)
@@ -180,7 +189,7 @@ namespace net.r_eg.vsCE.UI.WForms
                     Convert.ToInt32(rc.Cells[dgvCESnifferColumnId.Name].Value),
                     rc.Cells[dgvCESnifferColumnCustomIn.Name].Value,
                     rc.Cells[dgvCESnifferColumnCustomOut.Name].Value,
-                    (string)rc.Cells[dgvCESnifferColumnEnum.Name].Value
+                    (string)rc.Cells[dgvCESnifferColumnSrc.Name].Value
                 );
             }
         }

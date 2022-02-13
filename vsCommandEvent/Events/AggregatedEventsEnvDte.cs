@@ -5,7 +5,7 @@
  * See accompanying LICENSE file or visit https://github.com/3F/vsCommandEvent
 */
 
-using System;
+using System.Collections.Generic;
 using net.r_eg.SobaScript;
 
 namespace net.r_eg.vsCE.Events
@@ -13,6 +13,11 @@ namespace net.r_eg.vsCE.Events
     public sealed class AggregatedEventsEnvDte
     {
         internal const string DOC_EVENTS = "{2555243A-2A69-4335-BAD6-DDE9DFFE90F2}";
+
+        internal static readonly Dictionary<string, string> ExtraEvents = new()
+        {
+            { DOC_EVENTS, "@DocumentEvents" }
+        };
 
         /// <remarks>protects from GC</remarks>
         private readonly EnvDTE.CommandEvents cmdEvents;
