@@ -12,14 +12,15 @@ namespace net.r_eg.vsCE.Events
 {
     public sealed class AggregatedEventsEnvDte
     {
-        internal const string DOC_EVENTS = "{2555243A-2A69-4335-BAD6-DDE9DFFE90F2}";
+        internal const string E_DOC = "{2555243A-2A69-4335-BAD6-DDE9DFFE90F2}";
+        internal const int E_DOC_ID_OPENING = 0x100;
+        internal const int E_DOC_ID_CLOSING = 0x101;
 
         internal static readonly Dictionary<string, string> ExtraEvents = new()
         {
-            { DOC_EVENTS, "@DocumentEvents" }
+            { E_DOC, "@DocumentEvents" }
         };
 
-        /// <remarks>protects from GC</remarks>
         private readonly EnvDTE.CommandEvents cmdEvents;
         private readonly EnvDTE.DocumentEvents docEvents;
 
@@ -56,16 +57,36 @@ namespace net.r_eg.vsCE.Events
 
         private void onDocumentClosing(EnvDTE.Document doc)
         {
-            object input  = Value.From(doc?.FullName);
-            object output = Value.From(doc?.Language);
-            AfterExecute(DOC_EVENTS, 0x101, input, output);
+            if(doc == null)
+            {
+                AfterExecute(E_DOC, E_DOC_ID_CLOSING, null, null);
+                return;
+            }
+
+            AfterExecute
+            (
+                E_DOC, E_DOC_ID_CLOSING, 
+                Value.From(doc.FullName), 
+                ParamPacker.Pack
+                (
+                    "Language", doc.Language,
+                    "Saved", doc.Saved,
+                    "Kind", doc.Kind,
+                    "Type", doc.Type,
+                    "ReadOnly", doc.ReadOnly,
+                    "IndentSize", doc.IndentSize,
+                    "TabSize", doc.TabSize,
+                    "Name", doc.Name,
+                    "Path", doc.Path
+                )
+            );
         }
 
         private void onDocumentOpening(string path, bool readOnly)
         {
             object input  = path;
             object output = Value.From(readOnly);
-            AfterExecute(DOC_EVENTS, 0x100, input, output);
+            AfterExecute(E_DOC, E_DOC_ID_OPENING, input, output);
         }
     }
 }
