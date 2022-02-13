@@ -119,24 +119,16 @@ namespace net.r_eg.vsCE.Extensions
         /// <returns>true value if the objects are considered equal.</returns>
         public static bool EqualsMixedObjects(this object left, object right)
         {
-            if(left == null && right == null) {
-                return true;
-            }
-
-            if(left == null || right == null) {
-                return false;
-            }
-
-            if(Object.ReferenceEquals(left, right)) {
-                return true;
-            }
+            if(left == null && right == null) return true;
+            if(left == null || right == null) return false;
+            if(ReferenceEquals(left, right)) return true;
 
             if(left.GetType().IsArray && right.GetType().IsArray) {
                 return Enumerable.SequenceEqual((object[])left, (object[])right);
             }
 
             if(!left.GetType().IsArray && !right.GetType().IsArray) {
-                return Object.Equals(left, right);
+                return left.Equals(right);
             }
 
             return false;
@@ -149,7 +141,7 @@ namespace net.r_eg.vsCE.Extensions
         /// <returns>true if null or empty string, otherwise false.</returns>
         public static bool IsNullOrEmptyString(this object obj)
         {
-            return (obj == null || obj is string && (string)obj == String.Empty);
+            return (obj == null || obj is string str && str == string.Empty);
         }
 
         /// <summary>

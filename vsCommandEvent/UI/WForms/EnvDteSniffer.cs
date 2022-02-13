@@ -62,6 +62,8 @@ namespace net.r_eg.vsCE.UI.WForms
 
             InitializeComponent();
             Icon = Resource.Package_32;
+
+            chkPin.Checked = true;
         }
 
         protected void commandEventBefore(string guid, int id, object customIn, object customOut, ref bool cancelDefault)
@@ -171,7 +173,9 @@ namespace net.r_eg.vsCE.UI.WForms
 
             foreach(DataGridViewRow rc in dgvCESniffer.SelectedRows)
             {
-                link.command(
+                link.command
+                (
+                    Convert.ToBoolean(rc.Cells[dgvCESnifferColumnPre.Name].Value),
                     (string)rc.Cells[dgvCESnifferColumnGuid.Name].Value,
                     Convert.ToInt32(rc.Cells[dgvCESnifferColumnId.Name].Value),
                     rc.Cells[dgvCESnifferColumnCustomIn.Name].Value,
@@ -205,5 +209,7 @@ namespace net.r_eg.vsCE.UI.WForms
         private void menuRaise_Click(object sender, EventArgs e) => btnRaise_Click(sender, e);
 
         private void menuFlush_Click(object sender, EventArgs e) => buttonFlush_Click(sender, e);
+
+        private void chkPin_CheckedChanged(object sender, EventArgs e) => TopMost = chkPin.Checked;
     }
 }

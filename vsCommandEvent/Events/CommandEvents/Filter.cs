@@ -5,87 +5,28 @@
  * See accompanying LICENSE file or visit https://github.com/3F/vsCommandEvent
 */
 
-using Newtonsoft.Json;
-
 namespace net.r_eg.vsCE.Events.CommandEvents
 {
-    /// <summary>
-    /// Filters for ICommandEvent
-    /// </summary>
     public class Filter: IFilter
     {
-        /// <summary>
-        /// For work with command ID
-        /// </summary>
-        public int Id
-        {
-            get;
-            set;
-        }
+        public int Id { get; set; }
 
-        /// <summary>
-        /// Scope by GUID
-        /// </summary>
-        public string Guid
-        {
-            get;
-            set;
-        }
+        public string Guid { get; set; }
 
-        /// <summary>
-        /// Filter by Custom input parameters
-        /// </summary>
-        public object CustomIn
-        {
-            get;
-            set;
-        }
+        public object CustomIn { get; set; }
 
-        /// <summary>
-        /// Filter by Custom output parameters
-        /// </summary>
-        public object CustomOut
-        {
-            get;
-            set;
-        }
+        public object CustomOut { get; set; }
 
-        /// <summary>
-        /// Cancel command if it's possible
-        /// </summary>
-        public bool Cancel
-        {
-            get;
-            set;
-        }
+        public bool Cancel { get; set; }
 
-        /// <summary>
-        /// Use Before executing command
-        /// </summary>
-        public bool Pre
-        {
-            get { return pre; }
-            set { pre = value; }
-        }
-        private bool pre = true;
+        public bool Pre { get; set; } = true;
 
-        /// <summary>
-        /// Use After executed command
-        /// </summary>
-        public bool Post
-        {
-            get { return post; }
-            set { post = value; }
-        }
-        private bool post = false;
+        public bool Post { get; set; }
 
-        /// <summary>
-        /// About filter
-        /// </summary>
-        public string Description
-        {
-            get;
-            set;
-        }
+        public string Description { get; set; }
+
+        public bool IgnoreCustomIn { get; set; }
+
+        public bool IgnoreCustomOut { get; set; }
     }
 }

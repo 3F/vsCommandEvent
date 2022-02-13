@@ -14,6 +14,7 @@ using net.r_eg.vsCE.Events;
 using net.r_eg.vsCE.Extensions;
 using OWPIdent = net.r_eg.vsCE.Receiver.Output.Ident;
 using OWPItems = net.r_eg.vsCE.Receiver.Output.Items;
+using net.r_eg.vsCE.Events.CommandEvents;
 
 #if SDK15_OR_HIGH
 using Microsoft.VisualStudio.Shell;
@@ -169,59 +170,25 @@ namespace net.r_eg.vsCE.Actions
         /// <returns>If the method succeeds, it returns VSConstants.S_OK. If it fails, it returns an error code.</returns>
         protected int commandEvent(bool pre, string guid, int id, object customIn, object customOut, ref bool cancelDefault)
         {
-            if(SlnEvents == null) { // activation of this event type can be before opening solution
-                return VSConstants.S_FALSE;
-            }
+            if(SlnEvents == null) return VSConstants.S_FALSE;
+
             ICommandEvent[] evt = SlnEvents.Event;
+            if(isDisabledAll(evt)) return VSConstants.S_OK;
 
-            if(isDisabledAll(evt)) {
-                return VSConstants.S_OK;
-            }
-
-            if(!IsAllowActions) {
-                return _ignoredAction(SolutionEventType.CommandEvent);
-            }
+            if(!IsAllowActions) return _ignoredAction(SolutionEventType.CommandEvent);
 
             foreach(ICommandEvent item in evt)
             {
-                if(item.Filters == null) {
-                    // well, should be some protection for user if we will listen all events... otherwise we can lose control
-                    continue;
-                }
+                IFilter f = findFilter(item, pre, guid, id, customIn, customOut);
+                if(f == null) continue;
 
-                var Is = item.Filters.Where(f => 
-                            (
-                              ((pre && f.Pre) || (!pre && f.Post))
-                                && 
-                                (
-                                  (f.Id == id && f.Guid != null && f.Guid.CompareGuids(guid))
-                                   && 
-                                   (
-                                     (
-                                       (f.CustomIn != null && f.CustomIn.EqualsMixedObjects(customIn))
-                                       || (f.CustomIn == null && customIn.IsNullOrEmptyString())
-                                     )
-                                     &&
-                                     (
-                                       (f.CustomOut != null && f.CustomOut.EqualsMixedObjects(customOut))
-                                       || (f.CustomOut == null && customOut.IsNullOrEmptyString())
-                                     )
-                                   )
-                                )
-                            )).Select(f => f.Cancel);
-
-                if(Is.Count() < 1) {
-                    continue;
-                }
-
-                Log.Trace("[CommandEvent] catched: '{0}', '{1}', '{2}', '{3}', '{4}' /'{5}'",
-                                                        guid, id, customIn, customOut, cancelDefault, pre);
+                Log.Trace($"Catched: '{guid}', '{id}', '{customIn}', '{customOut}', '{cancelDefault}' /'{pre}'");
 
                 commandEvent(item);
 
-                if(pre && Is.Any(f => f)) {
+                if(pre && f.Pre && f.Cancel) {
                     cancelDefault = true;
-                    Log.Info("[CommandEvent] original command has been canceled for action: '{0}'", item.Caption);
+                    Log.Info($"The command has been canceled by {item.Name} `{item.Caption}`");
                 }
             }
             return Status._.contains(SolutionEventType.CommandEvent, StatusType.Fail)? VSConstants.S_FALSE : VSConstants.S_OK;
@@ -241,6 +208,36 @@ namespace net.r_eg.vsCE.Actions
                 Log.Debug(ex.StackTrace);
             }
             Status._.add(SolutionEventType.CommandEvent, StatusType.Fail);
+        }
+
+        protected IFilter findFilter(ICommandEvent item, bool pre, string guid, int id, object customIn, object customOut)
+        {
+            if(item.Filters == null) return null;
+
+            foreach(IFilter f in item.Filters)
+            {
+                if(!f.Pre && !f.Post) continue;
+                if((f.Pre && !pre) && (f.Post && pre)) continue;
+
+                if(f.Id != id || !f.Guid.CompareGuids(guid)) continue;
+
+                if(f.IgnoreCustomIn && f.IgnoreCustomOut) return f;
+
+                bool fin = (f.IgnoreCustomIn || 
+                (
+                    (f.CustomIn != null && f.CustomIn.EqualsMixedObjects(customIn))
+                        || customIn.IsNullOrEmptyString()
+                ));
+
+                bool fout = (f.IgnoreCustomOut ||
+                (
+                    (f.CustomOut != null && f.CustomOut.EqualsMixedObjects(customOut))
+                        || customOut.IsNullOrEmptyString()
+                ));
+
+                if(fin && fout) return f;
+            }
+            return null;
         }
 
         protected string getProjectName(IVsHierarchy pHierProj)

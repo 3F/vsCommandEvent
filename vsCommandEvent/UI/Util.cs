@@ -108,6 +108,8 @@ namespace net.r_eg.vsCE.UI
                     DataGridViewCellEventHandler call = (sender, e) => { callback(sender, (EventArgs)e); };
                     ((DataGridView)ctrl).CellValueChanged -= call;
                     ((DataGridView)ctrl).CellValueChanged += call;
+                    ((DataGridView)ctrl).CellContentClick -= call;
+                    ((DataGridView)ctrl).CellContentClick += call;
                     continue;
                 }
 

@@ -35,14 +35,10 @@ namespace net.r_eg.vsCE.Events
             }
 
             cmdEvents = env.Events.CommandEvents; // important! protects from GC
-            cmdEvents.BeforeExecute -= onCmdBeforeExecute;
-            cmdEvents.AfterExecute -= onCmdAfterExecute;
             cmdEvents.BeforeExecute += onCmdBeforeExecute;
             cmdEvents.AfterExecute += onCmdAfterExecute;
 
             docEvents = env.Events.DocumentEvents;
-            docEvents.DocumentOpening -= onDocumentOpening;
-            docEvents.DocumentClosing -= onDocumentClosing;
             docEvents.DocumentOpening += onDocumentOpening;
             docEvents.DocumentClosing += onDocumentClosing;
         }

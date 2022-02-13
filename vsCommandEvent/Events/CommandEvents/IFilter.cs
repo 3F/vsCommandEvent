@@ -5,15 +5,11 @@
  * See accompanying LICENSE file or visit https://github.com/3F/vsCommandEvent
 */
 
-using System;
-using System.Runtime.InteropServices;
-
 namespace net.r_eg.vsCE.Events.CommandEvents
 {
     /// <summary>
     /// Specifies filters for ICommandEvent
     /// </summary>
-    [Guid("7119BA06-8F1A-4055-BA13-9ADA5850D1B7")]
     public interface IFilter
     {
         /// <summary>
@@ -52,8 +48,18 @@ namespace net.r_eg.vsCE.Events.CommandEvents
         bool Post { get; set; }
 
         /// <summary>
-        /// About filter
+        /// User note.
         /// </summary>
         string Description { get; set; }
+
+        /// <summary>
+        /// Ignore <see cref="CustomIn"/> if true.
+        /// </summary>
+        bool IgnoreCustomIn { get; set; }
+
+        /// <summary>
+        /// Ignore <see cref="CustomOut"/> if true.
+        /// </summary>
+        bool IgnoreCustomOut { get; set; }
     }
 }

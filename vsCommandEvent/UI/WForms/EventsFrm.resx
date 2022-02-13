@@ -168,7 +168,7 @@
   <data name="panelSeparator1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAALEAAAABCAYAAACR40+wAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        EAAACxABrSO9dQAAAdlJREFUKFPl0l1LEwAAhWGJoCiIoKCIoKAugoIICoIIChKSrJQwM+zLSEbpdKbN
+        DAAACwwBP0AiyAAAAdlJREFUKFPl0l1LEwAAhWGJoCiIoKCIoKAugoIICoIIChKSrJQwM+zLSEbpdKbN
         yVZL05bZbMpajZxMa7ZJ6lwtp9nUls6mY7XRnFpbLm3lsonW7dvY3+ji/IHnPUl/F2MszkeZn4sQi07z
         KxLi58wkkfAYMyEf4c8evgZcBMecTPocjH+w43f38GmkC++wBc9gO+4BEyN9LQz3NjNk0+F4peXtSw19
         5jp625T0tFZjM1ZhNZTzokmGuVFCh07Mc20RrRohRvVlDHW5PKnNoanmLI2KLBqqTqKtSOeh/CgPZCnU
@@ -188,13 +188,25 @@
   <metadata name="dgvActionCaption.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="dgvCEFiltersColumnPre.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="dgvCEFiltersColumnPost.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <metadata name="dgvCEFiltersColumnGuid.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <metadata name="dgvCEFiltersColumnId.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="dgvCEFiltersColumnIgnoreCustomIn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <metadata name="dgvCEFiltersColumnCustomIn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="dgvCEFiltersColumnIgnoreCustomOut.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <metadata name="dgvCEFiltersColumnCustomOut.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -204,12 +216,6 @@
     <value>True</value>
   </metadata>
   <metadata name="dgvCEFiltersColumnCancel.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dgvCEFiltersColumnPre.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dgvCEFiltersColumnPost.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <metadata name="dgvCEFiltersColumnRemove.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -236,7 +242,7 @@
   <data name="panelSeparator2.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAALEAAAABCAYAAACR40+wAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        EAAACxABrSO9dQAAAdlJREFUKFPl0l1LEwAAhWGJoCiIoKCIoKAugoIICoIIChKSrJQwM+zLSEbpdKbN
+        DAAACwwBP0AiyAAAAdlJREFUKFPl0l1LEwAAhWGJoCiIoKCIoKAugoIICoIIChKSrJQwM+zLSEbpdKbN
         yVZL05bZbMpajZxMa7ZJ6lwtp9nUls6mY7XRnFpbLm3lsonW7dvY3+ji/IHnPUl/F2MszkeZn4sQi07z
         KxLi58wkkfAYMyEf4c8evgZcBMecTPocjH+w43f38GmkC++wBc9gO+4BEyN9LQz3NjNk0+F4peXtSw19
         5jp625T0tFZjM1ZhNZTzokmGuVFCh07Mc20RrRohRvVlDHW5PKnNoanmLI2KLBqqTqKtSOeh/CgPZCnU
