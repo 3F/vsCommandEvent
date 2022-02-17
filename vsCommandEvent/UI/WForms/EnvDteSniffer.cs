@@ -165,7 +165,7 @@ namespace net.r_eg.vsCE.UI.WForms
                     id      = Convert.ToInt32(cId);
                     guid    = cGuid.ToString().Trim();
 
-                    env.raise(guid, id, ref customIn, ref customOut);
+                    env.raise(guid, id, customIn, customOut);
                 }
             }
             catch(Exception ex)

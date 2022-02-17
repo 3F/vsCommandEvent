@@ -214,9 +214,9 @@ namespace net.r_eg.vsCE
         /// <param name="id">The command ID.</param>
         /// <param name="customIn">Custom input parameters.</param>
         /// <param name="customOut">Custom output parameters.</param>
-        public void raise(string guid, int id, ref object customIn, ref object customOut)
+        public void raise(string guid, int id, object customIn, object customOut)
         {
-            Log.Warn("Disabled for this Environment. /raise: '{0}', '{1}', '{2}', '{3}'", guid, id, customIn, customOut);
+            Log.Warn($"Disabled for this Environmen: raise('{guid}', '{id}', '{customIn}', '{customOut}')");
         }
 
         /// <summary>

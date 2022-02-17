@@ -348,9 +348,9 @@ namespace net.r_eg.vsCE
         /// <param name="id">The command ID.</param>
         /// <param name="customIn">Custom input parameters.</param>
         /// <param name="customOut">Custom output parameters.</param>
-        public void raise(string guid, int id, ref object customIn, ref object customOut)
+        public void raise(string guid, int id, object customIn, object customOut)
         {
-            ((EnvDTE.DTE)Dte2).Commands.Raise(guid, id, ref customIn, ref customOut);
+            ((EnvDTE.DTE)Dte2).Commands.Raise(guid, id, customIn, customOut);
         }
 
         /// <param name="dte2"></param>
