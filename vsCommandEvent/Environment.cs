@@ -350,6 +350,11 @@ namespace net.r_eg.vsCE
         /// <param name="customOut">Custom output parameters.</param>
         public void raise(string guid, int id, object customIn, object customOut)
         {
+            if(AggregatedEventsEnvDte.FindExtra(guid, out string at))
+            {
+                Log.Info($"Ignored raise {guid} #{id} due to source {at}");
+                return;
+            }
             ((EnvDTE.DTE)Dte2).Commands.Raise(guid, id, customIn, customOut);
         }
 

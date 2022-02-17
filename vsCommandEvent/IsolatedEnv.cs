@@ -204,7 +204,7 @@ namespace net.r_eg.vsCE
             //    return;
             //}
 
-            Log.Warn("Disabled for this Environment. /exec: '{0}', args: '{1}'", name, args);
+            __disabled($"{name}({args})");
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace net.r_eg.vsCE
         /// <param name="customOut">Custom output parameters.</param>
         public void raise(string guid, int id, object customIn, object customOut)
         {
-            Log.Warn($"Disabled for this Environmen: raise('{guid}', '{id}', '{customIn}', '{customOut}')");
+            __disabled($"raise('{guid}', '{id}', '{customIn}', '{customOut}')");
         }
 
         /// <summary>

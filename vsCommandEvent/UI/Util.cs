@@ -218,7 +218,7 @@ namespace net.r_eg.vsCE.UI
         /// </summary>
         public static string enumViewBy(string sguid, int id)
         {
-            if(AggregatedEventsEnvDte.ExtraEvents.TryGetValue(sguid, out string found)) {
+            if(AggregatedEventsEnvDte.FindExtra(sguid, out string found)) {
                 return found;
             }
 

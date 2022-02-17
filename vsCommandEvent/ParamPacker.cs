@@ -52,5 +52,8 @@ namespace net.r_eg.vsCE
             }
             return sb.ToString();
         }
+
+        internal static string PackRect(int left, int top, int width, int height)
+            => $"{left}|{top}|{width}|{height}";
     }
 }
