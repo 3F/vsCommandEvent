@@ -217,25 +217,17 @@ namespace net.r_eg.vsCE.Actions
             foreach(IFilter f in item.Filters)
             {
                 if(!f.Pre && !f.Post) continue;
-                if((f.Pre && !pre) && (f.Post && pre)) continue;
+                if((pre && !f.Pre) || (!pre && !f.Post)) continue;
 
                 if(f.Id != id || !f.Guid.CompareGuids(guid)) continue;
 
                 if(f.IgnoreCustomIn && f.IgnoreCustomOut) return f;
 
-                bool fin = (f.IgnoreCustomIn || 
-                (
-                    (f.CustomIn != null && f.CustomIn.EqualsMixedObjects(customIn))
-                        || customIn.IsNullOrEmptyString()
-                ));
-
-                bool fout = (f.IgnoreCustomOut ||
-                (
-                    (f.CustomOut != null && f.CustomOut.EqualsMixedObjects(customOut))
-                        || customOut.IsNullOrEmptyString()
-                ));
-
-                if(fin && fout) return f;
+                if((f.IgnoreCustomIn || f.CustomIn.EqualsMixedObjects(customIn, nullAndEmptyStr: true)) 
+                    && (f.IgnoreCustomOut || f.CustomOut.EqualsMixedObjects(customOut, nullAndEmptyStr: true)))
+                {
+                    return f;
+                }
             }
             return null;
         }

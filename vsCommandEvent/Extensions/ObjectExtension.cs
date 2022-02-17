@@ -116,11 +116,20 @@ namespace net.r_eg.vsCE.Extensions
         /// </summary>
         /// <param name="left">The first object to compare.</param>
         /// <param name="right">The second object to compare.</param>
+        /// <param name="nullAndEmptyStr">Compare null or empty strings as equal if true.</param>
         /// <returns>true value if the objects are considered equal.</returns>
-        public static bool EqualsMixedObjects(this object left, object right)
+        public static bool EqualsMixedObjects(this object left, object right, bool nullAndEmptyStr = false)
         {
             if(left == null && right == null) return true;
-            if(left == null || right == null) return false;
+            if(left == null || right == null)
+            {
+                return nullAndEmptyStr 
+                        && 
+                        (
+                            (left == null && right is string rstr && rstr == string.Empty)
+                            || (right == null && left is string lstr && lstr == string.Empty)
+                        );
+            }
             if(ReferenceEquals(left, right)) return true;
 
             if(left.GetType().IsArray && right.GetType().IsArray) {
