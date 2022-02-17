@@ -57,6 +57,9 @@ namespace net.r_eg.vsCE.Events
         private readonly EnvDTE.WindowEvents windowEvents;
         private readonly EnvDTE.DebuggerEvents dbgEvents;
 
+        private static volatile AggregatedEventsEnvDte instance;
+        private static readonly object sync = new();
+
         public delegate void BeforeExecuteEventHandler(string guid, int id, object customIn, object customOut, ref bool cancel);
 
         public delegate void AfterExecuteEventHandler(string guid, int id, object customIn, object customOut);
@@ -67,7 +70,17 @@ namespace net.r_eg.vsCE.Events
 
         internal static bool FindExtra(string guid, out string found) => ExtraEvents.TryGetValue(guid, out found);
 
-        internal AggregatedEventsEnvDte(IEnvironment env)
+        internal static AggregatedEventsEnvDte GetInstance(IEnvironment env = null)
+        {
+            if(instance != null) return instance;
+            lock(sync)
+            {
+                if(instance == null) instance = new(env);
+                return instance;
+            }
+        }
+
+        private AggregatedEventsEnvDte(IEnvironment env)
         {
             if(env?.Events == null)
             {

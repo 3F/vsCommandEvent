@@ -250,7 +250,7 @@ namespace net.r_eg.vsCE
             SolutionFileName    = slnProperties.GetOrDefault(PropertyNames.SLN_NAME, PropertyNames.UNDEFINED);
             IsOpenedSolution    = true;
 
-            AggregatedEvents = new(this);
+            AggregatedEvents = AggregatedEventsEnvDte.GetInstance(this);
         }
 
         /// <summary>

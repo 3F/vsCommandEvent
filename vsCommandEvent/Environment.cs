@@ -365,7 +365,7 @@ namespace net.r_eg.vsCE
             Dte2        = dte2;
             this.elvl   = elvl;
 
-            AggregatedEvents = new(this);
+            AggregatedEvents = AggregatedEventsEnvDte.GetInstance(this);
 
             //TODO: ?disposing whole environment
 
