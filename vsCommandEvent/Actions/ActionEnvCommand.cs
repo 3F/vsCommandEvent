@@ -69,7 +69,7 @@ namespace net.r_eg.vsCE.Actions
                 object cout = c.CustomOut;
 
                 try {
-                    cmd.Env.raise(c.Guid, c.Id, ref cin, ref cout);
+                    cmd.Env.raise(c.Guid, c.Id, cin, cout);
                 }
                 catch(Exception ex)
                 {

@@ -39,8 +39,8 @@ namespace net.r_eg.vsCE
         public void Execute(string cmd)
             => dteo.Value.exec(new string[] { cmd }, false);
 
-        public void Raise(string guid, int id, ref object customIn, ref object customOut)
-            => env.raise(guid, id, ref customIn, ref customOut);
+        public void Raise(string guid, int id, object customIn, object customOut)
+            => env.raise(guid, id, customIn, customOut);
 
         public void Dispose() => DetachCommandEvents();
 

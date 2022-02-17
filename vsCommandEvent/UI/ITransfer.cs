@@ -33,11 +33,6 @@ namespace net.r_eg.vsCE.UI
         /// <summary>
         /// EnvDTE command.
         /// </summary>
-        /// <param name="guid"></param>
-        /// <param name="id"></param>
-        /// <param name="customIn"></param>
-        /// <param name="customOut"></param>
-        /// <param name="description"></param>
-        void command(string guid, int id, object customIn, object customOut, string description);
+        void command(bool pre, string guid, int id, object customIn, object customOut, string description);
     }
 }

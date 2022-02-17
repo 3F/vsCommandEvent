@@ -32,6 +32,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.chkActivate = new System.Windows.Forms.CheckBox();
             this.groupBoxCESniffer = new System.Windows.Forms.GroupBox();
+            this.chkPin = new System.Windows.Forms.CheckBox();
             this.btnRaise = new System.Windows.Forms.Button();
             this.btnAddToFilters = new System.Windows.Forms.Button();
             this.buttonFlush = new System.Windows.Forms.Button();
@@ -46,7 +47,7 @@
             this.dgvCESnifferColumnId = new net.r_eg.vsCE.UI.WForms.Components.DataGridViewExt.NumericColumn();
             this.dgvCESnifferColumnCustomIn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvCESnifferColumnCustomOut = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvCESnifferColumnEnum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvCESnifferColumnSrc = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuMain = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuAddToFilters = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRaise = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,6 +79,7 @@
             // 
             // groupBoxCESniffer
             // 
+            this.groupBoxCESniffer.Controls.Add(this.chkPin);
             this.groupBoxCESniffer.Controls.Add(this.btnRaise);
             this.groupBoxCESniffer.Controls.Add(this.btnAddToFilters);
             this.groupBoxCESniffer.Controls.Add(this.buttonFlush);
@@ -89,9 +91,21 @@
             this.groupBoxCESniffer.Margin = new System.Windows.Forms.Padding(0);
             this.groupBoxCESniffer.Name = "groupBoxCESniffer";
             this.groupBoxCESniffer.Padding = new System.Windows.Forms.Padding(0);
-            this.groupBoxCESniffer.Size = new System.Drawing.Size(743, 37);
+            this.groupBoxCESniffer.Size = new System.Drawing.Size(800, 37);
             this.groupBoxCESniffer.TabIndex = 64;
             this.groupBoxCESniffer.TabStop = false;
+            // 
+            // chkPin
+            // 
+            this.chkPin.AutoSize = true;
+            this.chkPin.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.chkPin.Location = new System.Drawing.Point(335, 14);
+            this.chkPin.Name = "chkPin";
+            this.chkPin.Size = new System.Drawing.Size(36, 17);
+            this.chkPin.TabIndex = 72;
+            this.chkPin.Text = "📌";
+            this.chkPin.UseVisualStyleBackColor = true;
+            this.chkPin.CheckedChanged += new System.EventHandler(this.chkPin_CheckedChanged);
             // 
             // btnRaise
             // 
@@ -146,7 +160,7 @@
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
             this.panelTop.Padding = new System.Windows.Forms.Padding(2);
-            this.panelTop.Size = new System.Drawing.Size(747, 41);
+            this.panelTop.Size = new System.Drawing.Size(804, 41);
             this.panelTop.TabIndex = 65;
             // 
             // panelMain
@@ -155,7 +169,7 @@
             this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMain.Location = new System.Drawing.Point(0, 41);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(747, 254);
+            this.panelMain.Size = new System.Drawing.Size(804, 254);
             this.panelMain.TabIndex = 66;
             // 
             // dgvCESniffer
@@ -174,7 +188,7 @@
             this.dgvCESnifferColumnId,
             this.dgvCESnifferColumnCustomIn,
             this.dgvCESnifferColumnCustomOut,
-            this.dgvCESnifferColumnEnum});
+            this.dgvCESnifferColumnSrc});
             this.dgvCESniffer.ContextMenuStrip = this.contextMenuMain;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
@@ -196,7 +210,7 @@
             this.dgvCESniffer.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvCESniffer.RowTemplate.Height = 17;
             this.dgvCESniffer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCESniffer.Size = new System.Drawing.Size(747, 254);
+            this.dgvCESniffer.Size = new System.Drawing.Size(804, 254);
             this.dgvCESniffer.TabIndex = 7;
             // 
             // dgvCESnifferColumnStamp
@@ -264,14 +278,13 @@
             this.dgvCESnifferColumnCustomOut.ToolTipText = "Filter by Custom output parameter";
             this.dgvCESnifferColumnCustomOut.Width = 110;
             // 
-            // dgvCESnifferColumnEnum
+            // dgvCESnifferColumnSrc
             // 
-            this.dgvCESnifferColumnEnum.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgvCESnifferColumnEnum.HeaderText = "Enum";
-            this.dgvCESnifferColumnEnum.MinimumWidth = 100;
-            this.dgvCESnifferColumnEnum.Name = "dgvCESnifferColumnEnum";
-            this.dgvCESnifferColumnEnum.ReadOnly = true;
-            this.dgvCESnifferColumnEnum.ToolTipText = "Equivalent with Enum";
+            this.dgvCESnifferColumnSrc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgvCESnifferColumnSrc.HeaderText = "Source";
+            this.dgvCESnifferColumnSrc.MinimumWidth = 100;
+            this.dgvCESnifferColumnSrc.Name = "dgvCESnifferColumnSrc";
+            this.dgvCESnifferColumnSrc.ReadOnly = true;
             // 
             // contextMenuMain
             // 
@@ -335,7 +348,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(747, 295);
+            this.ClientSize = new System.Drawing.Size(804, 295);
             this.Controls.Add(this.panelMain);
             this.Controls.Add(this.panelTop);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -366,7 +379,7 @@
         private Components.DataGridViewExt.NumericColumn dgvCESnifferColumnId;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCESnifferColumnCustomIn;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCESnifferColumnCustomOut;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvCESnifferColumnEnum;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvCESnifferColumnSrc;
         private Controls.Lights lightsTraffic;
         private System.Windows.Forms.Panel panelTop;
         private System.Windows.Forms.Panel panelMain;
@@ -382,5 +395,6 @@
         private System.Windows.Forms.ToolStripMenuItem menuFlush;
         private System.Windows.Forms.Button btnRaise;
         private System.Windows.Forms.ToolStripMenuItem menuRaise;
+        private System.Windows.Forms.CheckBox chkPin;
     }
 }

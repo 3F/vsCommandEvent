@@ -79,13 +79,13 @@ namespace net.r_eg.vsCE.SobaScript.Components
             object customOut    = Extract(args[3]);
 
             LSender.Send(this, $"{M_RAISE}('{guid}', '{id}', '{customIn}', '{customOut}')");
-            Raise(guid, id, ref customIn, ref customOut);
+            Raise(guid, id, customIn, customOut);
             return Value.Empty;
         }
 
-        protected virtual void Raise(string guid, int id, ref object customIn, ref object customOut)
+        protected virtual void Raise(string guid, int id, object customIn, object customOut)
         {
-            envce.Raise(guid, id, ref customIn, ref customOut);
+            envce.Raise(guid, id, customIn, customOut);
         }
 
         private static object Extract(Argument arg)

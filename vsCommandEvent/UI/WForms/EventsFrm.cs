@@ -155,14 +155,9 @@ namespace net.r_eg.vsCE.UI.WForms
         /// <summary>
         /// Implements transport for EnvDTE command
         /// </summary>
-        /// <param name="guid"></param>
-        /// <param name="id"></param>
-        /// <param name="customIn"></param>
-        /// <param name="customOut"></param>
-        /// <param name="description"></param>
-        public void command(string guid, int id, object customIn, object customOut, string description)
+        public void command(bool pre, string guid, int id, object customIn, object customOut, string description)
         {
-            dgvCEFilters.Rows.Add(guid, id, customIn, customOut, description);
+            dgvCEFilters.Rows.Add(pre, !pre, guid, id, true, customIn, true, customOut, description);
         }
 
         public EventsFrm(Bootloader loader)
@@ -326,12 +321,10 @@ namespace net.r_eg.vsCE.UI.WForms
 
         protected void saveData(ICommandEvent evt)
         {
-            List<Filter> list = new List<Filter>();
+            List<Filter> list = new();
             foreach(DataGridViewRow row in dgvCEFilters.Rows)
             {
-                if(row.IsNewRow) {
-                    continue;
-                }
+                if(row.IsNewRow) continue;
 
                 object customIn  = Value.PackArgument(row.Cells[dgvCEFiltersColumnCustomIn.Name].Value);
                 object customOut = Value.PackArgument(row.Cells[dgvCEFiltersColumnCustomOut.Name].Value);
@@ -347,6 +340,9 @@ namespace net.r_eg.vsCE.UI.WForms
                     Cancel      = Convert.ToBoolean(row.Cells[dgvCEFiltersColumnCancel.Name].Value),
                     Pre         = Convert.ToBoolean(row.Cells[dgvCEFiltersColumnPre.Name].Value),
                     Post        = Convert.ToBoolean(row.Cells[dgvCEFiltersColumnPost.Name].Value),
+
+                    IgnoreCustomIn = !Convert.ToBoolean(row.Cells[dgvCEFiltersColumnIgnoreCustomIn.Name].Value),
+                    IgnoreCustomOut = !Convert.ToBoolean(row.Cells[dgvCEFiltersColumnIgnoreCustomOut.Name].Value),
                 });
             }
             evt.Filters = list.ToArray();
@@ -473,12 +469,21 @@ namespace net.r_eg.vsCE.UI.WForms
         protected void renderData(ICommandEvent evt)
         {
             dgvCEFilters.Rows.Clear();
-            if(evt.Filters == null) {
-                return;
-            }
-            foreach(IFilter f in evt.Filters) {
-                dgvCEFilters.Rows.Add(f.Guid, f.Id, Value.Pack(f.CustomIn), Value.Pack(f.CustomOut), f.Description, f.Cancel, f.Pre, f.Post);
-            }
+            if(evt.Filters == null) return;
+
+            foreach(IFilter f in evt.Filters) dgvCEFilters.Rows.Add
+            (
+                f.Pre,
+                f.Post,
+                f.Guid, 
+                f.Id, 
+                !f.IgnoreCustomIn,
+                Value.Pack(f.CustomIn), 
+                !f.IgnoreCustomOut,
+                Value.Pack(f.CustomOut), 
+                f.Description, 
+                f.Cancel
+            );
         }
 
         protected void fillActionsList()
@@ -862,7 +867,11 @@ namespace net.r_eg.vsCE.UI.WForms
                 return;
             }
 
-            void _call(object csender, EventArgs ce) => notice(true);
+            void _call(object csender, EventArgs ce)
+            {
+                string name = (csender as Control)?.Name;
+                if(name != chkPin.Name) notice(true);
+            }
 
             Util.noticeAboutChanges(typeof(CheckBox), this, _call);
             Util.noticeAboutChanges(typeof(RadioButton), this, _call);
@@ -1224,6 +1233,12 @@ namespace net.r_eg.vsCE.UI.WForms
             if(dgvActions.Rows.Count < 1) linkAddAction.Visible = true;
         }
 
+        private void dgvCEFilters_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
+        {
+            e.Row.Cells[dgvCEFiltersColumnIgnoreCustomIn.Name].Value = true;
+            e.Row.Cells[dgvCEFiltersColumnIgnoreCustomOut.Name].Value = true;
+        }
+
         private void menuTplTargetsDefault_Click(object sender, EventArgs e)
         {
             radioModeTargets.Checked = true;
@@ -1328,6 +1343,8 @@ namespace net.r_eg.vsCE.UI.WForms
         private void dgvCEFilters_CellClick(object sender, DataGridViewCellEventArgs e) => removeRow(dgvCEFilters, dgvCEFiltersColumnRemove, e);
         private void dgvEnvCmd_CellClick(object sender, DataGridViewCellEventArgs e) => removeRow(dgvEnvCmd, dgvEnvCmdColumnRemove, e);
         private void dgvOperations_CellClick(object sender, DataGridViewCellEventArgs e) => removeRow(dgvOperations, dgvOpColumnRemove, e);
+        private void btnSniffer_Click(object sender, EventArgs e) => menuItemSniffer_Click(sender, e);
+        private void chkPin_CheckedChanged(object sender, EventArgs e) => TopMost = chkPin.Checked;
         #endregion
 
         #region urls

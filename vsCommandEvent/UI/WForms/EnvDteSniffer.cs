@@ -62,6 +62,8 @@ namespace net.r_eg.vsCE.UI.WForms
 
             InitializeComponent();
             Icon = Resource.Package_32;
+
+            chkPin.Checked = true;
         }
 
         protected void commandEventBefore(string guid, int id, object customIn, object customOut, ref bool cancelDefault)
@@ -87,7 +89,16 @@ namespace net.r_eg.vsCE.UI.WForms
             }
 
             string tFormat = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern + " .fff";
-            dgvCESniffer.Rows.Add(DateTime.Now.ToString(tFormat), pre, guid, id, Value.Pack(customIn), Value.Pack(customOut), Util.enumViewBy(guid, id));
+            dgvCESniffer.Rows.Add
+            (
+                DateTime.Now.ToString(tFormat),
+                pre,
+                guid,
+                id,
+                Value.Pack(customIn),
+                Value.Pack(customOut),
+                EnumDecor.Shorten(Util.enumViewBy(guid, id))
+            );
         }
 
         protected void flash(Lights.FlashType type, int delay = 250)
@@ -154,7 +165,7 @@ namespace net.r_eg.vsCE.UI.WForms
                     id      = Convert.ToInt32(cId);
                     guid    = cGuid.ToString().Trim();
 
-                    env.raise(guid, id, ref customIn, ref customOut);
+                    env.raise(guid, id, customIn, customOut);
                 }
             }
             catch(Exception ex)
@@ -171,12 +182,14 @@ namespace net.r_eg.vsCE.UI.WForms
 
             foreach(DataGridViewRow rc in dgvCESniffer.SelectedRows)
             {
-                link.command(
+                link.command
+                (
+                    Convert.ToBoolean(rc.Cells[dgvCESnifferColumnPre.Name].Value),
                     (string)rc.Cells[dgvCESnifferColumnGuid.Name].Value,
                     Convert.ToInt32(rc.Cells[dgvCESnifferColumnId.Name].Value),
                     rc.Cells[dgvCESnifferColumnCustomIn.Name].Value,
                     rc.Cells[dgvCESnifferColumnCustomOut.Name].Value,
-                    (string)rc.Cells[dgvCESnifferColumnEnum.Name].Value
+                    (string)rc.Cells[dgvCESnifferColumnSrc.Name].Value
                 );
             }
         }
@@ -205,5 +218,7 @@ namespace net.r_eg.vsCE.UI.WForms
         private void menuRaise_Click(object sender, EventArgs e) => btnRaise_Click(sender, e);
 
         private void menuFlush_Click(object sender, EventArgs e) => buttonFlush_Click(sender, e);
+
+        private void chkPin_CheckedChanged(object sender, EventArgs e) => TopMost = chkPin.Checked;
     }
 }

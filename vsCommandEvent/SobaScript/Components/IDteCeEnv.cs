@@ -18,6 +18,6 @@ namespace net.r_eg.vsCE.SobaScript.Components
         /// <param name="id">The command ID.</param>
         /// <param name="customIn">Custom input parameters.</param>
         /// <param name="customOut">Custom output parameters.</param>
-        void Raise(string guid, int id, ref object customIn, ref object customOut);
+        void Raise(string guid, int id, object customIn, object customOut);
     }
 }

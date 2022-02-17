@@ -178,6 +178,7 @@
     <Compile Include="Configuration\User\UserValue.cs" />
     <Compile Include="DataArgs.cs" />
     <Compile Include="Events\AggregatedEventsEnvDte.cs" />
+    <Compile Include="ParamPacker.cs" />
     <Compile Include="SobaScript\Components\DteComponent.cs" />
     <Compile Include="DteEnv.cs" />
     <Compile Include="DteSlnCfg.cs" />
@@ -219,6 +220,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="UI\EnumDecor.cs" />
     <Compile Include="UI\WForms\AboutFrm.cs">
       <SubType>Form</SubType>
     </Compile>

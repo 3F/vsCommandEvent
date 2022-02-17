@@ -15,68 +15,50 @@ using System.Threading.Tasks;
 
 namespace net.r_eg.vsCE
 {
-    /// <summary>
-    /// Build / { Main App }
-    /// </summary>
     internal sealed class MainToolCommand: IDisposable
     {
         private readonly MenuCommand mcmd;
 
-        private readonly IEvLevel apievt;
-
-        private readonly IPkg pkg;
-
         private UI.WForms.EventsFrm configFrm;
 
-        public static MainToolCommand Instance
-        {
-            get;
-            private set;
-        }
+        private static volatile MainToolCommand _instance;
 
-        public void closeConfigForm()
-        {
-            UI.Util.closeTool(configFrm);
-        }
+        private static readonly object sync = new();
+
+        public static MainToolCommand Instance => _instance;
+
+        public void closeConfigForm() => UI.Util.closeTool(configFrm);
 
 #if SDK15_OR_HIGH
 
         public static async Task<MainToolCommand> InitAsync(IPkg pkg, IEvLevel evt)
         {
-            if(Instance != null) {
-                return Instance;
-            }
+            if(Instance != null) return Instance;
 
             // Switch to the main thread - the call to AddCommand in MainToolCommand's constructor requires
             // the UI thread.
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(pkg.CancellationToken);
-
-            Instance = new MainToolCommand
-            (
-                pkg,
-                await pkg.getSvcAsync(typeof(IMenuCommandService)) as OleMenuCommandService,
-                evt
-            );
-
-            return Instance;
+            
+            OleMenuCommandService svc = await pkg.getSvcAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
+            lock(sync)
+            {
+                if(Instance == null) _instance = new MainToolCommand(pkg, svc, evt);
+                return Instance;
+            }
         }
 
 #else
 
         public static MainToolCommand Init(IPkg pkg, IEvLevel evt)
         {
-            if(Instance != null) {
+            if(Instance != null) return Instance;
+
+            OleMenuCommandService svc = pkg.getSvc(typeof(IMenuCommandService)) as OleMenuCommandService;
+            lock(sync)
+            {
+                if(Instance == null) _instance = new MainToolCommand(pkg, svc, evt);
                 return Instance;
             }
-
-            Instance = new MainToolCommand
-            (
-                pkg,
-                pkg.getSvc(typeof(IMenuCommandService)) as OleMenuCommandService, 
-                evt
-            );
-
-            return Instance;
         }
 
 #endif
@@ -86,11 +68,11 @@ namespace net.r_eg.vsCE
         /// <param name="evt">Supported public events, not null.</param>
         private MainToolCommand(IPkg pkg, OleMenuCommandService svc, IEvLevel evt)
         {
-            this.pkg    = pkg ?? throw new ArgumentNullException(nameof(pkg));
-            svc         = svc ?? throw new ArgumentNullException(nameof(svc));
-            apievt      = evt ?? throw new ArgumentNullException(nameof(evt));
+            if(pkg == null) throw new ArgumentNullException(nameof(pkg));
+            if(svc == null) throw new ArgumentNullException(nameof(svc));
+            if(evt == null) throw new ArgumentNullException(nameof(evt));
 
-            MenuCommand _GetMenu(int cmd, EventHandler act) => new MenuCommand
+            static MenuCommand _GetMenu(int cmd, EventHandler act) => new
             (
                 act, new CommandID(GuidList.CMD_MAIN, cmd)
             )
@@ -109,13 +91,13 @@ namespace net.r_eg.vsCE
         {
             try
             {
-                if(UI.Util.focusForm(configFrm)) {
-                    return;
-                }
+                if(UI.Util.focusForm(configFrm)) return;
+
                 configFrm = new UI.WForms.EventsFrm(Bootloader._);
                 configFrm.Show();
             }
-            catch(Exception ex) {
+            catch(Exception ex)
+            {
                 Log.Error($"Failed UI: {ex.Message}");
                 Log.Debug(ex.StackTrace);
             }
