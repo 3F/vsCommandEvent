@@ -13,10 +13,10 @@ namespace net.r_eg.vsCE
     internal static class MSBuild
     {
         internal static IEvMSBuild MakeEvaluator(IEnvironment env, IUVars uvars)
-            => PostAction(env, new EvMSBuilder(uvars));
+            => PostAction(env, new EvMSBuilder(env, uvars));
 
         internal static IEvMSBuild MakeEvaluator(IEnvironment env)
-            => PostAction(env, new EvMSBuilder());
+            => PostAction(env, new EvMSBuilder(env));
 
         private static IEvMSBuild PostAction(IEnvironment env, IEvMSBuild instance)
         {
