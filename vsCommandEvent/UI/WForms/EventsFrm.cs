@@ -182,7 +182,10 @@ namespace net.r_eg.vsCE.UI.WForms
             toolStripMenuVersion.Text = $"v{Version.S_NUM}+{Version.B_SHA1}";
 #endif
 
-            btnApply.Location = new Point((statusStrip.Location.X - btnApply.Width) - 10, btnApply.Location.Y);
+            static Point repos(Control c, int ofs, Control from) => new(from.Location.X - c.Width + ofs, c.Location.Y);
+            btnApply.Location = repos(btnApply, -10, statusStrip);
+            chkPin.Location = repos(chkPin, -10, btnApply);
+            chkSwitchContext.Width = chkPin.Location.X - chkSwitchContext.Location.X;
 
             //TODO: it was before with original dataGridView... need to check with DataGridViewExt and move it inside if still needed
             foreach(Control ctrl in Util.getControls(this, c => c.GetType() == typeof(DataGridViewExt))) {
@@ -673,7 +676,7 @@ namespace net.r_eg.vsCE.UI.WForms
                 btnApply.FlatAppearance.BorderColor = Color.FromArgb(255, 0, 0);
                 return;
             }
-            btnApply.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 0);
+            btnApply.FlatAppearance.BorderColor = Color.FromArgb(0, 192, 192);
         }
 
         /// <summary>
@@ -783,7 +786,7 @@ namespace net.r_eg.vsCE.UI.WForms
 
         protected int addDgvAction(bool enabled, string name, string caption)
         {
-            int idx = dgvActions.Rows.Add(enabled, name);
+            int idx = dgvActions.Rows.Add(enabled, name, caption);
             dgvActions.Rows[idx].HeaderCell.ToolTipText = caption;
             dgvActions.Rows[idx].Cells[dgvActionName.Name].ToolTipText = caption;
             return idx;
@@ -856,6 +859,8 @@ namespace net.r_eg.vsCE.UI.WForms
             }
         }
 
+        protected void refreshContextCaption() => chkSwitchContext.Text = $"{App.ConfigManager.Context} context";
+
         private void EventsFrm_Load(object sender, EventArgs e)
         {
             if(!App.IsCfgExists)
@@ -870,7 +875,7 @@ namespace net.r_eg.vsCE.UI.WForms
             void _call(object csender, EventArgs ce)
             {
                 string name = (csender as Control)?.Name;
-                if(name != chkPin.Name) notice(true);
+                if(name != chkPin.Name && name != chkSwitchContext.Name) notice(true);
             }
 
             Util.noticeAboutChanges(typeof(CheckBox), this, _call);
@@ -897,6 +902,9 @@ namespace net.r_eg.vsCE.UI.WForms
                 Log.Error($"Failed to load form: {ex.Message}");
                 Log.Debug(ex.StackTrace);
             }
+
+            if(App.ConfigManager.Context == ContextType.Solution) chkSwitchContext.Checked = true;
+            else refreshContextCaption();
 
             addFirstAction();
         }
@@ -1318,6 +1326,12 @@ namespace net.r_eg.vsCE.UI.WForms
             menuLogIgnoreError.Checked  = IsIgnoreLevel("ERROR");
         }
 
+        private void chkSwitchContext_CheckedChanged(object sender, EventArgs e)
+        {
+            menuCfgUseSln_Click(sender, e);
+            refreshContextCaption();
+        }
+
         #region inline binding
         private void dgvActions_DragDropSortedRow(object sender, DataGridViewExt.MovingRowArgs e) => logic.moveEventItem(e.Data.from, e.Data.to);
         private void toolStripMenuApply_Click(object sender, EventArgs e) => btnApply_Click(sender, e);
@@ -1345,6 +1359,7 @@ namespace net.r_eg.vsCE.UI.WForms
         private void dgvOperations_CellClick(object sender, DataGridViewCellEventArgs e) => removeRow(dgvOperations, dgvOpColumnRemove, e);
         private void btnSniffer_Click(object sender, EventArgs e) => menuItemSniffer_Click(sender, e);
         private void chkPin_CheckedChanged(object sender, EventArgs e) => TopMost = chkPin.Checked;
+        private void btnAddAct_Click(object sender, EventArgs e) => addAction();
         #endregion
 
         #region urls

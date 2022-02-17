@@ -154,7 +154,7 @@ namespace net.r_eg.vsCE
             {
                 Data    = newCfg;
                 InRAM   = true;
-                Log.Info("Initialized with new settings.");
+                Log.Info($"Context is initialized as new at {Settings.WPath}");
             }
             catch(Exception ex)
             {
@@ -180,7 +180,7 @@ namespace net.r_eg.vsCE
                     throw new UnspecSBEException("file is empty");
                 }
 
-                Log.Info($"Loaded settings v{ret.Header.Compatibility} '{Settings.WPath.MakeRelativePath(link)}'");
+                Log.Info($"Loaded settings {ret.Header.Compatibility} at {Settings.WPath}");
                 return ret;
             }
         }

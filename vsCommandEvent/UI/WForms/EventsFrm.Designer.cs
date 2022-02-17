@@ -33,6 +33,8 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -41,8 +43,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.contextMenuActions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuActionsAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.menuActionsClone = new System.Windows.Forms.ToolStripMenuItem();
@@ -109,6 +109,8 @@
             this.labelTimeLimit = new System.Windows.Forms.Label();
             this.numericTimeLimit = new System.Windows.Forms.NumericUpDown();
             this.chkPin = new System.Windows.Forms.CheckBox();
+            this.chkSwitchContext = new System.Windows.Forms.CheckBox();
+            this.btnAddAct = new System.Windows.Forms.Button();
             this.btnApply = new System.Windows.Forms.Button();
             this.splitContainerMain = new System.Windows.Forms.SplitContainer();
             this.linkAddAction = new System.Windows.Forms.LinkLabel();
@@ -122,6 +124,17 @@
             this.tabControlCommands = new System.Windows.Forms.TabControl();
             this.tabPageEnvDTE = new System.Windows.Forms.TabPage();
             this.dgvCEFilters = new net.r_eg.vsCE.UI.WForms.Components.DataGridViewExt();
+            this.dgvCEFiltersColumnPre = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvCEFiltersColumnPost = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvCEFiltersColumnGuid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvCEFiltersColumnId = new net.r_eg.vsCE.UI.WForms.Components.DataGridViewExt.NumericColumn();
+            this.dgvCEFiltersColumnIgnoreCustomIn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvCEFiltersColumnCustomIn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvCEFiltersColumnIgnoreCustomOut = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvCEFiltersColumnCustomOut = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvCEFiltersColumnDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvCEFiltersColumnCancel = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvCEFiltersColumnRemove = new System.Windows.Forms.DataGridViewButtonColumn();
             this.contextMenuDte = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuSniffer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -179,17 +192,6 @@
             this.radioModeFiles = new System.Windows.Forms.RadioButton();
             this.panelStatusSide = new System.Windows.Forms.Panel();
             this.dgvOutput = new net.r_eg.vsCE.UI.WForms.Components.DataGridViewExt();
-            this.dgvCEFiltersColumnPre = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvCEFiltersColumnPost = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvCEFiltersColumnGuid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvCEFiltersColumnId = new net.r_eg.vsCE.UI.WForms.Components.DataGridViewExt.NumericColumn();
-            this.dgvCEFiltersColumnIgnoreCustomIn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvCEFiltersColumnCustomIn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvCEFiltersColumnIgnoreCustomOut = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvCEFiltersColumnCustomOut = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvCEFiltersColumnDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvCEFiltersColumnCancel = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvCEFiltersColumnRemove = new System.Windows.Forms.DataGridViewButtonColumn();
             this.contextMenuActions.SuspendLayout();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericTimeLimit)).BeginInit();
@@ -763,25 +765,56 @@
             // chkPin
             // 
             this.chkPin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkPin.AutoSize = true;
             this.chkPin.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.chkPin.Location = new System.Drawing.Point(519, 4);
+            this.chkPin.Location = new System.Drawing.Point(516, 1);
             this.chkPin.Name = "chkPin";
             this.chkPin.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkPin.Size = new System.Drawing.Size(36, 17);
+            this.chkPin.Size = new System.Drawing.Size(36, 22);
             this.chkPin.TabIndex = 48;
             this.chkPin.Text = "📌";
             this.toolTip.SetToolTip(this.chkPin, "Pin window");
             this.chkPin.UseVisualStyleBackColor = true;
             this.chkPin.CheckedChanged += new System.EventHandler(this.chkPin_CheckedChanged);
             // 
+            // chkSwitchContext
+            // 
+            this.chkSwitchContext.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkSwitchContext.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkSwitchContext.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.chkSwitchContext.FlatAppearance.BorderSize = 0;
+            this.chkSwitchContext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkSwitchContext.Location = new System.Drawing.Point(60, 1);
+            this.chkSwitchContext.Name = "chkSwitchContext";
+            this.chkSwitchContext.Size = new System.Drawing.Size(455, 22);
+            this.chkSwitchContext.TabIndex = 83;
+            this.chkSwitchContext.Text = ". . . context";
+            this.chkSwitchContext.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.chkSwitchContext, "Switch context");
+            this.chkSwitchContext.UseVisualStyleBackColor = true;
+            this.chkSwitchContext.CheckedChanged += new System.EventHandler(this.chkSwitchContext_CheckedChanged);
+            // 
+            // btnAddAct
+            // 
+            this.btnAddAct.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btnAddAct.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddAct.Location = new System.Drawing.Point(27, 0);
+            this.btnAddAct.Name = "btnAddAct";
+            this.btnAddAct.Size = new System.Drawing.Size(32, 23);
+            this.btnAddAct.TabIndex = 84;
+            this.btnAddAct.Text = "➕";
+            this.toolTip.SetToolTip(this.btnAddAct, "Add action");
+            this.btnAddAct.UseVisualStyleBackColor = true;
+            this.btnAddAct.Click += new System.EventHandler(this.btnAddAct_Click);
+            // 
             // btnApply
             // 
             this.btnApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnApply.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.btnApply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnApply.Location = new System.Drawing.Point(563, 0);
             this.btnApply.Name = "btnApply";
-            this.btnApply.Size = new System.Drawing.Size(69, 24);
+            this.btnApply.Size = new System.Drawing.Size(69, 23);
             this.btnApply.TabIndex = 79;
             this.btnApply.Text = "Apply 📡";
             this.btnApply.UseVisualStyleBackColor = true;
@@ -907,7 +940,7 @@
             // dgvActionName
             // 
             this.dgvActionName.FillWeight = 150F;
-            this.dgvActionName.HeaderText = "Name";
+            this.dgvActionName.HeaderText = "";
             this.dgvActionName.MaxInputLength = 256;
             this.dgvActionName.MinimumWidth = 70;
             this.dgvActionName.Name = "dgvActionName";
@@ -917,7 +950,7 @@
             // dgvActionCaption
             // 
             this.dgvActionCaption.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgvActionCaption.HeaderText = "Caption";
+            this.dgvActionCaption.HeaderText = "";
             this.dgvActionCaption.MinimumWidth = 70;
             this.dgvActionCaption.Name = "dgvActionCaption";
             this.dgvActionCaption.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
@@ -1030,6 +1063,141 @@
             this.dgvCEFilters.TabIndex = 7;
             this.dgvCEFilters.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCEFilters_CellClick);
             this.dgvCEFilters.DefaultValuesNeeded += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvCEFilters_DefaultValuesNeeded);
+            // 
+            // dgvCEFiltersColumnPre
+            // 
+            this.dgvCEFiltersColumnPre.FalseValue = "False";
+            this.dgvCEFiltersColumnPre.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.dgvCEFiltersColumnPre.HeaderText = "Pre";
+            this.dgvCEFiltersColumnPre.IndeterminateValue = "False";
+            this.dgvCEFiltersColumnPre.MinimumWidth = 28;
+            this.dgvCEFiltersColumnPre.Name = "dgvCEFiltersColumnPre";
+            this.dgvCEFiltersColumnPre.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvCEFiltersColumnPre.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dgvCEFiltersColumnPre.ToolTipText = "Before executing command";
+            this.dgvCEFiltersColumnPre.TrueValue = "True";
+            this.dgvCEFiltersColumnPre.Width = 30;
+            // 
+            // dgvCEFiltersColumnPost
+            // 
+            this.dgvCEFiltersColumnPost.FalseValue = "False";
+            this.dgvCEFiltersColumnPost.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.dgvCEFiltersColumnPost.HeaderText = "Post";
+            this.dgvCEFiltersColumnPost.IndeterminateValue = "False";
+            this.dgvCEFiltersColumnPost.MinimumWidth = 30;
+            this.dgvCEFiltersColumnPost.Name = "dgvCEFiltersColumnPost";
+            this.dgvCEFiltersColumnPost.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvCEFiltersColumnPost.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dgvCEFiltersColumnPost.ToolTipText = "After executed command";
+            this.dgvCEFiltersColumnPost.TrueValue = "True";
+            this.dgvCEFiltersColumnPost.Width = 34;
+            // 
+            // dgvCEFiltersColumnGuid
+            // 
+            this.dgvCEFiltersColumnGuid.HeaderText = "Guid";
+            this.dgvCEFiltersColumnGuid.MinimumWidth = 100;
+            this.dgvCEFiltersColumnGuid.Name = "dgvCEFiltersColumnGuid";
+            this.dgvCEFiltersColumnGuid.ToolTipText = "Scope by GUID";
+            this.dgvCEFiltersColumnGuid.Width = 240;
+            // 
+            // dgvCEFiltersColumnId
+            // 
+            this.dgvCEFiltersColumnId.Decimal = false;
+            dataGridViewCellStyle3.NullValue = "0";
+            this.dgvCEFiltersColumnId.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvCEFiltersColumnId.HeaderText = "Id";
+            this.dgvCEFiltersColumnId.MinimumWidth = 70;
+            this.dgvCEFiltersColumnId.Name = "dgvCEFiltersColumnId";
+            this.dgvCEFiltersColumnId.Negative = false;
+            this.dgvCEFiltersColumnId.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvCEFiltersColumnId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dgvCEFiltersColumnId.ToolTipText = "Command ID";
+            this.dgvCEFiltersColumnId.Width = 70;
+            // 
+            // dgvCEFiltersColumnIgnoreCustomIn
+            // 
+            this.dgvCEFiltersColumnIgnoreCustomIn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            this.dgvCEFiltersColumnIgnoreCustomIn.FalseValue = "False";
+            this.dgvCEFiltersColumnIgnoreCustomIn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.dgvCEFiltersColumnIgnoreCustomIn.HeaderText = "";
+            this.dgvCEFiltersColumnIgnoreCustomIn.IndeterminateValue = "False";
+            this.dgvCEFiltersColumnIgnoreCustomIn.MinimumWidth = 16;
+            this.dgvCEFiltersColumnIgnoreCustomIn.Name = "dgvCEFiltersColumnIgnoreCustomIn";
+            this.dgvCEFiltersColumnIgnoreCustomIn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvCEFiltersColumnIgnoreCustomIn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dgvCEFiltersColumnIgnoreCustomIn.ToolTipText = "Ignore CustomIn if unchecked";
+            this.dgvCEFiltersColumnIgnoreCustomIn.TrueValue = "True";
+            this.dgvCEFiltersColumnIgnoreCustomIn.Width = 21;
+            // 
+            // dgvCEFiltersColumnCustomIn
+            // 
+            this.dgvCEFiltersColumnCustomIn.HeaderText = "CustomIn";
+            this.dgvCEFiltersColumnCustomIn.MinimumWidth = 70;
+            this.dgvCEFiltersColumnCustomIn.Name = "dgvCEFiltersColumnCustomIn";
+            this.dgvCEFiltersColumnCustomIn.ToolTipText = "Filter by Custom Input parameter";
+            this.dgvCEFiltersColumnCustomIn.Width = 110;
+            // 
+            // dgvCEFiltersColumnIgnoreCustomOut
+            // 
+            this.dgvCEFiltersColumnIgnoreCustomOut.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            this.dgvCEFiltersColumnIgnoreCustomOut.FalseValue = "False";
+            this.dgvCEFiltersColumnIgnoreCustomOut.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.dgvCEFiltersColumnIgnoreCustomOut.HeaderText = "";
+            this.dgvCEFiltersColumnIgnoreCustomOut.IndeterminateValue = "False";
+            this.dgvCEFiltersColumnIgnoreCustomOut.MinimumWidth = 16;
+            this.dgvCEFiltersColumnIgnoreCustomOut.Name = "dgvCEFiltersColumnIgnoreCustomOut";
+            this.dgvCEFiltersColumnIgnoreCustomOut.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvCEFiltersColumnIgnoreCustomOut.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dgvCEFiltersColumnIgnoreCustomOut.ToolTipText = "Ignore CustomOut if unchecked";
+            this.dgvCEFiltersColumnIgnoreCustomOut.TrueValue = "True";
+            this.dgvCEFiltersColumnIgnoreCustomOut.Width = 21;
+            // 
+            // dgvCEFiltersColumnCustomOut
+            // 
+            this.dgvCEFiltersColumnCustomOut.HeaderText = "CustomOut";
+            this.dgvCEFiltersColumnCustomOut.MinimumWidth = 70;
+            this.dgvCEFiltersColumnCustomOut.Name = "dgvCEFiltersColumnCustomOut";
+            this.dgvCEFiltersColumnCustomOut.ToolTipText = "Filter by Custom Output parameter";
+            this.dgvCEFiltersColumnCustomOut.Width = 110;
+            // 
+            // dgvCEFiltersColumnDescription
+            // 
+            this.dgvCEFiltersColumnDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgvCEFiltersColumnDescription.HeaderText = "Description";
+            this.dgvCEFiltersColumnDescription.MinimumWidth = 40;
+            this.dgvCEFiltersColumnDescription.Name = "dgvCEFiltersColumnDescription";
+            // 
+            // dgvCEFiltersColumnCancel
+            // 
+            this.dgvCEFiltersColumnCancel.FalseValue = "False";
+            this.dgvCEFiltersColumnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.dgvCEFiltersColumnCancel.HeaderText = "Cancel";
+            this.dgvCEFiltersColumnCancel.IndeterminateValue = "False";
+            this.dgvCEFiltersColumnCancel.MinimumWidth = 48;
+            this.dgvCEFiltersColumnCancel.Name = "dgvCEFiltersColumnCancel";
+            this.dgvCEFiltersColumnCancel.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvCEFiltersColumnCancel.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dgvCEFiltersColumnCancel.ToolTipText = "Try cancel command if it\'s possible";
+            this.dgvCEFiltersColumnCancel.TrueValue = "True";
+            this.dgvCEFiltersColumnCancel.Width = 48;
+            // 
+            // dgvCEFiltersColumnRemove
+            // 
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Maroon;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Maroon;
+            this.dgvCEFiltersColumnRemove.DefaultCellStyle = dataGridViewCellStyle4;
+            this.dgvCEFiltersColumnRemove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.dgvCEFiltersColumnRemove.HeaderText = "";
+            this.dgvCEFiltersColumnRemove.MinimumWidth = 16;
+            this.dgvCEFiltersColumnRemove.Name = "dgvCEFiltersColumnRemove";
+            this.dgvCEFiltersColumnRemove.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvCEFiltersColumnRemove.Text = "x";
+            this.dgvCEFiltersColumnRemove.ToolTipText = "Remove this line";
+            this.dgvCEFiltersColumnRemove.UseColumnTextForButtonValue = true;
+            this.dgvCEFiltersColumnRemove.Width = 16;
             // 
             // contextMenuDte
             // 
@@ -1780,147 +1948,14 @@
             this.dgvOutput.TabIndex = 7;
             this.dgvOutput.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewOutput_CellClick);
             // 
-            // dgvCEFiltersColumnPre
-            // 
-            this.dgvCEFiltersColumnPre.FalseValue = "False";
-            this.dgvCEFiltersColumnPre.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.dgvCEFiltersColumnPre.HeaderText = "Pre";
-            this.dgvCEFiltersColumnPre.IndeterminateValue = "False";
-            this.dgvCEFiltersColumnPre.MinimumWidth = 28;
-            this.dgvCEFiltersColumnPre.Name = "dgvCEFiltersColumnPre";
-            this.dgvCEFiltersColumnPre.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvCEFiltersColumnPre.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dgvCEFiltersColumnPre.ToolTipText = "Before executing command";
-            this.dgvCEFiltersColumnPre.TrueValue = "True";
-            this.dgvCEFiltersColumnPre.Width = 30;
-            // 
-            // dgvCEFiltersColumnPost
-            // 
-            this.dgvCEFiltersColumnPost.FalseValue = "False";
-            this.dgvCEFiltersColumnPost.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.dgvCEFiltersColumnPost.HeaderText = "Post";
-            this.dgvCEFiltersColumnPost.IndeterminateValue = "False";
-            this.dgvCEFiltersColumnPost.MinimumWidth = 30;
-            this.dgvCEFiltersColumnPost.Name = "dgvCEFiltersColumnPost";
-            this.dgvCEFiltersColumnPost.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvCEFiltersColumnPost.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dgvCEFiltersColumnPost.ToolTipText = "After executed command";
-            this.dgvCEFiltersColumnPost.TrueValue = "True";
-            this.dgvCEFiltersColumnPost.Width = 34;
-            // 
-            // dgvCEFiltersColumnGuid
-            // 
-            this.dgvCEFiltersColumnGuid.HeaderText = "Guid";
-            this.dgvCEFiltersColumnGuid.MinimumWidth = 100;
-            this.dgvCEFiltersColumnGuid.Name = "dgvCEFiltersColumnGuid";
-            this.dgvCEFiltersColumnGuid.ToolTipText = "Scope by GUID";
-            this.dgvCEFiltersColumnGuid.Width = 240;
-            // 
-            // dgvCEFiltersColumnId
-            // 
-            this.dgvCEFiltersColumnId.Decimal = false;
-            dataGridViewCellStyle3.NullValue = "0";
-            this.dgvCEFiltersColumnId.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvCEFiltersColumnId.HeaderText = "Id";
-            this.dgvCEFiltersColumnId.MinimumWidth = 70;
-            this.dgvCEFiltersColumnId.Name = "dgvCEFiltersColumnId";
-            this.dgvCEFiltersColumnId.Negative = false;
-            this.dgvCEFiltersColumnId.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvCEFiltersColumnId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dgvCEFiltersColumnId.ToolTipText = "Command ID";
-            this.dgvCEFiltersColumnId.Width = 70;
-            // 
-            // dgvCEFiltersColumnIgnoreCustomIn
-            // 
-            this.dgvCEFiltersColumnIgnoreCustomIn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            this.dgvCEFiltersColumnIgnoreCustomIn.FalseValue = "False";
-            this.dgvCEFiltersColumnIgnoreCustomIn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.dgvCEFiltersColumnIgnoreCustomIn.HeaderText = "";
-            this.dgvCEFiltersColumnIgnoreCustomIn.IndeterminateValue = "False";
-            this.dgvCEFiltersColumnIgnoreCustomIn.MinimumWidth = 16;
-            this.dgvCEFiltersColumnIgnoreCustomIn.Name = "dgvCEFiltersColumnIgnoreCustomIn";
-            this.dgvCEFiltersColumnIgnoreCustomIn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvCEFiltersColumnIgnoreCustomIn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dgvCEFiltersColumnIgnoreCustomIn.ToolTipText = "Ignore CustomIn if unchecked";
-            this.dgvCEFiltersColumnIgnoreCustomIn.TrueValue = "True";
-            this.dgvCEFiltersColumnIgnoreCustomIn.Width = 21;
-            // 
-            // dgvCEFiltersColumnCustomIn
-            // 
-            this.dgvCEFiltersColumnCustomIn.HeaderText = "CustomIn";
-            this.dgvCEFiltersColumnCustomIn.MinimumWidth = 70;
-            this.dgvCEFiltersColumnCustomIn.Name = "dgvCEFiltersColumnCustomIn";
-            this.dgvCEFiltersColumnCustomIn.ToolTipText = "Filter by Custom Input parameter";
-            this.dgvCEFiltersColumnCustomIn.Width = 110;
-            // 
-            // dgvCEFiltersColumnIgnoreCustomOut
-            // 
-            this.dgvCEFiltersColumnIgnoreCustomOut.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            this.dgvCEFiltersColumnIgnoreCustomOut.FalseValue = "False";
-            this.dgvCEFiltersColumnIgnoreCustomOut.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.dgvCEFiltersColumnIgnoreCustomOut.HeaderText = "";
-            this.dgvCEFiltersColumnIgnoreCustomOut.IndeterminateValue = "False";
-            this.dgvCEFiltersColumnIgnoreCustomOut.MinimumWidth = 16;
-            this.dgvCEFiltersColumnIgnoreCustomOut.Name = "dgvCEFiltersColumnIgnoreCustomOut";
-            this.dgvCEFiltersColumnIgnoreCustomOut.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvCEFiltersColumnIgnoreCustomOut.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dgvCEFiltersColumnIgnoreCustomOut.ToolTipText = "Ignore CustomOut if unchecked";
-            this.dgvCEFiltersColumnIgnoreCustomOut.TrueValue = "True";
-            this.dgvCEFiltersColumnIgnoreCustomOut.Width = 21;
-            // 
-            // dgvCEFiltersColumnCustomOut
-            // 
-            this.dgvCEFiltersColumnCustomOut.HeaderText = "CustomOut";
-            this.dgvCEFiltersColumnCustomOut.MinimumWidth = 70;
-            this.dgvCEFiltersColumnCustomOut.Name = "dgvCEFiltersColumnCustomOut";
-            this.dgvCEFiltersColumnCustomOut.ToolTipText = "Filter by Custom Output parameter";
-            this.dgvCEFiltersColumnCustomOut.Width = 110;
-            // 
-            // dgvCEFiltersColumnDescription
-            // 
-            this.dgvCEFiltersColumnDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgvCEFiltersColumnDescription.HeaderText = "Description";
-            this.dgvCEFiltersColumnDescription.MinimumWidth = 40;
-            this.dgvCEFiltersColumnDescription.Name = "dgvCEFiltersColumnDescription";
-            // 
-            // dgvCEFiltersColumnCancel
-            // 
-            this.dgvCEFiltersColumnCancel.FalseValue = "False";
-            this.dgvCEFiltersColumnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.dgvCEFiltersColumnCancel.HeaderText = "Cancel";
-            this.dgvCEFiltersColumnCancel.IndeterminateValue = "False";
-            this.dgvCEFiltersColumnCancel.MinimumWidth = 48;
-            this.dgvCEFiltersColumnCancel.Name = "dgvCEFiltersColumnCancel";
-            this.dgvCEFiltersColumnCancel.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvCEFiltersColumnCancel.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dgvCEFiltersColumnCancel.ToolTipText = "Try cancel command if it\'s possible";
-            this.dgvCEFiltersColumnCancel.TrueValue = "True";
-            this.dgvCEFiltersColumnCancel.Width = 48;
-            // 
-            // dgvCEFiltersColumnRemove
-            // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Maroon;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Maroon;
-            this.dgvCEFiltersColumnRemove.DefaultCellStyle = dataGridViewCellStyle4;
-            this.dgvCEFiltersColumnRemove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.dgvCEFiltersColumnRemove.HeaderText = "";
-            this.dgvCEFiltersColumnRemove.MinimumWidth = 16;
-            this.dgvCEFiltersColumnRemove.Name = "dgvCEFiltersColumnRemove";
-            this.dgvCEFiltersColumnRemove.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvCEFiltersColumnRemove.Text = "x";
-            this.dgvCEFiltersColumnRemove.ToolTipText = "Remove this line";
-            this.dgvCEFiltersColumnRemove.UseColumnTextForButtonValue = true;
-            this.dgvCEFiltersColumnRemove.Width = 16;
-            // 
             // EventsFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(866, 571);
             this.Controls.Add(this.btnApply);
+            this.Controls.Add(this.btnAddAct);
+            this.Controls.Add(this.chkSwitchContext);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.splitContainerMain);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -2060,9 +2095,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem menuDteReset;
         private System.Windows.Forms.ToolStripMenuItem menuDteClear;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvActionEnabled;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvActionName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvActionCaption;
         private System.Windows.Forms.Label labelTimeLimit;
         private System.Windows.Forms.NumericUpDown numericTimeLimit;
         private System.Windows.Forms.ComboBox comboBoxWrapper;
@@ -2119,5 +2151,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCEFiltersColumnDescription;
         private System.Windows.Forms.DataGridViewCheckBoxColumn dgvCEFiltersColumnCancel;
         private System.Windows.Forms.DataGridViewButtonColumn dgvCEFiltersColumnRemove;
+        private System.Windows.Forms.Button btnAddAct;
+        private System.Windows.Forms.CheckBox chkSwitchContext;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvActionEnabled;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvActionName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvActionCaption;
     }
 }

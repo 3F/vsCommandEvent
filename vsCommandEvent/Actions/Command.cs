@@ -93,10 +93,7 @@ namespace net.r_eg.vsCE.Actions
                 return false;
             }
 
-            Log.Info($"Run '{evt.Name}' due to '{type}' using {evt.Mode.Type} mode.");
-            if(!string.IsNullOrWhiteSpace(evt.Caption)) {
-                Log.Info(evt.Caption);
-            }
+            Log.Info($"Run '{evt.Name}' due to '{type}' using {evt.Mode.Type} mode. {evt.Caption}");
             return actionBy(evt.Mode.Type, evt);
         }
 

@@ -149,7 +149,7 @@ namespace net.r_eg.vsCE.Actions
             try
             {
                 if(Cmd.exec(evt, SolutionEventType.OWP)) {
-                    Log.Info($"[Output] finished '{evt.Name}': {evt.Caption}");
+                    Log.Debug($"[Output] {evt.Name} action completed successfully.");
                 }
                 return VSConstants.S_OK;
             }
@@ -188,7 +188,7 @@ namespace net.r_eg.vsCE.Actions
 
                 if(pre && f.Pre && f.Cancel) {
                     cancelDefault = true;
-                    Log.Info($"The command has been canceled by {item.Name} `{item.Caption}`");
+                    Log.Info($"The command has been canceled by {item.Name} action.");
                 }
             }
             return Status._.contains(SolutionEventType.CommandEvent, StatusType.Fail)? VSConstants.S_FALSE : VSConstants.S_OK;
@@ -199,7 +199,7 @@ namespace net.r_eg.vsCE.Actions
             try
             {
                 if(Cmd.exec(item, SolutionEventType.CommandEvent)) {
-                    Log.Info($"[CommandEvent] finished: '{item.Caption}'");
+                    Log.Debug($"[CommandEvent] {item.Name} action completed successfully.");
                 }
                 Status._.add(SolutionEventType.CommandEvent, StatusType.Success);
             }
