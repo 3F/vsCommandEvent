@@ -1,14 +1,6 @@
 [![](https://raw.githubusercontent.com/3F/vsCommandEvent/master/vsCommandEvent/Resources/Package.png)](https://github.com/3F/vsCommandEvent) [**vsCommandEvent**](https://github.com/3F/vsCommandEvent)
 
-Extending Visual Studio **on the fly** via [E-MSBuild]((https://github.com/3F/E-MSBuild)), [SobaScript]((https://github.com/3F/SobaScript)), C#, ...
-
-*Feel like a master.*
-
-```r
-Copyright (c) 2015-2022  Denis Kuzmin <x-3F@outlook.com> github/3F
-```
-
-[ 「 <sub>@</sub> ☕ 」 ](https://3F.github.io/Donation/) [![LGPLv3](https://img.shields.io/badge/license-LGPLv3-008033.svg)](https://github.com/3F/vsCommandEvent/blob/master/LICENSE)
+Extending Visual Studio *on the fly* via [E-MSBuild]((https://github.com/3F/E-MSBuild)), [SobaScript]((https://github.com/3F/SobaScript)), C#, ...
 
 [![Build status](https://ci.appveyor.com/api/projects/status/gwmda50hdcu9esws/branch/master?svg=true)](https://ci.appveyor.com/project/3Fs/vscommandevent-2jxea/branch/master)
 [![VSIX](https://img.shields.io/badge/dynamic/xml?color=6C2C7C&label=VSIX&query=//text()&url=https://raw.githubusercontent.com/3F/vsCommandEvent/master/.version)](https://visualstudiogallery.msdn.microsoft.com/ad9f19b2-04c0-46fe-9637-9a52ce4ca661/)
@@ -16,11 +8,15 @@ Copyright (c) 2015-2022  Denis Kuzmin <x-3F@outlook.com> github/3F
 [![SobaScript](https://img.shields.io/badge/🧩-SobaScript-8E5733.svg)](https://github.com/3F/SobaScript)
 [![E-MSBuild](https://img.shields.io/badge/🧩-E--MSBuild-C8597A.svg)](https://github.com/3F/E-MSBuild)
 
-[![Build history](https://buildstats.info/appveyor/chart/3Fs/vscommandevent-2jxea?buildCount=20&showStats=true)](https://ci.appveyor.com/project/3Fs/vscommandevent-2jxea/history)
+```r
+Copyright (c) 2015-2022  Denis Kuzmin <x-3F@outlook.com> github/3F
+```
+
+[ 「 <sub>@</sub> ☕ 」 ](https://3F.github.io/Donation/) [![LGPLv3](https://img.shields.io/badge/license-LGPLv3-008033.svg)](https://github.com/3F/vsCommandEvent/blob/master/LICENSE)
 
 **[Download](https://github.com/3F/vsCommandEvent/releases/latest)**
 
-* [VisualStudio Marketplace](https://visualstudiogallery.msdn.microsoft.com/ad9f19b2-04c0-46fe-9637-9a52ce4ca661/)
+* Page on [VisualStudio Marketplace](https://visualstudiogallery.msdn.microsoft.com/ad9f19b2-04c0-46fe-9637-9a52ce4ca661/)
 
 ## Why vsCommandEvent ?
 
