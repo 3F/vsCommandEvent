@@ -171,35 +171,33 @@ namespace net.r_eg.vsCE.Events
             AfterExecute
             (
                 E_WND, id,
-                TryGetCOMProp(() => window.Caption),
+                TryGetCOMProp(() => doc?.FullName),
                 ParamPacker.Pack
                 (
                     "Kind", TryGetCOMProp(() => window.Kind),
+                    "Visible", TryGetCOMProp(() => window.Visible),
+                    "Caption", TryGetCOMProp(() => window.Caption),
+                    "Document.Name", TryGetCOMProp(() => doc?.Name),
+                    "Document.Language", TryGetCOMProp(() => doc?.Language),
+                    "Document.Saved", TryGetCOMProp(() => doc?.Saved),
+                    "Document.ReadOnly", TryGetCOMProp(() => doc?.ReadOnly),
+                    "Document.Kind", TryGetCOMProp(() => doc?.Kind),
+                    "Document.Type", TryGetCOMProp(() => doc?.Type),
+                    "Document.Path", TryGetCOMProp(() => doc?.Path),
+                    "Document.IndentSize", TryGetCOMProp(() => doc?.IndentSize),
+                    "Document.TabSize", TryGetCOMProp(() => doc?.TabSize),
+                    "WindowState", TryGetCOMProp(() => window.WindowState),
                     "Type", TryGetCOMProp(() => window.Type),
                     "Pos", PackRect(window),
-                    "WindowState", TryGetCOMProp(() => window.WindowState),
-                    "HWnd", TryGetCOMProp(() => window.HWnd),
-                    "Visible", TryGetCOMProp(() => window.Visible),
-                    "AutoHides", TryGetCOMProp(() => window.AutoHides),
-                    "IsFloating", TryGetCOMProp(() => window.IsFloating),
-                    "Linkable", TryGetCOMProp(() => window.Linkable),
-
+                    "LinkedWindowFrame.Pos", PackRect(lnk),
                     "LinkedWindowFrame.Caption", TryGetCOMProp(() => lnk?.Caption),
                     "LinkedWindowFrame.Kind", TryGetCOMProp(() => lnk?.Kind),
                     "LinkedWindowFrame.Type", TryGetCOMProp(() => lnk?.Type),
                     "LinkedWindowFrame.HWnd", TryGetCOMProp(() => lnk?.HWnd),
-                    "LinkedWindowFrame.Pos", PackRect(lnk),
-
-                    "Document.Name", TryGetCOMProp(() => doc?.Name),
-                    "Document.Kind", TryGetCOMProp(() => doc?.Kind),
-                    "Document.Type", TryGetCOMProp(() => doc?.Type),
-                    "Document.Language", TryGetCOMProp(() => doc?.Language),
-                    "Document.ReadOnly", TryGetCOMProp(() => doc?.ReadOnly),
-                    "Document.Saved", TryGetCOMProp(() => doc?.Saved),
-                    "Document.IndentSize", TryGetCOMProp(() => doc?.IndentSize),
-                    "Document.TabSize", TryGetCOMProp(() => doc?.TabSize),
-                    "Document.Path", TryGetCOMProp(() => doc?.Path),
-                    "Document.FullName", TryGetCOMProp(() => doc?.FullName)
+                    "HWnd", TryGetCOMProp(() => window.HWnd),
+                    "AutoHides", TryGetCOMProp(() => window.AutoHides),
+                    "IsFloating", TryGetCOMProp(() => window.IsFloating),
+                    "Linkable", TryGetCOMProp(() => window.Linkable)
                 )
             );
         }

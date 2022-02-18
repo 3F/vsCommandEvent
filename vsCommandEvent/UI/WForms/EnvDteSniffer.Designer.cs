@@ -355,7 +355,7 @@
             this.MinimumSize = new System.Drawing.Size(437, 210);
             this.Name = "EnvDteSniffer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "EnvDTE Sniffer";
+            this.Text = "Sniffer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EnvDteSniffer_FormClosing);
             this.Load += new System.EventHandler(this.EnvDteSniffer_Load);
             this.groupBoxCESniffer.ResumeLayout(false);
