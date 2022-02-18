@@ -1,6 +1,6 @@
 [![](https://raw.githubusercontent.com/3F/vsCommandEvent/master/vsCommandEvent/Resources/Package.png)](https://github.com/3F/vsCommandEvent) [**vsCommandEvent**](https://github.com/3F/vsCommandEvent)
 
-Extending Visual Studio **on the fly** via [E-MSBuild]((https://github.com/3F/E-MSBuild)), [SobaScript]((https://github.com/3F/SobaScript)), C#, ... An powerful manager of the commands and data.
+Extending Visual Studio **on the fly** via [E-MSBuild]((https://github.com/3F/E-MSBuild)), [SobaScript]((https://github.com/3F/SobaScript)), C#, ...
 
 *Feel like a master.*
 
@@ -18,15 +18,17 @@ Copyright (c) 2015-2022  Denis Kuzmin <x-3F@outlook.com> github/3F
 
 [![Build history](https://buildstats.info/appveyor/chart/3Fs/vscommandevent-2jxea?buildCount=20&showStats=true)](https://ci.appveyor.com/project/3Fs/vscommandevent-2jxea/history)
 
-**[Download](https://vsce.r-eg.net/Downloads/)**  (Binaries, Snapshots, Nightly builds, Libraries, ...)
+**[Download](https://github.com/3F/vsCommandEvent/releases/latest)**
 
 * [VisualStudio Marketplace](https://visualstudiogallery.msdn.microsoft.com/ad9f19b2-04c0-46fe-9637-9a52ce4ca661/)
 
 ## Why vsCommandEvent ?
 
-vsCommandEvent was based on [vsSolutionBuildEvent](https://github.com/3F/vsSolutionBuildEvent) engine and still continues mission to provide flexible actions for your environment!
+vsCommandEvent was based on [vsSolutionBuildEvent](https://github.com/3F/vsSolutionBuildEvent) engine to continue the mission of providing flexible customization for your environment and its automation.
 
-Means advanced handler of the most events but unlike the first it specialized for advanced work with the Visual Studio commands and its data as manager of this on the fly.
+Yet another advanced handlers of the most events but unlike the first it was focused on advanced manipulations with Visual Studio IDE and its runtime.
+
+![](media/devenv.png)
 
 * **[Examples](https://vsce.r-eg.net/doc/Examples/)** *- scripts, solutions, syntax etc.,*
 * [vsSolutionBuildEvent engine](https://github.com/3F/vsSolutionBuildEvent)
@@ -41,21 +43,21 @@ Means advanced handler of the most events but unlike the first it specialized fo
 
 ### Overriding commands
 
-The dev environment of any users may be flexibly changed as you need in a few steps.
+The development environment of any users can be flexibly changed according to your needs in a few steps.
 
-This is possible because vsCommandEvent **may override a lot of things** from Visual Studio, and it also provides [flexible actions](https://vsce.r-eg.net/doc/Examples/) due to the fact that it was based on [vsSolutionBuildEvent](https://github.com/3F/vsSolutionBuildEvent). 
+This is possible because vsCommandEvent may override a lot of things from IDE. It also provides [flexible actions](https://vsce.r-eg.net/doc/Modes/) due to the fact that it was based on [vsSolutionBuildEvent](https://github.com/3F/vsSolutionBuildEvent). 
 
 ![](https://3F.github.io/web.vsCE/doc/Resources/examples/EnvCommand.png)
 
 ![](media/gif/AboutVS.gif)
 
-You can even [override the 'Exit'](https://vsce.r-eg.net/doc/Examples/Overriding/) (including [X] and Alt + F4 hotkey) for Visual Studio IDE on the fly 🔧. 
+You can even [override the 'Exit'](https://vsce.r-eg.net/doc/Examples/Overriding/) (including [X] and Alt + F4 hotkey) for Visual Studio IDE on the fly depending on some state of the document etc. 
 
 ### A new look at old things
 
-In comparison with [vsSolutionBuildEvent](https://marketplace.visualstudio.com/vsgallery/0d1dbfd7-ed8a-40af-ae39-281bfeca2334), Why not look at some similar solutions from there.
+Why not look at some similar solutions from [vsSolutionBuildEvent](https://github.com/3F/vsSolutionBuildEvent).
 
-It cannot be same as for vsSolutionBuildEvent because it works on [another technologies](https://vssbe.r-eg.net/doc/Scheme/). But let's try to look closer. Can we achieve the same result via vsCommandEvent manager?
+Although it cannot be same as for vsCommandEvent (since it was based on another technologies), let's try to look closer. Can we achieve the same result?
 
 #### Solution-wide Build Events
 
@@ -71,7 +73,7 @@ Started - Clean Solution |{5EFC7975-14BC-11CF-9B2B-00AA00573819} | 885 | |
 
 #### Automatic Version Numbering
 
-Still available versioning as you prefer. **Moreover,** with an vsCommandEvent you can handle versioning for most operations of Visual Studio. [Just try as you need](https://vsce.r-eg.net/doc/Examples/Version%20number/).
+Still available versioning as you prefer. Moreover, with the vsCommandEvent you can handle versioning for most operations of Visual Studio. [Just try as you need](https://vsce.r-eg.net/doc/Examples/Version%20number/).
 
 ![](https://3F.github.io/web.vsCE/doc/Resources/examples/VersionClass.gif)
 
@@ -83,7 +85,7 @@ Disturbs [Warnings] and [Errors] ?! no problem, [**manage it**](https://vsce.r-e
 
 ## Advanced Actions
 
-**vsCommandEvent** provides most the action types from [vsSolutionBuildEvent](https://marketplace.visualstudio.com/vsgallery/0d1dbfd7-ed8a-40af-ae39-281bfeca2334) engine:
+*vsCommandEvent* provides most of the action types from [vsSolutionBuildEvent](https://marketplace.visualstudio.com/vsgallery/0d1dbfd7-ed8a-40af-ae39-281bfeca2334) engine:
 
 * Files Mode, Operation Mode, Interpreter Mode, Script Mode, Targets Mode, [C# Mode](https://vsce.r-eg.net/doc/Modes/CSharp/), **and more** such as [EnvCommand Mode](https://vsce.r-eg.net/doc/Modes/EnvCommand/) etc.
 
@@ -184,17 +186,9 @@ Use our available components or extend everything by creating [**new**](https://
 
 ## Wiki
 
-[Wiki](https://vsce.r-eg.net/) - Contains help for work with plugin, basic examples, syntax, information [for develop](https://vsce.r-eg.net/doc/Dev/), and other...
+[Read or Edit](https://vsce.r-eg.net/)
 
-Feel free to improve any our pages. Click [Edit] button or Start new page [here](https://vsce.r-eg.net/doc/New/).
-
-## Questions / Bugs / Suggestions / Source Code
-
-Welcome:
-
-* [https://github.com/3F/vsCommandEvent](https://github.com/3F/vsCommandEvent)
-
-## *🖼️
+## 🖼️
 
 ![](https://3F.github.io/web.vsCE/doc/Resources/Screenshots/vsCommandEvent_menu.png)
 
@@ -204,5 +198,5 @@ Welcome:
 
 ![](https://3F.github.io/web.vsCE/doc/Resources/examples/cmds/live.gif)
 
-👉 **[ [ . . .](https://vsce.r-eg.net/Screenshots/) ]**
+**[ [ . . .](https://vsce.r-eg.net/Screenshots/) ]**
 

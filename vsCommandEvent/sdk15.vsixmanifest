@@ -2,7 +2,7 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <!-- Do not use '..\' for paths because of problems when uninstalling -->
     <Metadata>
-        <Identity Id="DA5CEB32-1E09-44A5-A6AA-71D3149A53B7" Version="1.3.0" Language="en-US" Publisher="GitHub3F" />
+        <Identity Id="DA5CEB32-1E09-44A5-A6AA-71D3149A53B7" Version="1.4.0" Language="en-US" Publisher="GitHub3F" />
         <DisplayName>vsCommandEvent</DisplayName>
         <Description xml:space="preserve">Extending Visual Studio on the fly via E-MSBuild, SobaScript, C#, ... An powerful manager of the commands and data.</Description>
         <MoreInfo>https://github.com/3F/vsCommandEvent</MoreInfo>
